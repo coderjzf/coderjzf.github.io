@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JavaSE," />
+  <meta name="keywords" content="JavaWeb," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date Date utilDate=new Date(); //java.util.DateDate sqlDate=new Date(utilDate.getTime());//java.sql.Date 3.将字符串转成java.util.DateString str=”">
-<meta name="keywords" content="JavaSE">
+<meta name="description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
+<meta name="keywords" content="JavaWeb">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于java.util.Date与java.sql.Date">
-<meta property="og:url" content="http://yoursite.com/Date/index.html">
+<meta property="og:title" content="防表单重复提交">
+<meta property="og:url" content="http://yoursite.com/DuplicateForm/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date Date utilDate=new Date(); //java.util.DateDate sqlDate=new Date(utilDate.getTime());//java.sql.Date 3.将字符串转成java.util.DateString str=”">
-<meta property="og:updated_time" content="2017-05-03T12:51:35.030Z">
+<meta property="og:description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
+<meta property="og:updated_time" content="2017-05-04T15:22:32.892Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于java.util.Date与java.sql.Date">
-<meta name="twitter:description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date Date utilDate=new Date(); //java.util.DateDate sqlDate=new Date(utilDate.getTime());//java.sql.Date 3.将字符串转成java.util.DateString str=”">
+<meta name="twitter:title" content="防表单重复提交">
+<meta name="twitter:description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/Date/"/>
+  <link rel="canonical" href="http://yoursite.com/DuplicateForm/"/>
 
 
 
 
 
-  <title> 关于java.util.Date与java.sql.Date | coderjzf </title>
+  <title> 防表单重复提交 | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Date/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/DuplicateForm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -271,7 +271,7 @@
             
             
               
-                关于java.util.Date与java.sql.Date
+                防表单重复提交
               
             
           </h1>
@@ -286,8 +286,8 @@
               
                 <span class="post-meta-item-text">Posté le</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-03T00:00:00+08:00">
-                2017-05-03
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T00:00:00+08:00">
+                2017-05-04
               </time>
             
 
@@ -344,10 +344,160 @@
       
 
       
-        <p>1.java.sql.Date是java.util.Date的子类<br>2.将java.util.Date转成java.sql.Date</p>
-<p>Date utilDate=new Date(); //java.util.Date<br>Date sqlDate=new Date(utilDate.getTime());//java.sql.Date</p>
-<p>3.将字符串转成java.util.Date<br>String str=”1995-9-2”;<br>SimpleDateFormat sdf=new SimpleDateFormat(“yyyy-MM-dd”);<br>sdf.parse(str);</p>
+        <p>###主要分为三步</p>
+<ol>
+<li>先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面</li>
+<li>在表单提交页面通过隐藏域取出令牌，提交表单</li>
+<li>跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提交表单。</li>
+</ol>
+<hr>
+<p>#####生成令牌的servlet代码</p>
+<pre><code>import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import sun.misc.BASE64Encoder;
+
+public class FormServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    doPost(request, response);
+}
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    request.setCharacterEncoding(&quot;utf-8&quot;);
+    response.setContentType(&quot;text/html;charset=utf-8&quot;);
+
+    TokenProcess tp = TokenProcess.getInsetance();
+    String token = tp.generateToken(); // 生成令牌
+    request.getSession().setAttribute(&quot;token&quot;, token); // 将令牌存于session域
+    request.getRequestDispatcher(&quot;/Login4.jsp&quot;).forward(request, response);
+
+}
+}
+
+/**
+ * 使用单例模式创建一个令牌类
+ * @author jiazhengfeng
+ */
+class TokenProcess {
+    private static TokenProcess instance = new TokenProcess();
+
+    private TokenProcess() {
+    };
+
+    public static TokenProcess getInsetance() {
+        return instance;
+    }
+
+    public String generateToken() {
+        String token = System.currentTimeMillis() + new Random().nextInt() + &quot;&quot;;
+
+        try {
+            MessageDigest md = MessageDigest.getInstance(&quot;md5&quot;);
+            byte[] md5 = md.digest(token.getBytes()); // 得到token的消息摘要
+            BASE64Encoder encoder = new BASE64Encoder();
+            return encoder.encode(md5); // 用base64编码摘要并返回
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+</code></pre><hr>
+<p>#####一个简单的jsp登录页面</p>
+<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
+pageEncoding=&quot;utf-8&quot;%&gt;
+&lt;%@taglib prefix=&quot;simpletag&quot; uri=&quot;http://www.simpletag.com&quot; %&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
+&lt;title&gt;Insert title here&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+   &lt;form action=&quot;/LoginWithVerifyCode/DoFormServlet&quot; method=&quot;post&quot; &gt;
+  &lt;fieldset&gt;
+  &lt;legend&gt;请登录&lt;/legend&gt;
+  &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;${token}&quot;&gt;  &lt;%--隐藏域 用于传递token --%&gt;
+   User:&lt;br/&gt;
+   &lt;input type=&quot;text&quot; name=&quot;user&quot;&gt;&lt;br/&gt;
+   Password:&lt;br/&gt;
+   &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br/&gt;
+   &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+   &lt;/fieldset&gt;
+   &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><hr>
+<p>#####验证表单的servlet代码</p>
+<pre><code>import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class DoFormServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    doPost(request, response);
+}
+
+/**
+     * 利用令牌防止表单重复提交
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+        request.setCharacterEncoding(&quot;utf-8&quot;);
+        response.setContentType(&quot;text/html;charset=utf-8&quot;);
+
+        boolean b = isTokenValid(request);
+        if (!b) {
+            System.out.println(&quot;请勿重复提交表单&quot;);
+            return;
+        }
+
+        request.getSession().removeAttribute(&quot;token&quot;);
+        System.out.println(&quot;向数据库存入数据&quot;);
+
+    }
+
+    /**
+     * 判断令牌是否有效
+     * 
+     * @param request
+     * @return
+     */
+    private boolean isTokenValid(HttpServletRequest request) {
+        String client_token = request.getParameter(&quot;token&quot;); // 得到表单隐藏域的令牌
+        String server_token = (String) request.getSession().getAttribute(&quot;token&quot;); // 得到服务器端session域的令牌
+
+        if (client_token == null) { // 如果表单格式有错误或者伪造表单
+            return false;
+        }
+
+        if (server_token == null) { // 如果服务器端不存在令牌
+            return false;
+        }
+
+        if (server_token.equals(client_token)) {
+            return true;
+        }
+
+        return false;
+    }
+    }
+</code></pre>
       
     </div>
 
@@ -370,7 +520,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaSE/" rel="tag"># JavaSE</a>
+            <a href="/tags/JavaWeb/" rel="tag"># JavaWeb</a>
           
         </div>
       
@@ -383,18 +533,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/DuplicateForm/" rel="next" title="防表单重复提交">
-                <i class="fa fa-chevron-left"></i> 防表单重复提交
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/first/" rel="prev" title="Test for Hexo">
-                Test for Hexo <i class="fa fa-chevron-right"></i>
+              <a href="/Date/" rel="prev" title="关于java.util.Date与java.sql.Date">
+                关于java.util.Date与java.sql.Date <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
