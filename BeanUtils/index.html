@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JavaSE," />
+  <meta name="keywords" content="Utils," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date Date utilDate=new Date(); //java.util.DateDate sqlDate=new Date(utilDate.getTime());//java.sql.Date 3.将字符串转成java.util.DateString str=”">
-<meta name="keywords" content="JavaSE">
+<meta name="description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。 2.需要的环境使用BeanUtils需要commons-beanutils 和commons-logging两个jar包 3.常用APIBeanUtils：顾名思义就是对bean进行操作的工具类。常用方法 static vo">
+<meta name="keywords" content="Utils">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于java.util.Date与java.sql.Date">
-<meta property="og:url" content="http://yoursite.com/Date/index.html">
+<meta property="og:title" content="BeanUtils的使用">
+<meta property="og:url" content="http://yoursite.com/BeanUtils/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date Date utilDate=new Date(); //java.util.DateDate sqlDate=new Date(utilDate.getTime());//java.sql.Date 3.将字符串转成java.util.DateString str=”">
-<meta property="og:updated_time" content="2017-05-03T12:51:35.030Z">
+<meta property="og:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。 2.需要的环境使用BeanUtils需要commons-beanutils 和commons-logging两个jar包 3.常用APIBeanUtils：顾名思义就是对bean进行操作的工具类。常用方法 static vo">
+<meta property="og:updated_time" content="2017-05-06T03:14:18.143Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于java.util.Date与java.sql.Date">
-<meta name="twitter:description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date Date utilDate=new Date(); //java.util.DateDate sqlDate=new Date(utilDate.getTime());//java.sql.Date 3.将字符串转成java.util.DateString str=”">
+<meta name="twitter:title" content="BeanUtils的使用">
+<meta name="twitter:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。 2.需要的环境使用BeanUtils需要commons-beanutils 和commons-logging两个jar包 3.常用APIBeanUtils：顾名思义就是对bean进行操作的工具类。常用方法 static vo">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/Date/"/>
+  <link rel="canonical" href="http://yoursite.com/BeanUtils/"/>
 
 
 
 
 
-  <title> 关于java.util.Date与java.sql.Date | coderjzf </title>
+  <title> BeanUtils的使用 | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Date/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/BeanUtils/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -271,7 +271,7 @@
             
             
               
-                关于java.util.Date与java.sql.Date
+                BeanUtils的使用
               
             
           </h1>
@@ -286,8 +286,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-03T00:00:00+08:00">
-                2017-05-03
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-06T00:00:00+08:00">
+                2017-05-06
               </time>
             
 
@@ -344,10 +344,154 @@
       
 
       
-        <p>1.java.sql.Date是java.util.Date的子类<br>2.将java.util.Date转成java.sql.Date</p>
-<p>Date utilDate=new Date(); //java.util.Date<br>Date sqlDate=new Date(utilDate.getTime());//java.sql.Date</p>
-<p>3.将字符串转成java.util.Date<br>String str=”1995-9-2”;<br>SimpleDateFormat sdf=new SimpleDateFormat(“yyyy-MM-dd”);<br>sdf.parse(str);</p>
+        <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。</p>
+<p><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
+<p><strong>3.常用API</strong><br>BeanUtils：顾名思义就是对bean进行操作的工具类。<br>常用方法</p>
+<p><code>static void  setProperty(Object bean,String name,Object value)</code><br>将value的值付给bean的指定属性(需要注意的是，如果属性类型是基本类型，BeanUtils内部已经帮我们实现了自动转换;如果不是基本类型则需要注册相应的转换器)。</p>
+<p><code>static void     populate(Object bean, Map&lt;String,? extends Object&gt; properties)</code><br>将Map中的值赋给bean中相应的属性，其中Map中的键名必须与bean的属性名相同(同样，如果是非基本类型，需要注册相应的转换器)。</p>
+<p>ConvertUtils：用来注册转换器的工具类</p>
+<p>常用方法<br><code>static void     register(Converter converter, Class&lt;?&gt; clazz)</code><br>为clazz字节码对象对应的属性类型注册转换器(如属性值为Date类型，则clazz=Date.class())。</p>
+<p>Convert：即转换器接口，可通过实现这个接口来实现自定义的转换器类</p>
+<p>这个接口只有一个方法<br><code>&lt;T&gt; T convert(Class&lt;T&gt; type,Object value)</code></p>
+<p>commons-beanutils也为我们提供了众多的转换器类<br>如 BigDecimalConverte,DateConverter, DateLocaleConverter, URLConverter等。</p>
+<p><strong>4.实例</strong></p>
+<p>Person(JavaBean)</p>
+<pre><code>import java.util.Date;
 
+public class Person {
+    private int id;
+    private String name;
+    private String sex;
+    private Date birthday;
+
+public Date getBirthday() {
+    return birthday;
+}
+
+public void setBirthday(Date birthday) {
+    this.birthday = birthday;
+}
+
+public int getId() {
+    return id;
+}
+
+public void setId(int id) {
+    this.id = id;
+}
+
+public String getName() {
+    return name;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public String getSex() {
+    return sex;
+}
+
+public void setSex(String sex) {
+    this.sex = sex;
+}
+
+}
+</code></pre><hr>
+<p><strong>利用BeanUtils对bean进行行相关操作</strong></p>
+<pre><code>import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
+
+public class BeanUtilsTest {
+
+    /**
+     * 利用BeanUtils给bean相关属性赋值
+     */
+    public void test(){
+    Person p =new Person();
+    try {
+        BeanUtils.setProperty(p, &quot;name&quot;, &quot;James&quot;); //默认只支持基本类型的转换
+        System.out.println(p.getName());
+
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        e.printStackTrace();
+    }
+}
+
+/**
+ * 自定义转换器类并注册
+ */
+@SuppressWarnings(&quot;deprecation&quot;)
+public void test2(){
+    Person p = new Person();
+    String date=&quot;2017-5-6&quot;;
+
+    ConvertUtils.register(new Converter() { //为BeanUtils注册字符串转成日期类型的转换器，
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+        @Override
+        public &lt;T&gt; T convert(Class&lt;T&gt; type, Object value) {
+            if(value == null){
+                return null;
+            }
+
+            if(!(value instanceof String)){
+                throw new ConversionException(&quot;只支持string类型的转换&quot;);
+            }
+
+            SimpleDateFormat sdf=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+            try {
+                 return (T) sdf.parse((String) value);
+
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+    }, Date.class);
+
+    try {
+        BeanUtils.setProperty(p, &quot;birthday&quot;, date);
+        System.out.println(p.getBirthday().toLocaleString());
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new RuntimeException(&quot;转换出错！&quot;);
+    }
+}
+
+/**
+ * 用Map来填充bean的属性
+ */
+public void test3() {
+    Person person = new Person();
+    Map map = new HashMap();
+    map.put(&quot;name&quot;, &quot;James&quot;);
+    map.put(&quot;sex&quot;, &quot;男&quot;);
+    map.put(&quot;birthday&quot;, &quot;1984-6-5&quot;);
+    map.put(&quot;id&quot;, &quot;3&quot;);
+
+    ConvertUtils.register(new DateLocaleConverter(), Date.class);
+
+    try {
+        BeanUtils.populate(person, map); 
+        System.out.println(person.getBirthday());
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new RuntimeException(&quot;转换出错&quot;);
+    }
+}
+
+}
+</code></pre>
       
     </div>
 
@@ -370,7 +514,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaSE/" rel="tag"># JavaSE</a>
+            <a href="/tags/Utils/" rel="tag"># Utils</a>
           
         </div>
       
@@ -383,18 +527,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/DuplicateForm/" rel="next" title="防表单重复提交">
-                <i class="fa fa-chevron-left"></i> 防表单重复提交
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/first/" rel="prev" title="Test for Hexo">
-                Test for Hexo <i class="fa fa-chevron-right"></i>
+              <a href="/DuplicateForm/" rel="prev" title="防表单重复提交">
+                防表单重复提交 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

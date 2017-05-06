@@ -197,7 +197,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Accueil
+            Startseite
           </a>
         </li>
       
@@ -207,7 +207,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -240,6 +240,292 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/BeanUtils/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="coderjzf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="coderjzf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/BeanUtils/" itemprop="url">
+                  BeanUtils的使用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-06T00:00:00+08:00">
+                2017-05-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">in</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。</p>
+<p><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
+<p><strong>3.常用API</strong><br>BeanUtils：顾名思义就是对bean进行操作的工具类。<br>常用方法</p>
+<p><code>static void  setProperty(Object bean,String name,Object value)</code><br>将value的值付给bean的指定属性(需要注意的是，如果属性类型是基本类型，BeanUtils内部已经帮我们实现了自动转换;如果不是基本类型则需要注册相应的转换器)。</p>
+<p><code>static void     populate(Object bean, Map&lt;String,? extends Object&gt; properties)</code><br>将Map中的值赋给bean中相应的属性，其中Map中的键名必须与bean的属性名相同(同样，如果是非基本类型，需要注册相应的转换器)。</p>
+<p>ConvertUtils：用来注册转换器的工具类</p>
+<p>常用方法<br><code>static void     register(Converter converter, Class&lt;?&gt; clazz)</code><br>为clazz字节码对象对应的属性类型注册转换器(如属性值为Date类型，则clazz=Date.class())。</p>
+<p>Convert：即转换器接口，可通过实现这个接口来实现自定义的转换器类</p>
+<p>这个接口只有一个方法<br><code>&lt;T&gt; T convert(Class&lt;T&gt; type,Object value)</code></p>
+<p>commons-beanutils也为我们提供了众多的转换器类<br>如 BigDecimalConverte,DateConverter, DateLocaleConverter, URLConverter等。</p>
+<p><strong>4.实例</strong></p>
+<p>Person(JavaBean)</p>
+<pre><code>import java.util.Date;
+
+public class Person {
+    private int id;
+    private String name;
+    private String sex;
+    private Date birthday;
+
+public Date getBirthday() {
+    return birthday;
+}
+
+public void setBirthday(Date birthday) {
+    this.birthday = birthday;
+}
+
+public int getId() {
+    return id;
+}
+
+public void setId(int id) {
+    this.id = id;
+}
+
+public String getName() {
+    return name;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public String getSex() {
+    return sex;
+}
+
+public void setSex(String sex) {
+    this.sex = sex;
+}
+
+}
+</code></pre><hr>
+<p><strong>利用BeanUtils对bean进行行相关操作</strong></p>
+<pre><code>import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConversionException;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
+
+public class BeanUtilsTest {
+
+    /**
+     * 利用BeanUtils给bean相关属性赋值
+     */
+    public void test(){
+    Person p =new Person();
+    try {
+        BeanUtils.setProperty(p, &quot;name&quot;, &quot;James&quot;); //默认只支持基本类型的转换
+        System.out.println(p.getName());
+
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        e.printStackTrace();
+    }
+}
+
+/**
+ * 自定义转换器类并注册
+ */
+@SuppressWarnings(&quot;deprecation&quot;)
+public void test2(){
+    Person p = new Person();
+    String date=&quot;2017-5-6&quot;;
+
+    ConvertUtils.register(new Converter() { //为BeanUtils注册字符串转成日期类型的转换器，
+
+        @SuppressWarnings(&quot;unchecked&quot;)
+        @Override
+        public &lt;T&gt; T convert(Class&lt;T&gt; type, Object value) {
+            if(value == null){
+                return null;
+            }
+
+            if(!(value instanceof String)){
+                throw new ConversionException(&quot;只支持string类型的转换&quot;);
+            }
+
+            SimpleDateFormat sdf=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+            try {
+                 return (T) sdf.parse((String) value);
+
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+
+    }, Date.class);
+
+    try {
+        BeanUtils.setProperty(p, &quot;birthday&quot;, date);
+        System.out.println(p.getBirthday().toLocaleString());
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new RuntimeException(&quot;转换出错！&quot;);
+    }
+}
+
+/**
+ * 用Map来填充bean的属性
+ */
+public void test3() {
+    Person person = new Person();
+    Map map = new HashMap();
+    map.put(&quot;name&quot;, &quot;James&quot;);
+    map.put(&quot;sex&quot;, &quot;男&quot;);
+    map.put(&quot;birthday&quot;, &quot;1984-6-5&quot;);
+    map.put(&quot;id&quot;, &quot;3&quot;);
+
+    ConvertUtils.register(new DateLocaleConverter(), Date.class);
+
+    try {
+        BeanUtils.populate(person, map); 
+        System.out.println(person.getBirthday());
+    } catch (IllegalAccessException | InvocationTargetException e) {
+        throw new RuntimeException(&quot;转换出错&quot;);
+    }
+}
+
+}
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -287,7 +573,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posté le</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T00:00:00+08:00">
                 2017-05-04
@@ -308,7 +594,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -579,7 +865,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posté le</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-03T00:00:00+08:00">
                 2017-05-03
@@ -600,7 +886,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -721,7 +1007,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Posté le</span>
+                <span class="post-meta-item-text">Veröffentlicht am</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-25T00:00:00+08:00">
                 2017-04-25
@@ -742,7 +1028,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">In</span>
+                <span class="post-meta-item-text">in</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -860,8 +1146,8 @@ public class DoFormServlet extends HttpServlet {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
-                <span class="site-state-item-name">articles</span>
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">Artikel</span>
               </a>
             </div>
           
@@ -870,7 +1156,7 @@ public class DoFormServlet extends HttpServlet {
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">2</span>
-                <span class="site-state-item-name">categories</span>
+                <span class="site-state-item-name">Kategorien</span>
               
             </div>
           
@@ -878,8 +1164,8 @@ public class DoFormServlet extends HttpServlet {
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">2</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">Tags</span>
               </a>
             </div>
           
@@ -929,11 +1215,11 @@ public class DoFormServlet extends HttpServlet {
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
-  Thème -
+  Theme -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Pisces
   </a>
