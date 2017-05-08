@@ -197,7 +197,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -207,7 +207,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -287,7 +287,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-06T00:00:00+08:00">
                 2017-05-06
@@ -308,7 +308,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -348,156 +348,14 @@
 
       
         
-          
-            <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。</p>
-<p><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
-<p><strong>3.常用API</strong><br>BeanUtils：顾名思义就是对bean进行操作的工具类。<br>常用方法</p>
-<p><code>static void  setProperty(Object bean,String name,Object value)</code><br>将value的值付给bean的指定属性(需要注意的是，如果属性类型是基本类型，BeanUtils内部已经帮我们实现了自动转换;如果不是基本类型则需要注册相应的转换器)。</p>
-<p><code>static void     populate(Object bean, Map&lt;String,? extends Object&gt; properties)</code><br>将Map中的值赋给bean中相应的属性，其中Map中的键名必须与bean的属性名相同(同样，如果是非基本类型，需要注册相应的转换器)。</p>
-<p>ConvertUtils：用来注册转换器的工具类</p>
-<p>常用方法<br><code>static void     register(Converter converter, Class&lt;?&gt; clazz)</code><br>为clazz字节码对象对应的属性类型注册转换器(如属性值为Date类型，则clazz=Date.class())。</p>
-<p>Convert：即转换器接口，可通过实现这个接口来实现自定义的转换器类</p>
-<p>这个接口只有一个方法<br><code>&lt;T&gt; T convert(Class&lt;T&gt; type,Object value)</code></p>
-<p>commons-beanutils也为我们提供了众多的转换器类<br>如 BigDecimalConverte,DateConverter, DateLocaleConverter, URLConverter等。</p>
-<p><strong>4.实例</strong></p>
-<p>Person(JavaBean)</p>
-<pre><code>import java.util.Date;
-
-public class Person {
-    private int id;
-    private String name;
-    private String sex;
-    private Date birthday;
-
-public Date getBirthday() {
-    return birthday;
-}
-
-public void setBirthday(Date birthday) {
-    this.birthday = birthday;
-}
-
-public int getId() {
-    return id;
-}
-
-public void setId(int id) {
-    this.id = id;
-}
-
-public String getName() {
-    return name;
-}
-
-public void setName(String name) {
-    this.name = name;
-}
-
-public String getSex() {
-    return sex;
-}
-
-public void setSex(String sex) {
-    this.sex = sex;
-}
-
-}
-</code></pre><hr>
-<p><strong>利用BeanUtils对bean进行行相关操作</strong></p>
-<pre><code>import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
-
-public class BeanUtilsTest {
-
-    /**
-     * 利用BeanUtils给bean相关属性赋值
-     */
-    public void test(){
-    Person p =new Person();
-    try {
-        BeanUtils.setProperty(p, &quot;name&quot;, &quot;James&quot;); //默认只支持基本类型的转换
-        System.out.println(p.getName());
-
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-    }
-}
-
-/**
- * 自定义转换器类并注册
- */
-@SuppressWarnings(&quot;deprecation&quot;)
-public void test2(){
-    Person p = new Person();
-    String date=&quot;2017-5-6&quot;;
-
-    ConvertUtils.register(new Converter() { //为BeanUtils注册字符串转成日期类型的转换器，
-
-        @SuppressWarnings(&quot;unchecked&quot;)
-        @Override
-        public &lt;T&gt; T convert(Class&lt;T&gt; type, Object value) {
-            if(value == null){
-                return null;
-            }
-
-            if(!(value instanceof String)){
-                throw new ConversionException(&quot;只支持string类型的转换&quot;);
-            }
-
-            SimpleDateFormat sdf=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-            try {
-                 return (T) sdf.parse((String) value);
-
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-    }, Date.class);
-
-    try {
-        BeanUtils.setProperty(p, &quot;birthday&quot;, date);
-        System.out.println(p.getBirthday().toLocaleString());
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new RuntimeException(&quot;转换出错！&quot;);
-    }
-}
-
-/**
- * 用Map来填充bean的属性
- */
-public void test3() {
-    Person person = new Person();
-    Map map = new HashMap();
-    map.put(&quot;name&quot;, &quot;James&quot;);
-    map.put(&quot;sex&quot;, &quot;男&quot;);
-    map.put(&quot;birthday&quot;, &quot;1984-6-5&quot;);
-    map.put(&quot;id&quot;, &quot;3&quot;);
-
-    ConvertUtils.register(new DateLocaleConverter(), Date.class);
-
-    try {
-        BeanUtils.populate(person, map); 
-        System.out.println(person.getBirthday());
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new RuntimeException(&quot;转换出错&quot;);
-    }
-}
-
-}
-</code></pre>
-          
+          <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/BeanUtils/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -573,7 +431,7 @@ public void test3() {
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T00:00:00+08:00">
                 2017-05-04
@@ -594,7 +452,7 @@ public void test3() {
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -634,162 +492,20 @@ public void test3() {
 
       
         
-          
-            <p>###主要分为三步</p>
+          <p>###主要分为三步</p>
 <ol>
 <li>先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面</li>
 <li>在表单提交页面通过隐藏域取出令牌，提交表单</li>
 <li>跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提交表单。</li>
 </ol>
-<hr>
-<p>#####生成令牌的servlet代码</p>
-<pre><code>import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import sun.misc.BASE64Encoder;
-
-public class FormServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    doPost(request, response);
-}
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    request.setCharacterEncoding(&quot;utf-8&quot;);
-    response.setContentType(&quot;text/html;charset=utf-8&quot;);
-
-    TokenProcess tp = TokenProcess.getInsetance();
-    String token = tp.generateToken(); // 生成令牌
-    request.getSession().setAttribute(&quot;token&quot;, token); // 将令牌存于session域
-    request.getRequestDispatcher(&quot;/Login4.jsp&quot;).forward(request, response);
-
-}
-}
-
-/**
- * 使用单例模式创建一个令牌类
- * @author jiazhengfeng
- */
-class TokenProcess {
-    private static TokenProcess instance = new TokenProcess();
-
-    private TokenProcess() {
-    };
-
-    public static TokenProcess getInsetance() {
-        return instance;
-    }
-
-    public String generateToken() {
-        String token = System.currentTimeMillis() + new Random().nextInt() + &quot;&quot;;
-
-        try {
-            MessageDigest md = MessageDigest.getInstance(&quot;md5&quot;);
-            byte[] md5 = md.digest(token.getBytes()); // 得到token的消息摘要
-            BASE64Encoder encoder = new BASE64Encoder();
-            return encoder.encode(md5); // 用base64编码摘要并返回
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}
-</code></pre><hr>
-<p>#####一个简单的jsp登录页面</p>
-<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
-pageEncoding=&quot;utf-8&quot;%&gt;
-&lt;%@taglib prefix=&quot;simpletag&quot; uri=&quot;http://www.simpletag.com&quot; %&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
-&lt;title&gt;Insert title here&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-   &lt;form action=&quot;/LoginWithVerifyCode/DoFormServlet&quot; method=&quot;post&quot; &gt;
-  &lt;fieldset&gt;
-  &lt;legend&gt;请登录&lt;/legend&gt;
-  &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;${token}&quot;&gt;  &lt;%--隐藏域 用于传递token --%&gt;
-   User:&lt;br/&gt;
-   &lt;input type=&quot;text&quot; name=&quot;user&quot;&gt;&lt;br/&gt;
-   Password:&lt;br/&gt;
-   &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br/&gt;
-   &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
-   &lt;/fieldset&gt;
-   &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><hr>
-<p>#####验证表单的servlet代码</p>
-<pre><code>import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class DoFormServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    doPost(request, response);
-}
-
-/**
-     * 利用令牌防止表单重复提交
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        request.setCharacterEncoding(&quot;utf-8&quot;);
-        response.setContentType(&quot;text/html;charset=utf-8&quot;);
-
-        boolean b = isTokenValid(request);
-        if (!b) {
-            System.out.println(&quot;请勿重复提交表单&quot;);
-            return;
-        }
-
-        request.getSession().removeAttribute(&quot;token&quot;);
-        System.out.println(&quot;向数据库存入数据&quot;);
-
-    }
-
-    /**
-     * 判断令牌是否有效
-     * 
-     * @param request
-     * @return
-     */
-    private boolean isTokenValid(HttpServletRequest request) {
-        String client_token = request.getParameter(&quot;token&quot;); // 得到表单隐藏域的令牌
-        String server_token = (String) request.getSession().getAttribute(&quot;token&quot;); // 得到服务器端session域的令牌
-
-        if (client_token == null) { // 如果表单格式有错误或者伪造表单
-            return false;
-        }
-
-        if (server_token == null) { // 如果服务器端不存在令牌
-            return false;
-        }
-
-        if (server_token.equals(client_token)) {
-            return true;
-        }
-
-        return false;
-    }
-    }
-</code></pre>
-          
+<h2 id=""><a href="#" class="headerlink" title=""></a>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/DuplicateForm/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -865,7 +581,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-03T00:00:00+08:00">
                 2017-05-03
@@ -886,7 +602,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -926,12 +642,14 @@ public class DoFormServlet extends HttpServlet {
 
       
         
-          
-            <p>1.java.sql.Date是java.util.Date的子类<br>2.将java.util.Date转成java.sql.Date</p>
-<p>Date utilDate=new Date(); //java.util.Date<br>Date sqlDate=new Date(utilDate.getTime());//java.sql.Date</p>
-<p>3.将字符串转成java.util.Date<br>String str=”1995-9-2”;<br>SimpleDateFormat sdf=new SimpleDateFormat(“yyyy-MM-dd”);<br>sdf.parse(str);</p>
-
-          
+          <p>1.java.sql.Date是java.util.Date的子类<br>2.将java.util.Date转成java.sql.Date<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/Date/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1007,7 +725,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-25T00:00:00+08:00">
                 2017-04-25
@@ -1028,7 +746,7 @@ public class DoFormServlet extends HttpServlet {
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -1147,7 +865,7 @@ public class DoFormServlet extends HttpServlet {
             <div class="site-state-item site-state-posts">
               <a href="/archives">
                 <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -1156,7 +874,7 @@ public class DoFormServlet extends HttpServlet {
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">2</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">categories</span>
               
             </div>
           
@@ -1165,7 +883,7 @@ public class DoFormServlet extends HttpServlet {
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">3</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -1215,7 +933,7 @@ public class DoFormServlet extends HttpServlet {
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

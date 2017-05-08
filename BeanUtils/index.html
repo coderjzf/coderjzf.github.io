@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。 2.需要的环境使用BeanUtils需要commons-beanutils 和commons-logging两个jar包 3.常用APIBeanUtils：顾名思义就是对bean进行操作的工具类。常用方法 static vo">
+<meta name="description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。">
 <meta name="keywords" content="Utils">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BeanUtils的使用">
 <meta property="og:url" content="http://yoursite.com/BeanUtils/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。 2.需要的环境使用BeanUtils需要commons-beanutils 和commons-logging两个jar包 3.常用APIBeanUtils：顾名思义就是对bean进行操作的工具类。常用方法 static vo">
-<meta property="og:updated_time" content="2017-05-06T03:14:18.143Z">
+<meta property="og:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。">
+<meta property="og:updated_time" content="2017-05-07T02:14:43.951Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BeanUtils的使用">
-<meta name="twitter:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。 2.需要的环境使用BeanUtils需要commons-beanutils 和commons-logging两个jar包 3.常用APIBeanUtils：顾名思义就是对bean进行操作的工具类。常用方法 static vo">
+<meta name="twitter:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。">
 
 
 
@@ -197,7 +197,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -207,7 +207,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -284,7 +284,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-06T00:00:00+08:00">
                 2017-05-06
@@ -305,7 +305,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -344,8 +344,7 @@
       
 
       
-        <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。</p>
-<p><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
+        <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。<br><a id="more"></a><br><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
 <p><strong>3.常用API</strong><br>BeanUtils：顾名思义就是对bean进行操作的工具类。<br>常用方法</p>
 <p><code>static void  setProperty(Object bean,String name,Object value)</code><br>将value的值付给bean的指定属性(需要注意的是，如果属性类型是基本类型，BeanUtils内部已经帮我们实现了自动转换;如果不是基本类型则需要注册相应的转换器)。</p>
 <p><code>static void     populate(Object bean, Map&lt;String,? extends Object&gt; properties)</code><br>将Map中的值赋给bean中相应的属性，其中Map中的键名必须与bean的属性名相同(同样，如果是非基本类型，需要注册相应的转换器)。</p>
@@ -599,7 +598,7 @@ public void test3() {
             <div class="site-state-item site-state-posts">
               <a href="/archives">
                 <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">Artikel</span>
+                <span class="site-state-item-name">posts</span>
               </a>
             </div>
           
@@ -608,7 +607,7 @@ public void test3() {
             <div class="site-state-item site-state-categories">
               
                 <span class="site-state-item-count">2</span>
-                <span class="site-state-item-name">Kategorien</span>
+                <span class="site-state-item-name">categories</span>
               
             </div>
           
@@ -617,7 +616,7 @@ public void test3() {
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">3</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -667,7 +666,7 @@ public void test3() {
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">
