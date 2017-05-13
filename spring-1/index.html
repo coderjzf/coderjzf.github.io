@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JavaWeb," />
+  <meta name="keywords" content="Spring," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
-<meta name="keywords" content="JavaWeb">
+<meta name="description" content="一、Spring简述Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。 Spring为简化Java开发的复杂性，采取了以下四种关键策略：基于POJO的轻量级和最小侵入性编程通过依赖注入和面向接口实现松耦合">
+<meta name="keywords" content="Spring">
 <meta property="og:type" content="article">
-<meta property="og:title" content="防表单重复提交">
-<meta property="og:url" content="http://yoursite.com/DuplicateForm/index.html">
+<meta property="og:title" content="Spring_Study Note(1)">
+<meta property="og:url" content="http://yoursite.com/spring-1/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
-<meta property="og:updated_time" content="2017-05-07T02:14:11.558Z">
+<meta property="og:description" content="一、Spring简述Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。 Spring为简化Java开发的复杂性，采取了以下四种关键策略：基于POJO的轻量级和最小侵入性编程通过依赖注入和面向接口实现松耦合">
+<meta property="og:updated_time" content="2017-05-13T01:33:07.203Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="防表单重复提交">
-<meta name="twitter:description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
+<meta name="twitter:title" content="Spring_Study Note(1)">
+<meta name="twitter:description" content="一、Spring简述Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。 Spring为简化Java开发的复杂性，采取了以下四种关键策略：基于POJO的轻量级和最小侵入性编程通过依赖注入和面向接口实现松耦合">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/DuplicateForm/"/>
+  <link rel="canonical" href="http://yoursite.com/spring-1/"/>
 
 
 
 
 
-  <title> 防表单重复提交 | coderjzf </title>
+  <title> Spring_Study Note(1) | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/DuplicateForm/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/spring-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -271,7 +271,7 @@
             
             
               
-                防表单重复提交
+                Spring_Study Note(1)
               
             
           </h1>
@@ -286,8 +286,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-04T00:00:00+08:00">
-                2017-05-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-13T00:00:00+08:00">
+                2017-05-13
               </time>
             
 
@@ -344,159 +344,56 @@
       
 
       
-        <p>###主要分为三步</p>
+        <p><strong>一、Spring简述</strong><br>Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。</p>
+<p>Spring为简化Java开发的复杂性，采取了以下四种关键策略：<br>基于POJO的轻量级和最小侵入性编程<br>通过依赖注入和面向接口实现松耦合<br><a id="more"></a><br>基于切面和惯例进行声明式编程<br>通过切面和模板减少样板式代码</p>
+<p>在Spring4.0中，包括了20个不同的模块。</p>
+<ul>
+<li>Spring核心容器：Spring最核心的部分，管理者bean的创建、配置和管理。Spring bean工厂提供DI的功能，而Soring中的应用上<br>下文是在bean 工厂的基础上实现的。</li>
+<li>Spring AOP模块:Spring中开发切面的基础。借助于AOP,可以将遍布于系统中的横切关注点从它们应用的对象中解耦出来。</li>
+<li>数据访问与集成(ORM模块)</li>
+<li>Web与远程调用(Spring MVC)</li>
+<li>…</li>
+</ul>
+<hr>
+<p><strong>二、IoC&amp;DI</strong><br><em>IoC:控制反转 反转资源获取的方向</em><br>传统的资源查找要求组件向容器发起请求来查找资源，容器适时地返回资源，而应用了IoC之后容器主动将资源推送给它所管理的组件，<br>组件所要做的仅是选择一种合适的方式来接受资源</p>
+<p><em>DI:依赖注入 IoC的另一种表述形式</em><br>组件以一些方式(如构造器、setter方法)接受来自容器的资源注入</p>
+<p><em>Spring IoC容器的两种实现方式</em><br>1.BeanFactory<br>2.ApplicationContext接口(基于BeanFactory)<br>ClassPathXmlApplication 从类路径下加载配置文件<br>FileSystemXmlApplication 从文件系统中读取配置文件<br>..</p>
+<p><strong>配置bean</strong><br><strong>1.基于xml文件的方式</strong></p>
+<p><em>依赖注入的方式</em><br>属性注入(即setter方法注入，最常用的方式)<br>构造器注入 <code>&lt;constructor-arg&gt;</code></p>
+<p>每种注入方式又包括字面量注入，引用注入，集合注入，Map注入等</p>
+<p><em>bean之间的关系 继承、依赖</em><br>继承：parent属性指定要继承的bean<br>依赖：depends-on属性指定依赖的bean</p>
+<p><em>bean的作用域</em><br>使用bean的scope属性为bean设置作用域 默认值：singleton<br>singleton(单例的):在容器被创建时就初始化bean，每次请求返回到都是同一个bean实例<br>prototype(原型的):在容器被创建时没有初始化bean,每次请求都初始化并返回一个bean实例</p>
+<p><em>使用外部属性文件</em></p>
 <ol>
-<li>先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面</li>
-<li>在表单提交页面通过隐藏域取出令牌，提交表单</li>
-<li>跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提交表单。</li>
+<li>导入context命名空间</li>
+<li>配置properties文件</li>
+<li>使用<code>&lt;context:property-placeholder/&gt;</code> 导入properties文件</li>
+<li>使用属性占位符${}取出properties中的值</li>
 </ol>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>#####生成令牌的servlet代码</p>
-<pre><code>import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
+<p><em>SpEL Spring表达式语言<code>#{}</code></em></p>
+<ol>
+<li>表示字面量</li>
+<li>引用bean、属性和方法 ？来判断是非为null值</li>
+<li>使用Java中的类型</li>
+<li>SpEL运算符(算术、比较、逻辑、条件) 三元运算符来判断是否为null值</li>
+<li>SpEL通过matches支持正则表达式</li>
+<li>SpEL操作集合</li>
+</ol>
+<p><em>Spring IoC容器可以管理bean的生命周期</em><br>bean的生命周期过程：</p>
+<ol>
+<li>通过构造器或者工厂方法创建bean实例</li>
+<li>为bean的属性赋值</li>
+<li>将bean实例传给bean的后置处理器的postProcessBeforeInitialization方法</li>
+<li>调用bean的初始化方法</li>
+<li>将bean实例传给bean的后置处理器的postProcessAfterInitialization方法</li>
+<li>bean可以使用了</li>
+<li>当容器关闭时，调用bean的销毁方法</li>
+</ol>
+<p>3,5为可选的<br>可以通过实现BeanPostProcess接口，来自定义bean的后置处理器，在bean的初始化方法调用的前后对bean进行处理</p>
+<p><strong>2.通过注解配置bean</strong><br>常用注解<br><code>@Component</code><br><code>@Service</code><br><code>@Controller</code><br><code>@Repository</code></p>
+<p>组件扫描：容器从classpath下自动扫描具有特定注解的组件<br><code>&lt;context:component-scan base-package=&quot;&quot;&gt;</code> <code>base-package</code>指定要扫描的基类包<br><code>resource-pattern</code>属性指定扫描基类包下的某个包/类<br><code>&lt;context:include-filter&gt;</code>指定包含要扫描的某个包<br><code>&lt;context:exclude-filter&gt;</code>排除某个包</p>
+<p>autowired可以自动装配类型兼容的bean<br>可以放在普通字段、构造器等一切有参数的方法上</p>
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import sun.misc.BASE64Encoder;
-
-public class FormServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    doPost(request, response);
-}
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    request.setCharacterEncoding(&quot;utf-8&quot;);
-    response.setContentType(&quot;text/html;charset=utf-8&quot;);
-
-    TokenProcess tp = TokenProcess.getInsetance();
-    String token = tp.generateToken(); // 生成令牌
-    request.getSession().setAttribute(&quot;token&quot;, token); // 将令牌存于session域
-    request.getRequestDispatcher(&quot;/Login4.jsp&quot;).forward(request, response);
-
-}
-}
-
-/**
- * 使用单例模式创建一个令牌类
- * @author jiazhengfeng
- */
-class TokenProcess {
-    private static TokenProcess instance = new TokenProcess();
-
-    private TokenProcess() {
-    };
-
-    public static TokenProcess getInsetance() {
-        return instance;
-    }
-
-    public String generateToken() {
-        String token = System.currentTimeMillis() + new Random().nextInt() + &quot;&quot;;
-
-        try {
-            MessageDigest md = MessageDigest.getInstance(&quot;md5&quot;);
-            byte[] md5 = md.digest(token.getBytes()); // 得到token的消息摘要
-            BASE64Encoder encoder = new BASE64Encoder();
-            return encoder.encode(md5); // 用base64编码摘要并返回
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}
-</code></pre><hr>
-<p>#####一个简单的jsp登录页面</p>
-<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
-pageEncoding=&quot;utf-8&quot;%&gt;
-&lt;%@taglib prefix=&quot;simpletag&quot; uri=&quot;http://www.simpletag.com&quot; %&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
-&lt;title&gt;Insert title here&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-   &lt;form action=&quot;/LoginWithVerifyCode/DoFormServlet&quot; method=&quot;post&quot; &gt;
-  &lt;fieldset&gt;
-  &lt;legend&gt;请登录&lt;/legend&gt;
-  &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;${token}&quot;&gt;  &lt;%--隐藏域 用于传递token --%&gt;
-   User:&lt;br/&gt;
-   &lt;input type=&quot;text&quot; name=&quot;user&quot;&gt;&lt;br/&gt;
-   Password:&lt;br/&gt;
-   &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br/&gt;
-   &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
-   &lt;/fieldset&gt;
-   &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><hr>
-<p>#####验证表单的servlet代码</p>
-<pre><code>import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class DoFormServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    doPost(request, response);
-}
-
-/**
-     * 利用令牌防止表单重复提交
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        request.setCharacterEncoding(&quot;utf-8&quot;);
-        response.setContentType(&quot;text/html;charset=utf-8&quot;);
-
-        boolean b = isTokenValid(request);
-        if (!b) {
-            System.out.println(&quot;请勿重复提交表单&quot;);
-            return;
-        }
-
-        request.getSession().removeAttribute(&quot;token&quot;);
-        System.out.println(&quot;向数据库存入数据&quot;);
-
-    }
-
-    /**
-     * 判断令牌是否有效
-     * 
-     * @param request
-     * @return
-     */
-    private boolean isTokenValid(HttpServletRequest request) {
-        String client_token = request.getParameter(&quot;token&quot;); // 得到表单隐藏域的令牌
-        String server_token = (String) request.getSession().getAttribute(&quot;token&quot;); // 得到服务器端session域的令牌
-
-        if (client_token == null) { // 如果表单格式有错误或者伪造表单
-            return false;
-        }
-
-        if (server_token == null) { // 如果服务器端不存在令牌
-            return false;
-        }
-
-        if (server_token.equals(client_token)) {
-            return true;
-        }
-
-        return false;
-    }
-    }
-</code></pre>
       
     </div>
 
@@ -519,7 +416,7 @@ public class DoFormServlet extends HttpServlet {
       
         <div class="post-tags">
           
-            <a href="/tags/JavaWeb/" rel="tag"># JavaWeb</a>
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
           
         </div>
       
@@ -532,8 +429,8 @@ public class DoFormServlet extends HttpServlet {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/BeanUtils/" rel="next" title="BeanUtils的使用">
-                <i class="fa fa-chevron-left"></i> BeanUtils的使用
+              <a href="/spring-2/" rel="next" title="Spring_Study Note(2)">
+                <i class="fa fa-chevron-left"></i> Spring_Study Note(2)
               </a>
             
           </div>
@@ -542,8 +439,8 @@ public class DoFormServlet extends HttpServlet {
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/Date/" rel="prev" title="关于java.util.Date与java.sql.Date">
-                关于java.util.Date与java.sql.Date <i class="fa fa-chevron-right"></i>
+              <a href="/BeanUtils/" rel="prev" title="BeanUtils的使用">
+                BeanUtils的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -591,17 +488,8 @@ public class DoFormServlet extends HttpServlet {
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Inhaltsverzeichnis
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Übersicht
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -659,22 +547,6 @@ public class DoFormServlet extends HttpServlet {
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
