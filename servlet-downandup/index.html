@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JavaSE," />
+  <meta name="keywords" content="Servlet," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date">
-<meta name="keywords" content="JavaSE">
+<meta name="description" content="1.content-disposition实现文件的上传与下载都需要用到content-disposition头，content-disposition 是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。">
+<meta name="keywords" content="Servlet">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于java.util.Date与java.sql.Date">
-<meta property="og:url" content="http://yoursite.com/Date/index.html">
+<meta property="og:title" content="Servlet-download file/upload file">
+<meta property="og:url" content="http://yoursite.com/servlet-downandup/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date">
-<meta property="og:updated_time" content="2017-05-07T02:14:29.953Z">
+<meta property="og:description" content="1.content-disposition实现文件的上传与下载都需要用到content-disposition头，content-disposition 是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。">
+<meta property="og:updated_time" content="2017-05-13T13:00:57.377Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于java.util.Date与java.sql.Date">
-<meta name="twitter:description" content="1.java.sql.Date是java.util.Date的子类2.将java.util.Date转成java.sql.Date">
+<meta name="twitter:title" content="Servlet-download file/upload file">
+<meta name="twitter:description" content="1.content-disposition实现文件的上传与下载都需要用到content-disposition头，content-disposition 是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/Date/"/>
+  <link rel="canonical" href="http://yoursite.com/servlet-downandup/"/>
 
 
 
 
 
-  <title> 关于java.util.Date与java.sql.Date | coderjzf </title>
+  <title> Servlet-download file/upload file | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
@@ -260,7 +260,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/Date/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/servlet-downandup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -281,7 +281,7 @@
             
             
               
-                关于java.util.Date与java.sql.Date
+                Servlet-download file/upload file
               
             
           </h1>
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">Posté le</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-03T00:00:00+08:00">
-                2017-05-03
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-13T00:00:00+08:00">
+                2017-05-13
               </time>
             
 
@@ -354,9 +354,117 @@
       
 
       
-        <p>1.java.sql.Date是java.util.Date的子类<br>2.将java.util.Date转成java.sql.Date<br><a id="more"></a><br>Date utilDate=new Date(); //java.util.Date<br>Date sqlDate=new Date(utilDate.getTime());//java.sql.Date</p>
-<p>3.将字符串转成java.util.Date<br>String str=”1995-9-2”;<br>SimpleDateFormat sdf=new SimpleDateFormat(“yyyy-MM-dd”);<br>sdf.parse(str);</p>
+        <p><strong>1.content-disposition</strong><br>实现文件的上传与下载都需要用到content-disposition头，content-disposition 是 MIME 协议的<br>扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>2.文件下载</strong></p>
+<p>浏览器直接打开文件(必须是浏览器支持直接打开的类型 如：txt,jpg等)<br><code>content-disposition=&quot;inline;filename=XX.XXX&quot;</code><br>弹出对话框选择是保存还是打开<br><code>content-disposition=&quot;attachment;filename=XX.XXX&quot;</code></p>
+<pre><code>@WebServlet(&quot;/DownloadServlet&quot;)
+public class DownloadServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        doPost(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding(&quot;utf-8&quot;);
+        // 告诉浏览器文件类型为PDF
+        response.setContentType(&quot;application/pdf;charset=utf-8&quot;);
+        // 设置返回时，弹出对话框来选择是保存还是打开
+        response.setHeader(&quot;content-disposition&quot;, &quot;attachment;filename=ThinkingInJava.pdf&quot;);
+        // 得到文件的绝对路径
+        String file = request.getServletContext().getRealPath(&quot;/WEB-INF/uploadFile/ThinkingInJava.pdf&quot;);
+        // 读取文件
+        InputStream in = new FileInputStream(file);
+
+        OutputStream out = response.getOutputStream();
+
+        byte[] buff = new byte[1024 * 1024];
+        int length = 0;
+        while ((length = in.read(buff)) &gt; 0) {
+            // 将文件写入输出流
+            out.write(buff, 0, length);
+        }
+        in.close();
+    }
+}
+</code></pre><hr>
+<p><strong>3.文件上传</strong><br><em>3.1 Servlet3.0提供了对文件上传的支持。</em><br>HttpServletRequest 提供了两个方法用于从请求中解析出上传的文件：</p>
+<ul>
+<li><code>Part getPart(String name)</code></li>
+<li><code>Collection&lt;Part&gt; getParts()</code></li>
+</ul>
+<p><em>3.2 @MultipartConfig</em><br>要在servlet中使用文件上传功能，还需将servlet打上注解@MultipartConfig<br>该注解主要是为了辅助 Servlet 3.0 中 HttpServletRequest 提供的对上传文件的支持。该注解标注在 Servlet 上面，以表示该 Servlet 希望处理的请求的 MIME 类型是 multipart/form-data。</p>
+<p><em>3.3 如果请求的MIME类型不是multipart/form-data,则不能使用上述的两个方法来得到上传的文件。</em><br>所以，在表单中属性中要加上 enctype=”multipart/form-data”</p>
+<p><em>3.4文件上传的代码实现</em></p>
+<p>表单提交页面</p>
+<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
+    pageEncoding=&quot;utf-8&quot;%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;文件上传&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;文件上传&lt;/legend&gt;
+        &lt;form action=&quot;${pageContext.request.contextPath}/UploadServlet&quot;
+            method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+            &lt;input type=&quot;file&quot; name=&quot;file&quot;&gt; 
+            &lt;br/&gt;
+            &lt;input type=&quot;submit&quot; value=&quot;上传&quot;&gt;
+        &lt;/form&gt;
+    &lt;/fieldset&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><hr>
+<p>实现文件上传的servlet</p>
+<pre><code>@WebServlet(&quot;/UploadServlet&quot;)
+@MultipartConfig //标识这是一个处理请求类型为multipart/form-data的servlet
+public class UploadServlet extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        doPost(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding(&quot;utf-8&quot;);
+        response.setContentType(&quot;text/html;charset=utf-8&quot;);
+        PrintWriter out = response.getWriter();
+
+        //得到存储路径
+        String savePath = request.getServletContext().getRealPath(&quot;/WEB-INF/uploadFile&quot;);
+        //得到上传的文件对象
+        Part part = request.getPart(&quot;file&quot;);
+        //获得关于content-disposition头的信息
+        String header = part.getHeader(&quot;Content-Disposition&quot;);
+        //得到文件名
+        String fileName = getFileName(header);
+        //存储文件
+        part.write(savePath + File.separator + fileName);
+
+        out.println(&quot;上传成功&quot;);
+        out.flush();
+        out.close();
+    }
+    /**
+     * 从Content-Disposition头中解析出文件名
+     * content-disposition头实例  如：Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;jsdk23.chm&quot;
+     */
+    private String getFileName(String header) {
+        String[] tempArr1 = header.split(&quot;;&quot;);
+        String[] tempArr2 = tempArr1[2].split(&quot;=&quot;);
+        String fileName = tempArr2[1].substring(tempArr2[1].lastIndexOf(&quot;\\&quot;) + 1).replaceAll(&quot;\&quot;&quot;, &quot;&quot;);
+        return fileName;
+    }
+}
+</code></pre>
       
     </div>
 
@@ -379,7 +487,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaSE/" rel="tag"># JavaSE</a>
+            <a href="/tags/Servlet/" rel="tag"># Servlet</a>
           
         </div>
       
@@ -392,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/DuplicateForm/" rel="next" title="防表单重复提交">
-                <i class="fa fa-chevron-left"></i> 防表单重复提交
+              <a href="/spring-1/" rel="next" title="Spring_Study Note(1)">
+                <i class="fa fa-chevron-left"></i> Spring_Study Note(1)
               </a>
             
           </div>
@@ -402,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/first/" rel="prev" title="Test for Hexo">
-                Test for Hexo <i class="fa fa-chevron-right"></i>
+              <a href="/BeanUtils/" rel="prev" title="BeanUtils的使用">
+                BeanUtils的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -451,8 +559,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table Des Matières
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Ensemble
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -510,6 +627,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
