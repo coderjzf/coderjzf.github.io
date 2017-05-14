@@ -358,74 +358,14 @@
 
       
         
-          
-            <p><strong>一、SpringMVC简述</strong><br>SpringMVC 是一个模型-视图-控制(Model-View-Controller)框架,它建立在一个前端控制器(DispatcherServlet)之上，能够帮你建立一个像Spring框架一样灵活和松耦合的Web应用程序。</p>
-<p>《Spring实战》中这样描述了SpringMVC中请求的处理:</p>
-<blockquote>
-<ol>
-<li>请求的第一站是前端控制器(DispatcherServlet)，在这里一个单实例的Servlet将请求委托给应用程序的其他组件来处理，<br>即将请求发送给控制器(Controller)。</li>
-<li>应用程序中有多个处理器，DispatcherServlet需要查询处理器映射(HandlerMapping)来确定要将请求发送给哪个控制器。</li>
-<li>DispatcherServlet将请求发送给具体的控制器后，控制器在完成逻辑处理后，通常会产生一些需要返回给浏览器显示的信息，<br>这些信息被称为模型(Model)。</li>
-<li>不过仅仅返回给用户原始的信息是不够的,通常需要将信息发送给视图(View),通常是JSP，以用户友好的方式进行格式化。所以控制器会将<br>模型数据打包，并且标识出用于格式化这些模型数据的视图，再将模型数据和视图名一起发送给DispatcherServlet。</li>
-<li>传递给DispatcherServlet的视图名并表示具体的视图，只是一个逻辑视图名。DispatcherServlet会使用视图解析器(View Resolver)来将逻辑视图名解析为一个物理视图。</li>
-<li>DispatcherServlet将模型数据发送给物理视图。</li>
-<li>视图将使用模型数据渲染输出，并将输出通过响应对象返回给客户端(浏览器)。</li>
-</ol>
-</blockquote>
-<hr>
-<p><strong>二、搭建SpringMVC环境并开始第一个SpringMVC Web应用程序</strong></p>
-<p><strong>1.导入需要的jar包</strong><br>commons-logging-1.1.3.jar<br>spring-aop-4.0.0.RELEASE.jar<br>spring-beans-4.0.0.RELEASE.jar<br>spring-context-4.0.0.RELEASE.jar<br>spring-core-4.0.0.RELEASE.jar<br>spring-expression-4.0.0.RELEASE.jar<br>spring-web-4.0.0.RELEASE.jar<br>spring-webmvc-4.0.0.RELEASE.jar</p>
-<p>其中除了commons-logging为日志支持jar包需要单独下载,其他的包都在spring-framework-4.0.0.RELEASE中。</p>
-<p><strong>2.配置web.xml文件</strong></p>
-<p>配置DispatcherServlet<br>①使用默认的 Spring MVC DispatcherServlet 读取 xml 配置文件的原则：<br>  servlet-name ==&gt; /WEB-INF/servlet-name-servlet.xml(Spring的xml文件路径及文件名)</p>
-<pre><code>&lt;servlet&gt;        
-&lt;servlet-name&gt;dispatcherServlet&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-&lt;/servlet&gt;
-&lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;dispatcherServlet&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;
-</code></pre><p>②自行指定DispatcherServlet的要读取的xml文件的实际位置<br>如：<br>    <code>&lt;init-param&gt;</code><br>            <code>&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</code><br>            <code>&lt;param-value&gt;/WEB-INF/springmvc.xml&lt;/param-value&gt;</code><br>    <code>&lt;/init-param&gt;</code></p>
-<p><strong>3.配置spring的xml文件</strong></p>
-<p>组件的自动扫描<br><code>&lt;context:component-scan basepackage=&quot;com.jzf.springmvc&quot;&gt;``&lt;/context:component-scan&gt;</code></p>
-<p><strong>4.具体的控制器</strong></p>
-<pre><code>/**
- * 具体的控制器(处理器)：处理请求，并返回逻辑视图
- * @RequestMapping 表示这个类/方法能处理请求的url
- */
-@Controller
-public class Hello {
-@RequestMapping(&quot;/hello&quot;) 
-public String helloworld(){
-System.out.println(&quot;helloworld&quot;);
-return &quot;success&quot;;
-    }
-}
-</code></pre><p><strong>5.在spring的xml文件中配置视图解析器</strong></p>
-<pre><code>&lt;!-- 配置视图解析器，将处理器方法返回的值解析为具体的视图 --&gt;
-    &lt;bean
-        class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
-        &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/views/&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-</code></pre><p>视图解析器将控制器返回的逻辑视图解析为具体的物理视图，规则如下：<br>prefix+returnValue+suffix ==&gt; 物理视图</p>
-<p><strong>6.具体的视图(如jsp)</strong></p>
-<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot;
-    pageEncoding=&quot;ISO-8859-1&quot;%&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
-&lt;title&gt;Insert title here&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;a href=&quot;hello&quot;&gt;hello&lt;/a&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-          
+          <p><strong>一、SpringMVC简述</strong><br>SpringMVC 是一个模型-视图-控制(Model-View-Controller)框架,它建立在一个前端控制器(DispatcherServlet)之上，能够帮你建立一个像Spring框架一样灵活和松耦合的Web应用程序。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/springmvc-1/#more" rel="contents">
+              Weiterlesen &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
