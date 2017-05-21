@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Html," />
+  <meta name="keywords" content="CSS," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="一、html基本结构&amp;lt;html&amp;gt;  网页的所有内容都包含在内&amp;lt;hrad&amp;gt;  网页的标题&amp;lt;body&amp;gt; 网页的主体">
-<meta name="keywords" content="Html">
+<meta name="description" content="网易云课堂前端视频学习笔记之CSS  http://study.163.com/course/courseMain.htm?courseId=1002905013 一、什么是CSS?CSS(Cascading Style Sheet)即层叠样式表。它是一种专门描述结构文档的表现方式的文档，主要用于网页风格的设计，包括字体大小、颜色、以及元素的精确定位等。">
+<meta name="keywords" content="CSS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Html学习笔记">
-<meta property="og:url" content="http://yoursite.com/html/index.html">
+<meta property="og:title" content="CSS学习笔记(一)">
+<meta property="og:url" content="http://yoursite.com/css/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="一、html基本结构&amp;lt;html&amp;gt;  网页的所有内容都包含在内&amp;lt;hrad&amp;gt;  网页的标题&amp;lt;body&amp;gt; 网页的主体">
-<meta property="og:updated_time" content="2017-05-21T15:21:00.953Z">
+<meta property="og:description" content="网易云课堂前端视频学习笔记之CSS  http://study.163.com/course/courseMain.htm?courseId=1002905013 一、什么是CSS?CSS(Cascading Style Sheet)即层叠样式表。它是一种专门描述结构文档的表现方式的文档，主要用于网页风格的设计，包括字体大小、颜色、以及元素的精确定位等。">
+<meta property="og:updated_time" content="2017-05-21T15:17:53.034Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Html学习笔记">
-<meta name="twitter:description" content="一、html基本结构&amp;lt;html&amp;gt;  网页的所有内容都包含在内&amp;lt;hrad&amp;gt;  网页的标题&amp;lt;body&amp;gt; 网页的主体">
+<meta name="twitter:title" content="CSS学习笔记(一)">
+<meta name="twitter:description" content="网易云课堂前端视频学习笔记之CSS  http://study.163.com/course/courseMain.htm?courseId=1002905013 一、什么是CSS?CSS(Cascading Style Sheet)即层叠样式表。它是一种专门描述结构文档的表现方式的文档，主要用于网页风格的设计，包括字体大小、颜色、以及元素的精确定位等。">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/html/"/>
+  <link rel="canonical" href="http://yoursite.com/css/"/>
 
 
 
 
 
-  <title> Html学习笔记 | coderjzf </title>
+  <title> CSS学习笔记(一) | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -260,7 +260,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/html/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/css/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -281,7 +281,7 @@
             
             
               
-                Html学习笔记
+                CSS学习笔记(一)
               
             
           </h1>
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T00:00:00+08:00">
-                2017-05-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-21T00:00:00+08:00">
+                2017-05-21
               </time>
             
 
@@ -354,147 +354,67 @@
       
 
       
-        <p><strong>一、html基本结构</strong><br><code>&lt;html&gt;</code>  网页的所有内容都包含在内<br><code>&lt;hrad&gt;</code>  网页的标题<br><code>&lt;body&gt;</code> 网页的主体<br><a id="more"></a></p>
+        <p>网易云课堂前端视频学习笔记之CSS  <a href="http://study.163.com/course/courseMain.htm?courseId=1002905013" target="_blank" rel="external">http://study.163.com/course/courseMain.htm?courseId=1002905013</a></p>
+<p><strong>一、什么是CSS?</strong><br>CSS(Cascading Style Sheet)即层叠样式表。<br>它是一种专门描述结构文档的表现方式的文档，主要用于网页风格的设计，包括字体大小、颜色、以及元素的精确定位等。<br><a id="more"></a><br>在传统的web网页设计里，使用CSS能让单调的HTML网页更富表现力。</p>
 <hr>
-<p><strong>二、head标签</strong><br>    <code>&lt;title&gt;</code>   定义页面标题，即浏览器窗口栏的内容。(为页面的中心内容)<br>    <code>&lt;script&gt;</code> 包含javascript脚本<br>    <code>&lt;link&gt;</code>     链接外部css样式<br>    <code>&lt;style&gt;</code>   定义内部css样式<br>    <code>&lt;meta&gt;</code>     定义页面元信息，也就是一些键值对，主要有以下三个属性<br>                     http-equiv 定义元信息的名称,该属性指定的名称有特殊的意义，它可以向浏览器传回一些有用的信息，帮助浏览器正确地处理网页内容<br>                 name  指定元信息的名称，该名称值可以任意指定(常用的有author/keyword/description)<br>                 content 指定元信息的值</p>
+<p><strong>二、与传统HTML描述数据方式相比的优势</strong></p>
+<ul>
+<li>表达效果丰富</li>
+<li>文档体积更小</li>
+<li>便于信息检索</li>
+<li>可读性好</li>
+</ul>
 <hr>
-<p><strong>三、html常用块/行级标签</strong><br><em>常用块级标签</em><br>    显示为块状，浏览器会在其前后显示折行。常用的块级标签元素包括p,h1~h6,div,ui等<br>    <code>&lt;h1&gt;~&lt;h6&gt;</code>    标题标签<br>    <code>&lt;hr/&gt;</code>    水平线标签<br>    <code>&lt;p&gt;</code>        段落标签<br>    <code>&lt;ol&gt;</code>    有序列表标签<br>    <code>&lt;ul&gt;</code>    无序列表标签<br>    <code>&lt;dl&gt;</code>    定义描述标签<br>    <code>&lt;dt&gt;</code>   定义描述的项目<br>    <code>&lt;dd&gt;</code>        定义具体描述<br>    <code>&lt;div&gt;</code>    分区标签(网页整体布局，即当容器来使用)</p>
-<p><em>常用行级标签</em><br>    按行逐一显示，前后不会自动换行<br>    文本格式化标签<br>        <code>&lt;b&gt;</code>定义粗体文本<br>        <code>&lt;i&gt;</code>定义斜体文本<br>        <code>&lt;em&gt;</code>定义强调文本<br>        <code>&lt;strong&gt;</code>定义粗体文本<br>        <code>&lt;sub&gt;</code>定义下标文本<br>        <code>&lt;sup&gt;</code>定义下标文本<br>        <code>&lt;bdo&gt;</code>定义文本显示方向，内有dir属性，取值只能为rtl/ltr<br>    超链接标签<code>&lt;a&gt;</code><br>        href   指定跳转到的网页的url<br>        target 指定框架中的哪个框架来装载另一个资源，该属性可以是<br>    图像标签<code>&lt;img&gt;</code><br>        src 图片地址<br>        alt 当图片不能正常打开时的提示文字<br>    span标签 <code>&lt;span&gt;</code>修饰文本等行级内容<br>    换行标签 <code>&lt;br/&gt;</code></p>
+<p><strong>三、CSS发展历程</strong><br>CSS1.0:1996年12月–&gt;CSS2.0:1998年5月–&gt;CSS2.1:2004年2月–&gt;CSS3.0:2010年</p>
 <hr>
-<p><strong>四、html框架</strong><br>        <em>frameset框架集</em><br>            创建框架网页的步骤</p>
-<pre><code>1. 创建各个子窗口对应的html文件
-2. 创建整个框架文件，分别引用子窗口文件
-</code></pre><p>创建frameset框架页面的基本语法<br>        <code>&lt;frameset cols=&quot;&quot; rows=&quot;&quot; border=&quot;&quot;&gt;</code><br>            <code>&lt;frame src=&quot;&quot; target=&quot;&quot;&gt;</code><br>        <code>&lt;/frameset&gt;</code></p>
-<p>注意：<code>&lt;frameset&gt;</code>标签不能与<code>&lt;body&gt;</code>标签同时使用，除非你在<code>&lt;frameset&gt;</code>中使用<code>&lt;noframes&gt;</code>标签</p>
-<pre><code>&lt;frameset&gt;标签的属性及值
-属性      值            描述
-cols   pixels,%,*    定义框架中列的数目及尺寸
-rows   pixels,%,*     定义框架中行的数目及尺寸
+<p><strong>四、CSS基本使用</strong><br><strong>1.引入方式</strong></p>
+<ul>
+<li>内联样式</li>
+<li>内部样式</li>
+<li>引入(链接)外部样式文件</li>
+<li>导入外部样式文件</li>
+</ul>
+<p><strong>内联样式</strong>将样式内联到具体的HTML元上，常用于精确控制一个HTML元素的表现。直接使用HTML元素的style属性来控制表现形式</p>
+<p><strong>内部样式</strong>在HTML文档头部定义样式表，每批样式只控制一份HTML文档。将样式写在<code>&lt;head&gt;</code>标签内，用<code>&lt;style&gt;</code>标签进行声明</p>
+<p><strong>引入(链接)外部样式文件</strong><br>将样式表文件与HTML文档彻底分离，需要额外引入样式文件，一份样式表可控制多分HTML文档。使用频率最高，让结构与表现分离。<br>语法<code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;外部样式文件&quot;&gt;</code></p>
+<p><strong>导入外部样式文件</strong>，与连接外部样式文件类似，只是使用@import来引入外部样式表文件</p>
+<p><strong>各种引入方式的优先级</strong><br>可以同时使用以上四种引入样式的方式，当四种方式有相同属性时：<br>优先级顺序 内部&gt;内联&gt;导入&gt;引入</p>
+<hr>
+<p><strong>2.CSS选择器</strong></p>
+<p><strong>定义CSS选择器语法：</strong><br>    <code>selector{
+        property:value;
+        property2:value2;
+    }</code></p>
+<p>selector(选择器)：选择器决定该样式对哪些元素起作用<br>属性键值对：决定该样式有什么样的效果</p>
+<p><strong>常用CSS选择器</strong></p>
+<p><strong>标记选择器(元素选择器)</strong><br><code>Element{
+    ...
+}/*E代表有效的HTML元素*/</code></p>
+<p><strong>类选择器(元素可以有多个classValue,并且效果会叠加)</strong><br><code>Element.classValue{
+    ...
+}/*Element代表有效的HTML元素*/</code></p>
+<p><strong>ID选择器(元素同时使用多个id，不会生效)</strong><br><code>Element#idValue{
+    ...
+}/*Element代表有效的HTML元素*/</code></p>
+<p><strong>选择器组合</strong><br><code>selector1,selector2,selector3...{
+    ...
+}/*其中selctor为有效的选择器*/</code></p>
+<p><strong>选择器嵌套</strong><br><code>selector1 selector2{
+    ...
+}/*其中selctor为有效的选择器*/</code></p>
+<hr>
+<p><strong>3.常用样式属性设置</strong><br>CSS字体和文本相关属性</p>
+<p><strong>字体相关属性与值</strong><br>font-family        设置文本的字体系列<br>font-size         设置文本的字体大小,绝对大小px，相对大小em,%<br>font-style         设置文本的字体样式，主要有normal/italic/oblique<br>font-weight      设置字体的粗细</p>
+<p><strong>文本相关属性与值</strong><br>color           设置文本颜色<br>letter-spacing     设置文本字符间距(字母之间的距离)<br>word-spacing     设置文本单词的间距<br>line-height     设置文本行高<br>text-align      设置文本对齐方式,只有left,right,center<br>text-decoration 设置文本的下划线/上划线/删除线<br>text-indent      设置文本块的首行缩进<br>text-transform     设置文本的大小写，主要有uppercase,lowercase,capitalize</p>
+<p><strong>边框和背景</strong><br>边框和背景主要对块级标签使用，要想对行级标签使用，可以通过设置行级标签的display属性为block;同样地可以将块级标签的display属性设置为inline来使用行级标签的相关属性。</p>
+<p><strong>边框相关属性</strong><br>border             设置边框的颜色、宽度、样式<br>border-left     设置左边框的颜色、宽度、样式<br>border-right     设置右边框的颜色、宽度、样式<br>border-left     设置左边框的颜色、宽度、样式<br>border-bottom     设置下边框的颜色、宽度、样式<br>border-top         设置上边框的颜色、宽度、样式<br>border-width    设置边框的宽度<br>border-style    设置边框的样式，主要有dotted,solid,doule,dashed<br>border-color     设置边框的颜色</p>
+<p>除了border属性可以将各个子属性写在一起，background,font,margin,padding等也可以</p>
+<p><strong>背景图片相关属性</strong><br>background                 设置背景图片相关属性<br>background-color:         设置背景图片颜色<br>background-attachment   设置背景图片是否随着滚动条滚动，只有fixed,scroll<br>background-image         设置背景图片 url：背景图片地址,none：无<br>background-position     设置背景图片位置(依次是距左、上边距离)<br>background-repeat         设置背景图片是否平铺，主要有repeat,repeat-x,repeat-y,no-repeat</p>
+<p><strong>列表(有序、无序、定义列表)和表格相关属性</strong><br><strong>列表相关属性</strong><br>list-style<br>list-style-image         将图片设置为列表项标记<br>list-style-postion      outside,inside<br>list-style-type          列表项标记符号类型，与list-style-image不可同时使用</p>
+<p><strong>表格相关属性</strong><br>border                     设置表格(若选择器是对表格，则是表格边框的设置)的所有边框颜色、宽度、样式<br>border-collapse         设置是否把表格边框合并为单一的边框,collapse<br>border-spacing          设置分割单元格边框的距离,与border-collapse一起使用不会生效<br>caption-side              设置表格标题的位置left,bottom,right<br>empty-cells              设置是否显示表格中空单元格,hidden</p>
+<p><strong>常用伪类别属性</strong><br>CSS对<code>&lt;a&gt;</code>标签提供了相关可以实现动态效果的CSS伪类别属性</p>
+<p><code>a:link</code>         超链接的普通样式<br><code>a:visited</code>     被点击过的超链接的样式<br><code>a:hover</code>鼠标经过超链接时的样式<br><code>a:active</code>     单击超链接时的样式</p>
 
-&lt;frame&gt;标签的属性及值
-        属性     值            描述
-        norize   norize        框架边框不可拉伸
-        src      html_name  引用的网页文件
-        name     frame_name 框架的名字
-
-iframe内嵌框架(作为body的一部分)
-        属性             值                描述
-        frameborder        0,1               框架有无边框
-        name             frame_name      框架名字
-        scrolling         yes,no,auto     框架是否显示滚动条
-        src               html_name         在框架中显示的文档的url
-</code></pre><hr>
-<p><strong>五、表格标签</strong></p>
-<pre><code>    表格相关元素
-    &lt;table&gt;
-        border 边框
-        cellspacing  单元格与单元格之间的距离
-        cellspadding 单元格内边距，即文字到单元格边框的距离
-    &lt;caption&gt;
-        定义表格的标题
-    &lt;tr&gt;
-        定义表格的行，只能包括th,td两种元素
-    &lt;td&gt;
-        colspan 横跨列数
-        rowspan 横跨行数
-    &lt;th&gt;
-        定义表格页眉的单元格
-    &lt;tbody&gt;
-        定义表格体
-    &lt;thead&gt;
-        定义表格头
-    &lt;tfoot&gt;
-        定义表格脚
-
-   表格标签使用场景
-1. 主要用于规则的数据显示
-2.适当的可以在表单页面使用
-
-使用表格标签进行页面布局的缺点
-1. 代码量大，页面浏览速度比较慢
-2. 层次结构比较复杂，不易于维护和改版
-3. 不利于搜索引擎搜索查找数据
-</code></pre><hr>
-<p>六、html表单</p>
-<pre><code>form标签
-    常用属性
-    action
-        提交表单给哪个url来处理
-    method
-        指定请求的方法，get/post/...
-    enctype
-        指定表单数据的编码方式
-        mutipart/form-data 以二进制流的方式来处理表单
-        application/x-www-form-urlencode 默认的编码方式，将表单控件的值处理成url编码的方式
-        text/plain 当表单的action属性为mailto:url的形式时使用
-
-常用的表单元素
-    input元素
-        text         单行文本框
-        password    密码输入框
-        hidden         隐藏域
-        radio         单选框
-        checkbox     复选框
-        img         图像域，可以设置width和height属性
-        file         文件上传域
-        submit         提交
-        reset         重置
-        button         普通按钮
-    input元素的常用属性
-        name        设置元素名称
-        value         设置元素值/默认值
-        id            设置元素id，唯一表示一个元素
-        checked     用在单选/复选框中，设置默认选中的项
-        disabled     用在单选/复选框中，设置不可用的项
-        maxlength     设置文本框/密码框最大输入字符
-        readonly    设置文本框为只读,即不允许修改
-        size         设置文本框/密码框的长度
-        src            设置图像域所显示图片的url
-    button元素(比input元素中的按钮更灵活、更强大)
-        常用属性
-        disabled    指定是否禁用此元素
-        name          指定名称
-        type         指定按钮类型，只能是button,reset,submit
-    label元素
-        常用属性
-        for         当光标移到label标签上，关联的表单元素会获得焦点
-    select列表框/下拉菜单(设置了size/multiple属性即为列表框)
-        列表框/下拉菜单常用属性
-            disabled     设置是否禁用此元素
-            size        设置列表框显示的数目
-            multiple      设置是否允许多选
-        常用子元素
-            option 定义
-                常用属性
-                disabled  设置是否禁用此元素
-                selected  设置是否默认选中
-                value        设置元素默认的值
-            optgroup
-                常用属性
-                label        选项组名称
-                disabeld  指定选项组是否被禁用
-    textarea多行文本框
-        常用属性
-        cols   设置文本框的列宽，必填
-        rows   设置文本框的行高，必填
-        readonly 设置为只读，即不允许修改
-</code></pre><p><strong>七、多媒体：web上的多媒体指的是音效、音乐、视频和动画，现代网络已经支持很多多媒体格式</strong></p>
-<pre><code>常用的视频格式
-    Flash    .flv/.swf
-    Mpeg-4   .mp4
-常用的音频格式
-    WMA      .wma
-    MP3        .mp3/.mpg3
-音频和视频标签(不同浏览器的播放音频/视频的插件不同)
-    &lt;embed&gt;所有的参数都写入标签体作为它的属性。
-        常用属性
-        src          设置视频/音频源
-        width          设置视频/音频播放插件宽度
-        height         设置视频/音频播放插件高度
-        loop          设置是否循环播放
-        autostart   设置是否自动播放
-        PLUGINSPAGE 设置下载插件的网址(若没有相关插件)
-</code></pre>
       
     </div>
 
@@ -517,7 +437,7 @@ iframe内嵌框架(作为body的一部分)
       
         <div class="post-tags">
           
-            <a href="/tags/Html/" rel="tag"># Html</a>
+            <a href="/tags/CSS/" rel="tag"># CSS</a>
           
         </div>
       
@@ -530,18 +450,14 @@ iframe内嵌框架(作为body的一部分)
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/css1/" rel="next" title="CSS学习笔记(一)">
-                <i class="fa fa-chevron-left"></i> CSS学习笔记(一)
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/IE/" rel="prev" title="(转)远程计算机或设备将不接受连接，IE无法上网">
-                (转)远程计算机或设备将不接受连接，IE无法上网 <i class="fa fa-chevron-right"></i>
+              <a href="/css1/" rel="prev" title="CSS学习笔记(一)">
+                CSS学习笔记(一) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

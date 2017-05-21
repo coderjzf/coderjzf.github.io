@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="JavaWeb," />
+  <meta name="keywords" content="Serlvet," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
-<meta name="keywords" content="JavaWeb">
+<meta name="description" content="主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提">
+<meta name="keywords" content="Serlvet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="防表单重复提交">
 <meta property="og:url" content="http://yoursite.com/DuplicateForm/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
-<meta property="og:updated_time" content="2017-05-07T02:14:11.558Z">
+<meta property="og:description" content="主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提">
+<meta property="og:updated_time" content="2017-05-21T15:15:17.305Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="防表单重复提交">
-<meta name="twitter:description" content="###主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿">
+<meta name="twitter:description" content="主要分为三步  先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面 在表单提交页面通过隐藏域取出令牌，提交表单 跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提">
 
 
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/JavaWeb/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaWeb</span>
                   </a>
                 </span>
 
@@ -354,13 +354,13 @@
       
 
       
-        <p>###主要分为三步</p>
+        <p><strong>主要分为三步</strong></p>
 <ol>
 <li>先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面</li>
 <li>在表单提交页面通过隐藏域取出令牌，提交表单</li>
 <li>跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提交表单。</li>
 </ol>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>#####生成令牌的servlet代码</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>生成令牌的servlet代码</strong></p>
 <pre><code>import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -422,7 +422,7 @@ class TokenProcess {
     }
 }
 </code></pre><hr>
-<p>#####一个简单的jsp登录页面</p>
+<p><strong>一个简单的jsp登录页面</strong></p>
 <pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
 pageEncoding=&quot;utf-8&quot;%&gt;
 &lt;%@taglib prefix=&quot;simpletag&quot; uri=&quot;http://www.simpletag.com&quot; %&gt;
@@ -447,7 +447,7 @@ pageEncoding=&quot;utf-8&quot;%&gt;
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre><hr>
-<p>#####验证表单的servlet代码</p>
+<p><strong>验证表单的servlet代码</strong></p>
 <pre><code>import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -529,7 +529,7 @@ public class DoFormServlet extends HttpServlet {
       
         <div class="post-tags">
           
-            <a href="/tags/JavaWeb/" rel="tag"># JavaWeb</a>
+            <a href="/tags/Serlvet/" rel="tag"># Serlvet</a>
           
         </div>
       
@@ -626,7 +626,7 @@ public class DoFormServlet extends HttpServlet {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -644,7 +644,7 @@ public class DoFormServlet extends HttpServlet {
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
