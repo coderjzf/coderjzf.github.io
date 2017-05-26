@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Spring," />
+  <meta name="keywords" content="jQuery," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="一、Spring简述Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。 Spring为简化Java开发的复杂性，采取了以下四种关键策略：基于POJO的轻量级和最小侵入性编程通过依赖注入和面向接口实现松耦合">
-<meta name="keywords" content="Spring">
+<meta name="description" content="菜鸟教程jQuery教程学习笔记http://www.runoob.com/jquery/jquery-tutorial.html 一、jQuery是一个轻量级的javascript函数库。">
+<meta name="keywords" content="jQuery">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring_Study Note(1)">
-<meta property="og:url" content="http://yoursite.com/spring-1/index.html">
+<meta property="og:title" content="jQuery学习笔记">
+<meta property="og:url" content="http://yoursite.com/jQuery/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="一、Spring简述Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。 Spring为简化Java开发的复杂性，采取了以下四种关键策略：基于POJO的轻量级和最小侵入性编程通过依赖注入和面向接口实现松耦合">
-<meta property="og:updated_time" content="2017-05-14T09:06:34.504Z">
+<meta property="og:description" content="菜鸟教程jQuery教程学习笔记http://www.runoob.com/jquery/jquery-tutorial.html 一、jQuery是一个轻量级的javascript函数库。">
+<meta property="og:updated_time" content="2017-05-26T09:02:29.145Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring_Study Note(1)">
-<meta name="twitter:description" content="一、Spring简述Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。 Spring为简化Java开发的复杂性，采取了以下四种关键策略：基于POJO的轻量级和最小侵入性编程通过依赖注入和面向接口实现松耦合">
+<meta name="twitter:title" content="jQuery学习笔记">
+<meta name="twitter:description" content="菜鸟教程jQuery教程学习笔记http://www.runoob.com/jquery/jquery-tutorial.html 一、jQuery是一个轻量级的javascript函数库。">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/spring-1/"/>
+  <link rel="canonical" href="http://yoursite.com/jQuery/"/>
 
 
 
 
 
-  <title> Spring_Study Note(1) | coderjzf </title>
+  <title> jQuery学习笔记 | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -260,7 +260,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/spring-1/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/jQuery/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -281,7 +281,7 @@
             
             
               
-                Spring_Study Note(1)
+                jQuery学习笔记
               
             
           </h1>
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-13T00:00:00+08:00">
-                2017-05-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T00:00:00+08:00">
+                2017-05-26
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaWeb/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaWeb</span>
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
                   </a>
                 </span>
 
@@ -354,55 +354,155 @@
       
 
       
-        <p><strong>一、Spring简述</strong><br>Spring是一个开源框架，是为简化企业级应用开发而生。Spring是一个IoC(DI)和AOP框架。</p>
-<p>Spring为简化Java开发的复杂性，采取了以下四种关键策略：<br>基于POJO的轻量级和最小侵入性编程<br>通过依赖注入和面向接口实现松耦合<br><a id="more"></a><br>基于切面和惯例进行声明式编程<br>通过切面和模板减少样板式代码</p>
-<p>在Spring4.0中，包括了20个不同的模块。</p>
+        <p>菜鸟教程jQuery教程学习笔记<a href="http://www.runoob.com/jquery/jquery-tutorial.html" target="_blank" rel="external">http://www.runoob.com/jquery/jquery-tutorial.html</a></p>
+<p><strong>一、jQuery是一个轻量级的javascript函数库。</strong><br><a id="more"></a><br>jQuery可以实现HTML元素访问、操作、CSS操作、HTML事件函数等功能。</p>
+<hr>
+<p><strong>二、jQuery语法</strong><br>基础语法：${selector}.action()</p>
 <ul>
-<li>Spring核心容器：Spring最核心的部分，管理者bean的创建、配置和管理。Spring bean工厂提供DI的功能，而Soring中的应用上<br>下文是在bean 工厂的基础上实现的。</li>
-<li>Spring AOP模块:Spring中开发切面的基础。借助于AOP,可以将遍布于系统中的横切关注点从它们应用的对象中解耦出来。</li>
-<li>数据访问与集成(ORM模块)</li>
-<li>Web与远程调用(Spring MVC)</li>
+<li>‘$’定义jQuery</li>
+<li>‘selector’选择器用来选取HTML元素</li>
+<li>‘action()’代表对HTML元素执行的操作</li>
+</ul>
+<hr>
+<p><strong>三、jQuery选择器</strong><br>jQuery选择器基于元素的id、类、类型、属性、属性值等来选取HTML元素，它基于CSS选择器。除此之外还有一些自定义的选择器。</p>
+<ul>
+<li>元素选择器<br><code>${&quot;p&quot;}</code> 选取元素标签名为p的元素</li>
+<li>id选择器<br><code>${&quot;#id_name&quot;}</code> 选取id为id_name的元素</li>
+<li>类选择器<br><code>${&quot;.class_name&quot;}</code> 选取class=”class_name”的元素</li>
+<li>属性选择器<br><code>${&quot;[attribute_name]&quot;}</code>  选取带有属性名为attribute_name的属性的元素</li>
+</ul>
+<hr>
+<p><strong>四、jQuery事件</strong><br>DOM事件</p>
+<ul>
+<li>鼠标事件:click,dbclick,mouseenter,mouseleave</li>
+<li>键盘事件:keydown,keyup,kepress</li>
+<li>表单事件:submit,change,blur,fouse</li>
+<li>文档/窗口事件:load,unload,scroll,resize</li>
+</ul>
+<p>在jQuery中，大多数DOM事件都有一个等效的jQuery方法。如：</p>
+<ul>
+<li><code>$(document).ready();</code> 文档加载完成后执行</li>
+<li><code>$(&quot;p&quot;).click();</code>     p元素被点击时触发</li>
+<li><code>$(&quot;#test&quot;).foucs();</code> id为test的元素获得焦点时执行</li>
 <li>…</li>
 </ul>
 <hr>
-<p><strong>二、IoC&amp;DI</strong><br><em>IoC:控制反转 反转资源获取的方向</em><br>传统的资源查找要求组件向容器发起请求来查找资源，容器适时地返回资源，而应用了IoC之后容器主动将资源推送给它所管理的组件，<br>组件所要做的仅是选择一种合适的方式来接受资源</p>
-<p><em>DI:依赖注入 IoC的另一种表述形式</em><br>组件以一些方式(如构造器、setter方法)接受来自容器的资源注入</p>
-<p><em>Spring IoC容器的两种实现方式</em><br>1.BeanFactory<br>2.ApplicationContext接口(基于BeanFactory)<br>ClassPathXmlApplication 从类路径下加载配置文件<br>FileSystemXmlApplication 从文件系统中读取配置文件<br>..</p>
-<p><strong>配置bean</strong><br><strong>1.基于xml文件的方式</strong></p>
-<p><em>依赖注入的方式</em><br>属性注入(即setter方法注入，最常用的方式)<br>构造器注入 <code>&lt;constructor-arg&gt;</code></p>
-<p>每种注入方式又包括字面量注入，引用注入，集合注入，Map注入等</p>
-<p><em>bean之间的关系 继承、依赖</em><br>继承：parent属性指定要继承的bean<br>依赖：depends-on属性指定依赖的bean</p>
-<p><em>bean的作用域</em><br>使用bean的scope属性为bean设置作用域 默认值：singleton<br>singleton(单例的):在容器被创建时就初始化bean，每次请求返回到都是同一个bean实例<br>prototype(原型的):在容器被创建时没有初始化bean,每次请求都初始化并返回一个bean实例</p>
-<p><em>使用外部属性文件</em></p>
-<ol>
-<li>导入context命名空间</li>
-<li>配置properties文件</li>
-<li>使用<code>&lt;context:property-placeholder/&gt;</code> 导入properties文件</li>
-<li>使用属性占位符${}取出properties中的值</li>
-</ol>
-<p><em>SpEL Spring表达式语言<code>#{}</code></em></p>
-<ol>
-<li>表示字面量</li>
-<li>引用bean、属性和方法 ？来判断是非为null值</li>
-<li>使用Java中的类型</li>
-<li>SpEL运算符(算术、比较、逻辑、条件) 三元运算符来判断是否为null值</li>
-<li>SpEL通过matches支持正则表达式</li>
-<li>SpEL操作集合</li>
-</ol>
-<p><em>Spring IoC容器可以管理bean的生命周期</em><br>bean的生命周期过程：</p>
-<ol>
-<li>通过构造器或者工厂方法创建bean实例</li>
-<li>为bean的属性赋值</li>
-<li>将bean实例传给bean的后置处理器的postProcessBeforeInitialization方法</li>
-<li>调用bean的初始化方法</li>
-<li>将bean实例传给bean的后置处理器的postProcessAfterInitialization方法</li>
-<li>bean可以使用了</li>
-<li>当容器关闭时，调用bean的销毁方法</li>
-</ol>
-<p>3,5为可选的<br>可以通过实现BeanPostProcess接口，来自定义bean的后置处理器，在bean的初始化方法调用的前后对bean进行处理</p>
-<p><strong>2.通过注解配置bean</strong><br>常用注解<br><code>@Component</code><br><code>@Service</code><br><code>@Controller</code><br><code>@Repository</code></p>
-<p>组件扫描：容器从classpath下自动扫描具有特定注解的组件<br><code>&lt;context:component-scan base-package=&quot;&quot;&gt;</code> <code>base-package</code>指定要扫描的基类包<br><code>resource-pattern</code>属性指定扫描基类包下的某个包/类<br><code>&lt;context:include-filter&gt;</code>指定包含要扫描的某个包<br><code>&lt;context:exclude-filter&gt;</code>排除某个包</p>
-<p>autowired可以自动装配类型兼容的bean<br>可以放在普通字段、构造器等一切有参数的方法上</p>
+<p><strong>五、jQuery效果</strong></p>
+<ul>
+<li><p>显示/隐藏，可以使用hide(),show()方法来隐藏式显示HTML元素。<br>hide(speed,callback); 可选参数speed控制隐藏的速度，可以是slow/fast/毫秒值；可选参数callback是隐藏后执行的函数名称。<br>对于show()方法，同理。还可以使用toggle()方法来切换显示/隐藏,<br>如果元素已经显示，则会被隐藏;否则会被显示。callback回调函数会在动画效果完成后才执行。</p>
+</li>
+<li><p>淡入淡出</p>
+<ul>
+<li>fadeIn()  使元素淡入</li>
+<li>fadeOut() 使元素淡出</li>
+<li>fadeToggle() 若元素已淡入，则会添加淡出效果;否则执行淡入效果</li>
+<li>fadeTo()  使元素渐变为给定的不透明度。fadeTo(speed,opacity,callback);<br>必需参数opacity来设置元素的不透明度,值为0~1之间。</li>
+</ul>
+</li>
+<li><p>滑动</p>
+<ul>
+<li>slideDown() 使元素下滑</li>
+<li>slideUp()   使元素上滑</li>
+<li>slideToggle() 切换元素的上滑/下滑</li>
+</ul>
+</li>
+<li><p>动画<br>animate();方法可以自定义元素的动画效果。<br>语法：<code>$(selector).animate({params},speed,callback);</code><br>{params}定义元素的CSS属性，如width,border等。<br>并且自定义动画支持队列功能。<br>注意：要记得首先把元素的position属性设置为relative、fixed或absolute。</p>
+</li>
+<li><p>停止效果<br><code>stop(stopAll,goToEnd);</code>方法可以停止元素的动画效果。</p>
+<ul>
+<li>stopAll默认为false，仅停止元素的当前动画效果，队列可以继续向后执行;<br>为true时则停止元素的所有动画效果</li>
+<li>goToEnd规定是否立即完成当前动画，默认为false。</li>
+</ul>
+</li>
+</ul>
+<p><strong>jQuery链(Chaining)技术允许在元素上执行多条jQuery命令(方法)。如：</strong><br><code>$(&quot;p&quot;).slideDown(&quot;slow&quot;).fadeOut(&quot;slow&quot;).slideUp(&quot;slow&quot;);</code></p>
+<hr>
+<p><strong>六、jQuery操作DOM</strong><br>jQuery提供了一系列操作DOM方法，使得访问和操作HTML元素变得十分容易。</p>
+<ul>
+<li><p>获得元素内容或属性值</p>
+<ul>
+<li>html() 获得元素的内容(包括其中嵌套的HTML标记的内容)</li>
+<li>text() 获得元素文本内容</li>
+<li>val()  获得元素的输入字段的值</li>
+<li>attr(“attr_name”) 获得元素的属性名为”attr_name”的属性的值</li>
+</ul>
+</li>
+<li><p>设置元素内容或属性值</p>
+<ul>
+<li>通过html(),text(),val()方法设置元素新的html内容，文本内容和输入字段的值。</li>
+<li>通过attr()方法设置元素的属性的值。如：<code>$(&quot;#id&quot;).attr(&quot;value&quot;,&quot;newValue&quot;);</code><br>attr()方法还可以同时给多个属性赋值。如：<code>$(#id).attr(&quot;attr1&quot;:&quot;value1&quot;,&quot;attr2&quot;:&quot;value2&quot;);</code></li>
+<li>上述四种方法都支持通过回调函数来设置元素新的内容或属性值。如：<br><code>$(&quot;#id&quot;).attr(&quot;value&quot;,function(i,origValue){return origValue+&quot;newValue&quot;;});</code></li>
+</ul>
+</li>
+<li><p>添加元素</p>
+<ul>
+<li>append()/append(elementName) 在元素末尾添加内容或者新元素</li>
+<li>prepend()/prepend(elementName) 在元素开头添加内容或者新元素</li>
+<li>after()/after(elementName)  在某个元素之后添加内容或者新元素</li>
+<li>befor()/before(elementName) 在某个元素之前添加内容或者新元素</li>
+</ul>
+</li>
+<li><p>删除元素</p>
+<ul>
+<li>remove() 删除选中的元素及其子元素。也可以通过接受一个参数(符合jQuery选择器的语法)<br>进行有选择的删除。如：<code>$(&quot;p&quot;).remove(&quot;#id2&quot;);</code> 删除id=2的p元素。</li>
+<li>empty()  删除选中元素的子元素</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>七、jQuery操作CSS</strong></p>
+<ul>
+<li>addClass() 向元素添加类</li>
+<li>removeClass() 移除元素的类</li>
+<li>toggleClass() 对元素的类执行移除/添加的切换操作</li>
+<li>css() 获得CSS属性的值或者设置CSS属性的值。也可以对多个CSS属性进行赋值。如：<br><code>$(&quot;p&quot;).css(&quot;background-color&quot;:&quot;red&quot;,&quot;font-size&quot;:&quot;20px&quot;);</code></li>
+</ul>
+<p><strong>jQuery与尺寸有关的方法</strong></p>
+<ul>
+<li>width() 元素的宽度(只包括content)</li>
+<li>height() 元素的高度(包括content）</li>
+<li>innerWidth() 元素的宽度(包括content和padding)</li>
+<li>innerHeight() 元素的高度(包括content和padding)</li>
+<li>outerWidth()  元素的宽度(包括content和padding和边框)</li>
+<li>outerHeight() 元素的高度(包括content和padding和边框)</li>
+</ul>
+<hr>
+<p><strong>八、jQuery遍历DOM</strong></p>
+<ul>
+<li><p>向上遍历</p>
+<ul>
+<li>parent() 返回元素的直接父元素(即只向上遍历一级)</li>
+<li>parents() 返回元素的所有祖先。这个方法还可以接收一个参数，来进行筛选。如：<br><code>$(&quot;p&quot;).parents(&quot;div&quot;);</code>返回p元素所有祖先，并且是div元素。</li>
+<li>parentsUntil() 返回两个元素之间的父元素。如：<code>$(&quot;span&quot;).parentUntil(&quot;div&quot;);</code>返回<br>span元素到div元素之间的所有span元素的父元素。</li>
+</ul>
+</li>
+<li><p>向下遍历</p>
+<ul>
+<li>children() 返回元素的所有直接子元素(即只向下遍历一级)</li>
+<li>find()  返回元素的所有子元素(遍历直到最后一代)。该方法必须接受一个参数，可以是”*”,即选取所有<br>子元素;也可以是符合CSS选择器语法的参数。如：<code>$(&quot;div&quot;).find(&quot;p&quot;);</code>返回div的所有子元素，且必须是p元素。</li>
+</ul>
+</li>
+<li><p>水平遍历(遍历兄弟元素)</p>
+<ul>
+<li>siblings() 返回元素的所有兄弟元素。</li>
+<li>next() 返回元素的下一个兄弟元素。</li>
+<li>nextAll() 返回该元素下面的所有兄弟元素。(沿着兄弟元素遍历)</li>
+<li>nextUntil 返回该元素到另一个元素之间的所有兄弟元素。如：<br><code>$(&quot;h1&quot;).nextUntil(&quot;h4&quot;);</code>返回h1元素到h4元素之间所有的h1元素的兄弟元素。</li>
+<li>pre(),preAll(),preUntil() 与上述有关next的方法同样，只不过是沿着兄弟元素向上遍历。</li>
+</ul>
+</li>
+<li><p>过滤，即缩小遍历元素的范围。</p>
+<ul>
+<li>first()返回第一个被选元素的第一个元素。如：<code>$(&quot;div p&quot;).first();</code>选取第一个div元素内的第一个p元素。   </li>
+<li>last()l  返回最后一个被选元素的最后一个元素。如:<code>&quot;$(div</code><br><code>p).last();&quot;</code>选取最后一个div元素内的最后一个p元素。</li>
+<li>eq() 返回索引号为指定值的元素,索引从0开始。如：<code>$(&quot;li&quot;).eq(&quot;1&quot;);</code> 选取第二个li元素</li>
+<li>filter() 返回满足一定标准的元素。如：<code>$(&quot;p&quot;).(&quot;#first&quot;);</code> 返回id=first的p元素。</li>
+<li>not() 返回不满足一定标准的元素。如：<code>$(&quot;p&quot;).not(&quot;.test&quot;);</code> 返回所有class!=test的p元素。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>八、总结：jQuery主要是用来选取元素，并对元素进行操作的函数库。</strong></p>
 
       
     </div>
@@ -426,7 +526,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring/" rel="tag"># Spring</a>
+            <a href="/tags/jQuery/" rel="tag"># jQuery</a>
           
         </div>
       
@@ -439,18 +539,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/servlet-downandup/" rel="next" title="Servlet-download file/upload file">
-                <i class="fa fa-chevron-left"></i> Servlet-download file/upload file
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/spring-2/" rel="prev" title="Spring_Study Note(2)">
-                Spring_Study Note(2) <i class="fa fa-chevron-right"></i>
+              <a href="/div+css/" rel="prev" title="CSS学习笔记(二)">
+                CSS学习笔记(二) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
