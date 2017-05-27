@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Utils," />
+  <meta name="keywords" content="AJAX," />
 
 
 
@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。">
-<meta name="keywords" content="Utils">
+<meta name="description" content="一、什么是AJAX?AJAX是Asynchronous JavaScript And Xml(异步的JavaScript和Xml)的缩写。">
+<meta name="keywords" content="AJAX">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BeanUtils的使用">
-<meta property="og:url" content="http://yoursite.com/BeanUtils/index.html">
+<meta property="og:title" content="AJAX入门(一)">
+<meta property="og:url" content="http://yoursite.com/AJAX/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。">
-<meta property="og:updated_time" content="2017-05-07T02:14:43.951Z">
+<meta property="og:description" content="一、什么是AJAX?AJAX是Asynchronous JavaScript And Xml(异步的JavaScript和Xml)的缩写。">
+<meta property="og:updated_time" content="2017-05-27T01:22:57.074Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BeanUtils的使用">
-<meta name="twitter:description" content="1.什么是BeanUtilscommons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。">
+<meta name="twitter:title" content="AJAX入门(一)">
+<meta name="twitter:description" content="一、什么是AJAX?AJAX是Asynchronous JavaScript And Xml(异步的JavaScript和Xml)的缩写。">
 
 
 
@@ -125,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/BeanUtils/"/>
+  <link rel="canonical" href="http://yoursite.com/AJAX/"/>
 
 
 
 
 
-  <title> BeanUtils的使用 | coderjzf </title>
+  <title> AJAX入门(一) | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -260,7 +260,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/BeanUtils/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/AJAX/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -281,7 +281,7 @@
             
             
               
-                BeanUtils的使用
+                AJAX入门(一)
               
             
           </h1>
@@ -296,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-06T00:00:00+08:00">
-                2017-05-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T00:00:00+08:00">
+                2017-05-27
               </time>
             
 
@@ -319,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
                   </a>
                 </span>
 
@@ -354,152 +354,110 @@
       
 
       
-        <p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。<br><a id="more"></a><br><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
-<p><strong>3.常用API</strong><br>BeanUtils：顾名思义就是对bean进行操作的工具类。<br>常用方法</p>
-<p><code>static void  setProperty(Object bean,String name,Object value)</code><br>将value的值付给bean的指定属性(需要注意的是，如果属性类型是基本类型，BeanUtils内部已经帮我们实现了自动转换;如果不是基本类型则需要注册相应的转换器)。</p>
-<p><code>static void     populate(Object bean, Map&lt;String,? extends Object&gt; properties)</code><br>将Map中的值赋给bean中相应的属性，其中Map中的键名必须与bean的属性名相同(同样，如果是非基本类型，需要注册相应的转换器)。</p>
-<p>ConvertUtils：用来注册转换器的工具类</p>
-<p>常用方法<br><code>static void     register(Converter converter, Class&lt;?&gt; clazz)</code><br>为clazz字节码对象对应的属性类型注册转换器(如属性值为Date类型，则clazz=Date.class())。</p>
-<p>Convert：即转换器接口，可通过实现这个接口来实现自定义的转换器类</p>
-<p>这个接口只有一个方法<br><code>&lt;T&gt; T convert(Class&lt;T&gt; type,Object value)</code></p>
-<p>commons-beanutils也为我们提供了众多的转换器类<br>如 BigDecimalConverte,DateConverter, DateLocaleConverter, URLConverter等。</p>
-<p><strong>4.实例</strong></p>
-<p>Person(JavaBean)</p>
-<pre><code>import java.util.Date;
-
-public class Person {
-    private int id;
-    private String name;
-    private String sex;
-    private Date birthday;
-
-public Date getBirthday() {
-    return birthday;
-}
-
-public void setBirthday(Date birthday) {
-    this.birthday = birthday;
-}
-
-public int getId() {
-    return id;
-}
-
-public void setId(int id) {
-    this.id = id;
-}
-
-public String getName() {
-    return name;
-}
-
-public void setName(String name) {
-    this.name = name;
-}
-
-public String getSex() {
-    return sex;
-}
-
-public void setSex(String sex) {
-    this.sex = sex;
-}
-
+        <p><strong>一、什么是AJAX?</strong><br>AJAX是<em>Asynchronous JavaScript And Xml</em>(异步的JavaScript和Xml)的缩写。<br><a id="more"></a><br>AJAX不是新的编程语言，而是一种使用现有标准的新方法，最大的<strong>优点</strong>是在<em>不加载整个页面的情况下，与服务器交换部分数据并更新部分网页。</em></p>
+<p><strong>异步:使用异步的方式，JavaScript无需等待服务器的响应，而是：</strong></p>
+<ol>
+<li>在等待响应时执行其他脚本</li>
+<li>响应就绪后对响应进行处理</li>
+</ol>
+<hr>
+<p><strong>二、创建XMLHttpRequest对象</strong><br>XMLHttpRequest对象是AJAX的基础，所有现代浏览器都支持XMLHttpRequest对象(IE5和IE6支持ActiveXObject)。<br>XMLHttpRequest对象用于和服务器进行数据交换，以实现在不重载整个页面的情况下更新部分网页。<br>创建XMLHttpRequest对象的语法如下：</p>
+<pre><code>var xmlHttp;
+if(window.XMLHttpRequest){//如果是支持XMLHttpRequest对象的浏览器
+    xmlHttp = new XMLHttpRequest();
+}else{//如果是IE5和IE6
+    xmlHttp = new ActiveXObject(&quot;MicroSoft.XMLHTTP&quot;);
 }
 </code></pre><hr>
-<p><strong>利用BeanUtils对bean进行行相关操作</strong></p>
-<pre><code>import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+<p><strong>三、XMLHttpRequest对象的重要属性</strong></p>
+<ul>
+<li>onreadystatechange  回调函数，每当XMLHttpRequest对象的readystate属性改变时，就会调用该函数。</li>
+<li>readyState        存储XMLHttpRequest对象状态的属性，共有5种状态：<ul>
+<li>0:请求未初始化</li>
+<li>1:与服务器建立连接</li>
+<li>2:请求已接收</li>
+<li>3:请求处理中</li>
+<li>4:请求已完成，且响应已就绪        </li>
+</ul>
+</li>
+<li>status           服务器返回的状态码，常用的有：<ul>
+<li>200:ok</li>
+<li>302:请求被重定向</li>
+<li>404:未找到页面</li>
+<li>500:服务器错误   </li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>四、XMLHttpRequest发送请求</strong><br>使用XMLHttpRequest对象发送请求需要用到XMLHttpRequest对象的open和send方法。</p>
+<ul>
+<li>open(method,url,async);设置请求的方法、url和是否异步<ul>
+<li>method:请求的方法</li>
+<li>url:请求的文件在服务器上的地址</li>
+<li>async:请求是异步还是同步的。true:异步，false:异步</li>
+</ul>
+</li>
+<li>send(string);发送请求<ul>
+<li>string:如果请求类型是post，可以通过string参数模拟表单</li>
+<li>setRequestHeader(name,value):如果是post请求，可以使用setRequestHeader方法来设置请求头<ul>
+<li>name:请求头名称</li>
+<li>value:请求头值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>五、XMLHttpRequest获得响应数据</strong><br>使用XMLHttpRequest对象的responseText属性和responseXML属性来获得响应数据</p>
+<ul>
+<li>responseText  获得字符串形式的响应数据</li>
+<li>responseXML  获得XML格式的响应数据</li>
+</ul>
+<p><strong>六、AJAX与服务器进行交互的实例</strong></p>
+<p>1.客户端javascript代码</p>
+<pre><code>function getQueryString() {
+    var queryString = &quot;&quot;;
+    var name = document.getElementById(&quot;text1&quot;).value;
+    var age = document.getElementById(&quot;text2&quot;).value;
+    queryString = &quot;name=&quot;+name+&quot;&amp;&quot;+&quot;age=&quot;+age
+    return queryString;
+} 
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
+function loadDoc() {
+    var txt = getQueryString();
 
-public class BeanUtilsTest {
-
-    /**
-     * 利用BeanUtils给bean相关属性赋值
-     */
-    public void test(){
-    Person p =new Person();
-    try {
-        BeanUtils.setProperty(p, &quot;name&quot;, &quot;James&quot;); //默认只支持基本类型的转换
-        System.out.println(p.getName());
-
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
+      var xhttp;
+    if (window.XMLHttpRequest) {
+        xhttp = new XMLHttpRequest();
+    }else{
+        xhttp = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
     }
-}
 
-/**
- * 自定义转换器类并注册
- */
-@SuppressWarnings(&quot;deprecation&quot;)
-public void test2(){
-    Person p = new Person();
-    String date=&quot;2017-5-6&quot;;
-
-    ConvertUtils.register(new Converter() { //为BeanUtils注册字符串转成日期类型的转换器，
-
-        @SuppressWarnings(&quot;unchecked&quot;)
-        @Override
-        public &lt;T&gt; T convert(Class&lt;T&gt; type, Object value) {
-            if(value == null){
-                return null;
-            }
-
-            if(!(value instanceof String)){
-                throw new ConversionException(&quot;只支持string类型的转换&quot;);
-            }
-
-            SimpleDateFormat sdf=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-            try {
-                 return (T) sdf.parse((String) value);
-
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
+      xhttp.onreadystatechange = function() {
+           if (this.readyState == 4 &amp;&amp; this.status == 200) {
+                document.getElementById(&quot;div4&quot;).innerHTML = xhttp.responseText;
         }
+      };
 
+      /*
+      get方式
+       xhttp.open(&quot;GET&quot;, &quot;server.jsp?&quot;+txt, true);
+       xhttp.send();
+       */
 
-    }, Date.class);
-
-    try {
-        BeanUtils.setProperty(p, &quot;birthday&quot;, date);
-        System.out.println(p.getBirthday().toLocaleString());
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new RuntimeException(&quot;转换出错！&quot;);
-    }
-}
-
-/**
- * 用Map来填充bean的属性
- */
-public void test3() {
-    Person person = new Person();
-    Map map = new HashMap();
-    map.put(&quot;name&quot;, &quot;James&quot;);
-    map.put(&quot;sex&quot;, &quot;男&quot;);
-    map.put(&quot;birthday&quot;, &quot;1984-6-5&quot;);
-    map.put(&quot;id&quot;, &quot;3&quot;);
-
-    ConvertUtils.register(new DateLocaleConverter(), Date.class);
-
-    try {
-        BeanUtils.populate(person, map); 
-        System.out.println(person.getBirthday());
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new RuntimeException(&quot;转换出错&quot;);
-    }
-}
+       /*post方式*/
+       xhttp.open(&quot;post&quot;,&quot;server.jsp&quot;,true);
+    xhttp.setRequestHeader(&quot;content-type&quot;,&quot;application/x-www-form-urlencoded&quot;);
+    xhttp.send(txt);
 
 }
+</code></pre><p>2.服务器端jsp</p>
+<pre><code>&lt;% 
+    String name = request.getParameter(&quot;name&quot;);
+    String age = request.getParameter(&quot;age&quot;);
+    out.print(&quot;name=&quot;+name+&quot;,age=&quot;+age);//返回给客户端的数据
+
+%&gt;
 </code></pre>
       
     </div>
@@ -523,7 +481,7 @@ public void test3() {
       
         <div class="post-tags">
           
-            <a href="/tags/Utils/" rel="tag"># Utils</a>
+            <a href="/tags/AJAX/" rel="tag"># AJAX</a>
           
         </div>
       
@@ -536,18 +494,14 @@ public void test3() {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/servlet-downandup/" rel="next" title="Servlet-download file/upload file">
-                <i class="fa fa-chevron-left"></i> Servlet-download file/upload file
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/DuplicateForm/" rel="prev" title="防表单重复提交">
-                防表单重复提交 <i class="fa fa-chevron-right"></i>
+              <a href="/jQuery/" rel="prev" title="jQuery入门(一)">
+                jQuery入门(一) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
