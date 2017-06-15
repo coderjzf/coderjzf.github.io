@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://yoursite.com/mybatis1/project.jpg">
 <meta property="og:image" content="http://yoursite.com/mybatis1/log4j.jpg">
 <meta property="og:image" content="http://yoursite.com/mybatis1/out.jpg">
-<meta property="og:updated_time" content="2017-06-14T08:25:33.892Z">
+<meta property="og:updated_time" content="2017-06-14T10:49:58.287Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyBatis(一)：简介及入门程序">
 <meta name="twitter:description" content="一、Mybatis简介MyBatis是支持普通 SQL查询，存储过程和高级映射的优秀持久层框架。，消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。">
@@ -370,12 +370,25 @@
 </ol>
 <p>而Mybatis提供了对输入参数的自动映射，和将结果集自动映射为POJO(输出映射)，可扩展性好，利于维护。</p>
 <hr>
-<h2 id="二、Mybatis框架基本结构"><a href="#二、Mybatis框架基本结构" class="headerlink" title="二、Mybatis框架基本结构"></a>二、Mybatis框架基本结构</h2><ol>
+<h2 id="二、Mybatis框架基本结构"><a href="#二、Mybatis框架基本结构" class="headerlink" title="二、Mybatis框架基本结构"></a>二、Mybatis框架基本结构</h2><h3 id="2-1-配置文件与API"><a href="#2-1-配置文件与API" class="headerlink" title="2.1 配置文件与API"></a>2.1 配置文件与API</h3><ol>
 <li>mybatis-config.xml(名称不固定):全局配置文件,配置关于数据源、事务管理、映射文件注册等设置</li>
 <li>Xxx.xml:映射文件，配置具体的sql语句。若是使用mapper代理开发，则映射文件名需和mapper节口名一致</li>
 <li>SqlSessionFactoryBuilder:会话过程构造器，用来读取配置文件并配置会话工厂</li>
 <li>SqlSessionFactory:会话工厂，用来创建会话</li>
 <li>SqlSession:会话，面向程序员，用来实现增、删、改、查等与数据库交互的操作</li>
+</ol>
+<h3 id="2-2-作用域与声明周期"><a href="#2-2-作用域与声明周期" class="headerlink" title="2.2 作用域与声明周期"></a>2.2 作用域与声明周期</h3><ol>
+<li>SqlSessionFactoryBuilder:作用域为方法作用域。可作为一个工具使用，创建了SqlSessionFactory后就不在需要它了。</li>
+<li>SqlSessionFactory:作用域为应用作用域。SqlSessionFactory一旦被创建就应该在应用的运行期间一直存在，没有任何理由对它进行清除或重建。</li>
+<li>SqlSession:作用域为请求或方法作用域。每个线程都应该有它自己的 SqlSession 实例。SqlSession 的实例不是线程安全的，因此是不能被共享的。<br>标准模式：<br> SqlSession session = sqlSessionFactory.openSession();<br> try {<br>   // do work<br> } finally {<br>   session.close();<br> }</li>
+<li>Mapper Instances(映射器实例):映射器是用来绑定statement(sql语句)接口。作用域是方法作用域。<br>标准模式：<pre><code>SqlSession session = sqlSessionFactory.openSession();
+ try {
+   BlogMapper mapper = session.getMapper(BlogMapper.class);
+   // do work
+ } finally {
+   session.close();
+ }
+</code></pre></li>
 </ol>
 <hr>
 <h2 id="三、第一个Mybatis小程序"><a href="#三、第一个Mybatis小程序" class="headerlink" title="三、第一个Mybatis小程序"></a>三、第一个Mybatis小程序</h2><h3 id="3-1准备工作："><a href="#3-1准备工作：" class="headerlink" title="3.1准备工作："></a>3.1准备工作：</h3><ol>
@@ -592,7 +605,7 @@ public class UserMapperTest {
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -652,7 +665,7 @@ public class UserMapperTest {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Mybatis简介"><span class="nav-number">1.</span> <span class="nav-text">一、Mybatis简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Mybatis框架基本结构"><span class="nav-number">2.</span> <span class="nav-text">二、Mybatis框架基本结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、第一个Mybatis小程序"><span class="nav-number">3.</span> <span class="nav-text">三、第一个Mybatis小程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1准备工作："><span class="nav-number">3.1.</span> <span class="nav-text">3.1准备工作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-log4j日志文件"><span class="nav-number">3.2.</span> <span class="nav-text">3.2  log4j日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-全局配置文件mybatis-config-xml"><span class="nav-number">3.3.</span> <span class="nav-text">3.3  全局配置文件mybatis-config.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-映射文件"><span class="nav-number">3.4.</span> <span class="nav-text">3.4  映射文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-测试程序"><span class="nav-number">3.5.</span> <span class="nav-text">3.5  测试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-输出"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 输出</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Mybatis简介"><span class="nav-number">1.</span> <span class="nav-text">一、Mybatis简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Mybatis框架基本结构"><span class="nav-number">2.</span> <span class="nav-text">二、Mybatis框架基本结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-配置文件与API"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 配置文件与API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-作用域与声明周期"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 作用域与声明周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、第一个Mybatis小程序"><span class="nav-number">3.</span> <span class="nav-text">三、第一个Mybatis小程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1准备工作："><span class="nav-number">3.1.</span> <span class="nav-text">3.1准备工作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-log4j日志文件"><span class="nav-number">3.2.</span> <span class="nav-text">3.2  log4j日志文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-全局配置文件mybatis-config-xml"><span class="nav-number">3.3.</span> <span class="nav-text">3.3  全局配置文件mybatis-config.xml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-映射文件"><span class="nav-number">3.4.</span> <span class="nav-text">3.4  映射文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-测试程序"><span class="nav-number">3.5.</span> <span class="nav-text">3.5  测试程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-输出"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 输出</span></a></li></ol></li></ol></div>
             
 
           </div>

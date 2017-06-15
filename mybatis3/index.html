@@ -1,0 +1,815 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MyBatis," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="coderjzf" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="一、全局配置文件所有标签如下  properties（属性） settings（全局配置参数）">
+<meta name="keywords" content="MyBatis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis(三):全局配置文件与映射文件">
+<meta property="og:url" content="http://yoursite.com/mybatis3/index.html">
+<meta property="og:site_name" content="coderjzf">
+<meta property="og:description" content="一、全局配置文件所有标签如下  properties（属性） settings（全局配置参数）">
+<meta property="og:image" content="http://yoursite.com/mybatis3/properties.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/mysql.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/datasource.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/properties2.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/typealias.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/typealias4.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/typealias3.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/mappers.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/mappers2.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/parameterType.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/parameterType2.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/userwrapper.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/user.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/userwrappermapper.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/userwrappermapperxml.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/userwrappermappertest.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/usermapper.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/usermapperxml.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/findusers.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/usermapper3.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/usermapperxml2.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/test.jpg">
+<meta property="og:image" content="http://yoursite.com/mybatis3/if.png">
+<meta property="og:image" content="http://yoursite.com/mybatis3/choose.png">
+<meta property="og:image" content="http://yoursite.com/mybatis3/sql.png">
+<meta property="og:image" content="http://yoursite.com/mybatis3/sql2.png">
+<meta property="og:updated_time" content="2017-06-15T08:34:48.285Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis(三):全局配置文件与映射文件">
+<meta name="twitter:description" content="一、全局配置文件所有标签如下  properties（属性） settings（全局配置参数）">
+<meta name="twitter:image" content="http://yoursite.com/mybatis3/properties.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/mybatis3/"/>
+
+
+
+
+
+  <title> MyBatis(三):全局配置文件与映射文件 | coderjzf </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">coderjzf</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/mybatis3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="coderjzf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="coderjzf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MyBatis(三):全局配置文件与映射文件
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-14T19:54:09+08:00">
+                2017-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaWeb/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaWeb</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、全局配置文件"><a href="#一、全局配置文件" class="headerlink" title="一、全局配置文件"></a>一、全局配置文件</h2><p>所有标签如下</p>
+<ul>
+<li>properties（属性）</li>
+<li>settings（全局配置参数）<a id="more"></a></li>
+<li>typeAliases（类型别名）</li>
+<li>typeHandlers（类型处理器）</li>
+<li>objectFactory（对象工厂）</li>
+<li>plugins（插件）</li>
+<li>environments（环境集合属性对象）<ul>
+<li>environment（环境子属性对象）<ul>
+<li>transactionManager（事务管理）</li>
+<li>dataSource（数据源）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>mappers（映射器）</li>
+</ul>
+<h3 id="1-1-properties"><a href="#1-1-properties" class="headerlink" title="1.1 properties"></a>1.1 properties</h3><h4 id="1-1-1加载外部属性文件"><a href="#1-1-1加载外部属性文件" class="headerlink" title="1.1.1加载外部属性文件:"></a>1.1.1加载外部属性文件:</h4><p><img src="/mybatis3/properties.jpg" alt="properties"></p>
+<p>mysql.properties:<br><img src="/mybatis3/mysql.jpg" alt="mysql"></p>
+<p>其中的属性就可以在整个配置文件中使用来替换需要动态配置的属性值,如:<br><img src="/mybatis3/datasource.jpg" alt="dataSource"></p>
+<h4 id="1-1-2-properties-元素的子元素来传递"><a href="#1-1-2-properties-元素的子元素来传递" class="headerlink" title="1.1.2 properties 元素的子元素来传递:"></a>1.1.2 properties 元素的子元素来传递:</h4><p><img src="/mybatis3/properties2.jpg" alt="properties2"></p>
+<h3 id="1-2-settings-全局参数配置。MyBatis-中极为重要的调整设置，它们会改变-MyBatis-的运行时行为。"><a href="#1-2-settings-全局参数配置。MyBatis-中极为重要的调整设置，它们会改变-MyBatis-的运行时行为。" class="headerlink" title="1.2 settings:全局参数配置。MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为。"></a>1.2 settings:全局参数配置。MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为。</h3><p><strong>常用</strong>的参数有：</p>
+<ul>
+<li>cacheEnabled            该配置影响的所有映射器中配置的缓存的全局开关。默认为true。</li>
+<li>lazyLoadingEnabled    延迟加载的全局开关。当开启时，所有关联对象都会延迟加载。 </li>
+<li>aggressiveLazyLoading 当开启时，任何方法的调用都会加载该对象的所有属性。否则，每个属性会按需加载。</li>
+</ul>
+<p>其他参数设置见mybatis官方文档：<a href="http://www.mybatis.org/mybatis-3/zh/configuration.html#settings" target="_blank" rel="external">http://www.mybatis.org/mybatis-3/zh/configuration.html#settings</a></p>
+<h3 id="1-3-typeAliases-类型别名。"><a href="#1-3-typeAliases-类型别名。" class="headerlink" title="1.3 typeAliases:类型别名。"></a>1.3 typeAliases:类型别名。</h3><p>在mapper.xml中，定义很多的statement，statement需要parameterType指定输入参数的类型、需要resultType指定输出结果的映射类型。<br>如果在指定类型时输入类型全路径，不方便进行开发，可以针对parameterType或resultType指定的类型定义一些别名，在mapper.xml中通过别名定义，方便开发。</p>
+<h4 id="1-3-1-MyBatis默认支持的常用Java类型别名："><a href="#1-3-1-MyBatis默认支持的常用Java类型别名：" class="headerlink" title="1.3.1 MyBatis默认支持的常用Java类型别名："></a>1.3.1 MyBatis默认支持的常用Java类型别名：</h4><p>见官方文档：<a href="http://www.mybatis.org/mybatis-3/zh/configuration.html#typeAliases" target="_blank" rel="external">http://www.mybatis.org/mybatis-3/zh/configuration.html#typeAliases</a></p>
+<h4 id="1-3-2-自定义别名："><a href="#1-3-2-自定义别名：" class="headerlink" title="1.3.2 自定义别名："></a>1.3.2 自定义别名：</h4><p>定义:<br><img src="/mybatis3/typealias.jpg" alt="typealias"></p>
+<p>使用：<br><img src="/mybatis3/typealias4.jpg" alt="typealias4"></p>
+<h4 id="1-3-3-批量定义别名-推荐使用-："><a href="#1-3-3-批量定义别名-推荐使用-：" class="headerlink" title="1.3.3 批量定义别名(推荐使用)："></a>1.3.3 批量定义别名(推荐使用)：</h4><p>如：<br><img src="/mybatis3/typealias3.jpg" alt="typealias3"></p>
+<h3 id="1-4-mappers-用来加载映射文件"><a href="#1-4-mappers-用来加载映射文件" class="headerlink" title="1.4 mappers:用来加载映射文件"></a>1.4 mappers:用来加载映射文件</h3><h4 id="1-4-1-加载单个映射文件："><a href="#1-4-1-加载单个映射文件：" class="headerlink" title="1.4.1 加载单个映射文件："></a>1.4.1 加载单个映射文件：</h4><p><img src="/mybatis3/mappers.jpg" alt="mappers"></p>
+<h4 id="1-4-2-批量加载映射文件："><a href="#1-4-2-批量加载映射文件：" class="headerlink" title="1.4.2 批量加载映射文件："></a>1.4.2 批量加载映射文件：</h4><p><img src="/mybatis3/mappers2.jpg" alt="mappers2"></p>
+<h2 id="二、映射文件中的输入与输出映射"><a href="#二、映射文件中的输入与输出映射" class="headerlink" title="二、映射文件中的输入与输出映射"></a>二、映射文件中的输入与输出映射</h2><p><em>MyBatis强大的地方就在于它的映射文件(包含statement即sql语句)，通过灵活地使用mapper.xml映射文件，可以使代码更加简洁，功能却更加强大。</em></p>
+<p>映射文件有一些顶级元素，用来映射statement或者进行其他设置：</p>
+<ul>
+<li>insert:映射插入语句</li>
+<li>select:映射查询语句</li>
+<li>update:映射更新语句</li>
+<li>delete:映射删除语句</li>
+<li>cache:缓存配置</li>
+<li>cache-ref:其他命名空间缓存配置的引用</li>
+<li>resultMap:是最复杂也是最强大的元素，用来描述如何从数据库结果集中来加载对象</li>
+<li>sql:定义可重用sql语句块</li>
+</ul>
+<h3 id="2-1输入映射："><a href="#2-1输入映射：" class="headerlink" title="2.1输入映射："></a>2.1输入映射：</h3><p>使用insert、select、update、delete等定义sql语句都需要输入参数parameterType，parameterType可以是简单类型、HashMap、POJO或者POJO的包装类型。</p>
+<h4 id="2-1-1输入参数类型为简单类型："><a href="#2-1-1输入参数类型为简单类型：" class="headerlink" title="2.1.1输入参数类型为简单类型："></a>2.1.1输入参数类型为简单类型：</h4><p><img src="/mybatis3/parameterType.jpg" alt="parameterType"></p>
+<h4 id="2-1-2输入参数类型为POJO"><a href="#2-1-2输入参数类型为POJO" class="headerlink" title="2.1.2输入参数类型为POJO:"></a>2.1.2输入参数类型为POJO:</h4><p><img src="/mybatis3/parameterType2.jpg" alt="parameterType2"></p>
+<h4 id="2-1-3输入参数类型为POJO的包装类型"><a href="#2-1-3输入参数类型为POJO的包装类型" class="headerlink" title="2.1.3输入参数类型为POJO的包装类型:"></a>2.1.3输入参数类型为POJO的包装类型:</h4><p>当查询条件很复杂时，原有的POJO不能满足要求，可以对POJO进行包装</p>
+<h5 id="2-1-3-1-UserWrapper-User的包装类型"><a href="#2-1-3-1-UserWrapper-User的包装类型" class="headerlink" title="2.1.3.1 UserWrapper(User的包装类型)"></a>2.1.3.1 UserWrapper(User的包装类型)</h5><p><img src="/mybatis3/userwrapper.jpg" alt="userwrapper"></p>
+<h5 id="2-1-3-2-User"><a href="#2-1-3-2-User" class="headerlink" title="2.1.3.2 User"></a>2.1.3.2 User</h5><p><img src="/mybatis3/user.jpg" alt="user"></p>
+<h5 id="2-1-3-3-UserWrapperMapper-mapper接口"><a href="#2-1-3-3-UserWrapperMapper-mapper接口" class="headerlink" title="2.1.3.3 UserWrapperMapper(mapper接口)"></a>2.1.3.3 UserWrapperMapper(mapper接口)</h5><p><img src="/mybatis3/userwrappermapper.jpg" alt="userwrappermapper"></p>
+<h5 id="2-1-3-4-UserWrapperMapper-xml-映射文件"><a href="#2-1-3-4-UserWrapperMapper-xml-映射文件" class="headerlink" title="2.1.3.4 UserWrapperMapper.xml(映射文件)"></a>2.1.3.4 UserWrapperMapper.xml(映射文件)</h5><p><img src="/mybatis3/userwrappermapperxml.jpg" alt="userwrappermapperxml"></p>
+<h5 id="2-1-3-5-测试程序"><a href="#2-1-3-5-测试程序" class="headerlink" title="2.1.3.5 测试程序"></a>2.1.3.5 测试程序</h5><p><img src="/mybatis3/userwrappermappertest.jpg" alt="userwrappermappertest"></p>
+<h3 id="2-2输出映射："><a href="#2-2输出映射：" class="headerlink" title="2.2输出映射："></a>2.2输出映射：</h3><p>输出参数可以用resltType和resultMap来表示。<br>resultType可以是简单类型、POJO类型。<br><strong>注意：</strong><br>使用resultType进行输出映射，只有查询出来的列名和pojo中的属性名一致，该列才可以映射成功。<br>如果查询出来的列名和pojo中的属性名全部不一致，没有创建pojo对象。<br>只要查询出来的列名和pojo中的属性有一个一致，就会创建pojo对象。</p>
+<p>输出参数为简单类型和POJO类型的操作和输入映射做法一样。但当输入为POJO对象列表(List)时，输出参数类型即resultType仍为列表中元素类型(POJO)。</p>
+<h4 id="2-2-1-输出为POJO列表"><a href="#2-2-1-输出为POJO列表" class="headerlink" title="2.2.1 输出为POJO列表"></a>2.2.1 输出为POJO列表</h4><h5 id="2-2-1-1-UserMapper-java-mapper接口"><a href="#2-2-1-1-UserMapper-java-mapper接口" class="headerlink" title="2.2.1.1 UserMapper.java(mapper接口)"></a>2.2.1.1 UserMapper.java(mapper接口)</h5><p><img src="/mybatis3/usermapper.jpg" alt="usermapper"></p>
+<h5 id="2-2-1-2-UserMapper-xml映射文件"><a href="#2-2-1-2-UserMapper-xml映射文件" class="headerlink" title="2.2.1.2 UserMapper.xml映射文件"></a>2.2.1.2 UserMapper.xml映射文件</h5><p><img src="/mybatis3/usermapperxml.jpg" alt="usermapperxml"></p>
+<h5 id="2-2-1-3-测试程序"><a href="#2-2-1-3-测试程序" class="headerlink" title="2.2.1.3 测试程序"></a>2.2.1.3 测试程序</h5><p><img src="/mybatis3/findusers.jpg" alt="findusers"></p>
+<h4 id="2-2-2-resultMap的使用"><a href="#2-2-2-resultMap的使用" class="headerlink" title="2.2.2 resultMap的使用"></a>2.2.2 resultMap的使用</h4><p><strong>当查询得到的列名与POJO的属性名不一致时，可以使用resultMap将列名映射为POJO属性名</strong></p>
+<h5 id="2-2-2-1-UserMapper-java-mapper接口"><a href="#2-2-2-1-UserMapper-java-mapper接口" class="headerlink" title="2.2.2.1 UserMapper.java(mapper接口)"></a>2.2.2.1 UserMapper.java(mapper接口)</h5><p><img src="/mybatis3/usermapper3.jpg" alt="usermapper3"></p>
+<h5 id="2-2-2-2-UserMapper-xml映射文件"><a href="#2-2-2-2-UserMapper-xml映射文件" class="headerlink" title="2.2.2.2 UserMapper.xml映射文件"></a>2.2.2.2 UserMapper.xml映射文件</h5><p><img src="/mybatis3/usermapperxml2.jpg" alt="usermapperxml2"></p>
+<h5 id="2-2-2-3-测试程序"><a href="#2-2-2-3-测试程序" class="headerlink" title="2.2.2.3 测试程序"></a>2.2.2.3 测试程序</h5><p><img src="/mybatis3/test.jpg" alt="test"></p>
+<h2 id="三、动态SQL语句"><a href="#三、动态SQL语句" class="headerlink" title="三、动态SQL语句"></a>三、动态SQL语句</h2><p>MyBatis 的强大特性之一便是它的动态 SQL。利用动态 SQL 这一特性可以实现更简洁的代码却有着更加强大的功能。</p>
+<ul>
+<li>if</li>
+<li>choose(when otherwise)</li>
+<li>trim(where set)</li>
+<li>foreach</li>
+</ul>
+<h3 id="3-1-if的使用"><a href="#3-1-if的使用" class="headerlink" title="3.1 if的使用"></a>3.1 if的使用</h3><p><img src="/mybatis3/if.png" alt="if"></p>
+<h3 id="3-2-choose的使用"><a href="#3-2-choose的使用" class="headerlink" title="3.2 choose的使用"></a>3.2 choose的使用</h3><p><img src="/mybatis3/choose.png" alt="choose"></p>
+<h3 id="3-3-可重用的sql片段"><a href="#3-3-可重用的sql片段" class="headerlink" title="3.3 可重用的sql片段"></a>3.3 可重用的sql片段</h3><p>可以将上面的choose语句部分定义为可重用的sql片段<br><img src="/mybatis3/sql.png" alt="sql"></p>
+<p>使用include元素可以通过id来引用sql片段(若sql片段不在该命名空间内，还需加上命名空间名)<br><img src="/mybatis3/sql2.png" alt="sql2"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/mybatis2/" rel="prev" title="MyBatis(二)：使用mapper代理方法进行增删改查操作">
+                MyBatis(二)：使用mapper代理方法进行增删改查操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="coderjzf" />
+          <p class="site-author-name" itemprop="name">coderjzf</p>
+           
+              <p class="site-description motion-element" itemprop="description">a primary coder</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、全局配置文件"><span class="nav-number">1.</span> <span class="nav-text">一、全局配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-properties"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 properties</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-1加载外部属性文件"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1加载外部属性文件:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-2-properties-元素的子元素来传递"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2 properties 元素的子元素来传递:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-settings-全局参数配置。MyBatis-中极为重要的调整设置，它们会改变-MyBatis-的运行时行为。"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 settings:全局参数配置。MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-typeAliases-类型别名。"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 typeAliases:类型别名。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-MyBatis默认支持的常用Java类型别名："><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1 MyBatis默认支持的常用Java类型别名：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-自定义别名："><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2 自定义别名：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-批量定义别名-推荐使用-："><span class="nav-number">1.3.3.</span> <span class="nav-text">1.3.3 批量定义别名(推荐使用)：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-mappers-用来加载映射文件"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 mappers:用来加载映射文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-加载单个映射文件："><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 加载单个映射文件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-2-批量加载映射文件："><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 批量加载映射文件：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、映射文件中的输入与输出映射"><span class="nav-number">2.</span> <span class="nav-text">二、映射文件中的输入与输出映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1输入映射："><span class="nav-number">2.1.</span> <span class="nav-text">2.1输入映射：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1输入参数类型为简单类型："><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1输入参数类型为简单类型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2输入参数类型为POJO"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2输入参数类型为POJO:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3输入参数类型为POJO的包装类型"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3输入参数类型为POJO的包装类型:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-1-UserWrapper-User的包装类型"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">2.1.3.1 UserWrapper(User的包装类型)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-2-User"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">2.1.3.2 User</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-3-UserWrapperMapper-mapper接口"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">2.1.3.3 UserWrapperMapper(mapper接口)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-4-UserWrapperMapper-xml-映射文件"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">2.1.3.4 UserWrapperMapper.xml(映射文件)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-5-测试程序"><span class="nav-number">2.1.3.5.</span> <span class="nav-text">2.1.3.5 测试程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2输出映射："><span class="nav-number">2.2.</span> <span class="nav-text">2.2输出映射：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-输出为POJO列表"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 输出为POJO列表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-1-UserMapper-java-mapper接口"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">2.2.1.1 UserMapper.java(mapper接口)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-2-UserMapper-xml映射文件"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">2.2.1.2 UserMapper.xml映射文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-3-测试程序"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">2.2.1.3 测试程序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-resultMap的使用"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 resultMap的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-1-UserMapper-java-mapper接口"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">2.2.2.1 UserMapper.java(mapper接口)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-2-UserMapper-xml映射文件"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">2.2.2.2 UserMapper.xml映射文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-3-测试程序"><span class="nav-number">2.2.2.3.</span> <span class="nav-text">2.2.2.3 测试程序</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、动态SQL语句"><span class="nav-number">3.</span> <span class="nav-text">三、动态SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-if的使用"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 if的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-choose的使用"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 choose的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-可重用的sql片段"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 可重用的sql片段</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">coderjzf</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

@@ -4,12 +4,12 @@
 
     
   <url>
-    <loc>http://yoursite.com/mybatis2/</loc>
-    <lastmod>2017-06-14T10:00:31.440Z</lastmod>
+    <loc>http://yoursite.com/mybatis3/</loc>
+    <lastmod>2017-06-15T08:34:48.285Z</lastmod>
     <data>
         <display>
-        <title>MyBatis(二)：使用mapper代理方法进行增删改查操作</title>
-        <pubTime>2017-06-14T09:53:19.000Z</pubTime>
+        <title>MyBatis(三):全局配置文件与映射文件</title>
+        <pubTime>2017-06-14T11:54:09.000Z</pubTime>
         
         <tag>MyBatis</tag>
          
@@ -25,11 +25,31 @@
     
   <url>
     <loc>http://yoursite.com/mybatis1/</loc>
-    <lastmod>2017-06-14T08:25:33.892Z</lastmod>
+    <lastmod>2017-06-14T10:49:58.287Z</lastmod>
     <data>
         <display>
         <title>MyBatis(一)：简介及入门程序</title>
         <pubTime>2017-06-14T08:14:07.000Z</pubTime>
+        
+        <tag>MyBatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="JavaWeb" url="http://yoursite.com/categories/JavaWeb/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/mybatis2/</loc>
+    <lastmod>2017-06-14T10:00:31.440Z</lastmod>
+    <data>
+        <display>
+        <title>MyBatis(二)：使用mapper代理方法进行增删改查操作</title>
+        <pubTime>2017-06-14T09:53:19.000Z</pubTime>
         
         <tag>MyBatis</tag>
          
