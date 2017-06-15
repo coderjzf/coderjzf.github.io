@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-15T08:34:48.285Z</updated>
+  <updated>2017-06-15T09:49:48.898Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,59 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MyBatis(四):一级、二级缓存</title>
+    <link href="http://yoursite.com/mybatis4/"/>
+    <id>http://yoursite.com/mybatis4/</id>
+    <published>2017-06-15T09:31:46.000Z</published>
+    <updated>2017-06-15T09:49:48.898Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、MyBtis缓存简介"><a href="#一、MyBtis缓存简介" class="headerlink" title="一、MyBtis缓存简介"></a>一、MyBtis缓存简介</h2><p>为什么要用缓存？<br>如果缓存中有所需要的数据，就不用从数据库中获取数据，大大提高了系统性能。<br><a id="more"></a></p>
+<h3 id="1-1-MyBtis的一级、二级缓存："><a href="#1-1-MyBtis的一级、二级缓存：" class="headerlink" title="1.1 MyBtis的一级、二级缓存："></a>1.1 MyBtis的一级、二级缓存：</h3><ul>
+<li><strong>一级缓存</strong>是sqlsession的缓存<br>sqlsession对象有一个数据结构(hashmap)，用于缓存数据。不同的sqlsession之间的缓存数据区域是互不影响的。</li>
+<li><strong>二级缓存</strong>是mapper.xml(映射文件)级别的缓存<br>多个sqlsession去操作同一个mapper.xml的statement(sql语句)，多个sqlsession可以用二级缓存来缓存数据，二级缓存是跨sqlsession的。<br>(二级缓存区域根据mapper的namespace来区分，不同mapper的二级缓存互不影响)</li>
+</ul>
+<p><strong>区别</strong>：二级缓存比一级缓存的范围大</p>
+<hr>
+<h2 id="二、MyBtis一级缓存"><a href="#二、MyBtis一级缓存" class="headerlink" title="二、MyBtis一级缓存"></a>二、MyBtis一级缓存</h2><p><strong>MyBtis默认支持一级缓存，不需要进行配置</strong></p>
+<h3 id="2-1-会从缓存中取数据的情况"><a href="#2-1-会从缓存中取数据的情况" class="headerlink" title="2.1 会从缓存中取数据的情况"></a>2.1 会从缓存中取数据的情况</h3><p>先查询用户id为1的用户。(会去缓存中查找;若没有,从数据库中查询)<br>再查询用户id为1的用户。(此时缓存中已经存在,则会直接取出数据，不需要从数据库查询，即不需要发出sql语句)</p>
+<p><strong>mapper接口</strong><br><img src="/mybatis4/mapper.png" alt="mapper"></p>
+<p><strong>UserMapper.xml</strong><br><img src="/mybatis4/mapperxml.png" alt="mapperxml"></p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test.png" alt="test"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test11.png" alt="test1"><br>可以看出第一次执行了一条sql语句,而第二次是直接从缓存中取出数据</p>
+<h3 id="2-2-不会从缓存中取数据取数据的情况"><a href="#2-2-不会从缓存中取数据取数据的情况" class="headerlink" title="2.2 不会从缓存中取数据取数据的情况"></a>2.2 不会从缓存中取数据取数据的情况</h3><p>先查询用户id为1的用户。<br>执行修改、删除、更新用户的sql语句即包含commit的操作。<br>再查询用户id为1的用户。(这时，为了避免脏读，不会从缓存中取数据而是从数据库中查询)</p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test2.png" alt="test2"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test21.png" alt="test21"><br>可以看到第三次查询没有从缓存中直接取出数据，而是从数据库中查询</p>
+<h2 id="三、MyBtis二级缓存"><a href="#三、MyBtis二级缓存" class="headerlink" title="三、MyBtis二级缓存"></a>三、MyBtis二级缓存</h2><h3 id="3-1首先要开启MyBtis的二级缓存"><a href="#3-1首先要开启MyBtis的二级缓存" class="headerlink" title="3.1首先要开启MyBtis的二级缓存"></a>3.1首先要开启MyBtis的二级缓存</h3><ol>
+<li><p>在全局配置文件中开启二级缓存<br><code>&lt;setting name=&quot;cacheEnabled&quot; value=&quot;true&quot;/&gt;</code></p>
+</li>
+<li><p>还需在mapper.xml(映射文件)中开启二级缓存<br>添加一行<code>&lt;cache/&gt;</code></p>
+</li>
+</ol>
+<h3 id="3-2-例1-会从二级缓存中取数据的情况："><a href="#3-2-例1-会从二级缓存中取数据的情况：" class="headerlink" title="3.2 例1 会从二级缓存中取数据的情况："></a>3.2 例1 会从二级缓存中取数据的情况：</h3><p>sqlsession1先查询用户id为1的用户。(会去缓存中查找;若没有,从数据库中查询)<br>sqlsession2再查询用户id为1的用户。(会直接缓存中查找数据)</p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test3.png" alt="test3"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test31.png" alt="test31"><br>可以看出sqlsession2执行时并没有发出sql语句，而是直接从二级缓存区域中取出数据</p>
+<h3 id="3-3-例2不会从二级缓存中取数据的情况"><a href="#3-3-例2不会从二级缓存中取数据的情况" class="headerlink" title="3.3 例2不会从二级缓存中取数据的情况:"></a>3.3 例2不会从二级缓存中取数据的情况:</h3><p>sqlsession1先查询用户id为1的用户。(会去二级缓存中查找;若没有,从数据库中查询)<br>sqlSession3查询用户id为1的用户，再更新用户的信息<br>sqlsession2再查询用户id为1的用户。(会从数据库中查询)</p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test4.png" alt="test4"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test41.png" alt="test41"></p>
+<h3 id="3-3-与二级缓存有关的属性"><a href="#3-3-与二级缓存有关的属性" class="headerlink" title="3.3 与二级缓存有关的属性"></a>3.3 与二级缓存有关的属性</h3><p>禁用二级缓存<br><code>&lt;select id=&quot;findUserById&quot; parameterType=&quot;int&quot; resultType=&quot;User&quot; useCache=&quot;false&quot;&gt;</code></p>
+<p>设置<strong>select</strong>元素的<strong>usecache</strong>属性为true，将会导致本条语句的结果被二级缓存，默认值：对<strong>select</strong>元素为true。</p>
+<p>刷新二级缓存(清空缓存)<br><code>&lt;update id=&quot;updateUser&quot; parameterType=&quot;User&quot; flushCache=&quot;true&quot;&gt;</code><br>设置<strong>update、insert、delete</strong>元素的<strong>flushcache</strong>属性为 true，任何时候只要语句被调用，都会导致本地缓存和二级缓存都会被清空。<br>对于<strong>update、insert、delete</strong>元素默认值：true。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、MyBtis缓存简介&quot;&gt;&lt;a href=&quot;#一、MyBtis缓存简介&quot; class=&quot;headerlink&quot; title=&quot;一、MyBtis缓存简介&quot;&gt;&lt;/a&gt;一、MyBtis缓存简介&lt;/h2&gt;&lt;p&gt;为什么要用缓存？&lt;br&gt;如果缓存中有所需要的数据，就不用从数据库中获取数据，大大提高了系统性能。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="JavaWeb" scheme="http://yoursite.com/categories/JavaWeb/"/>
+    
+    
+      <category term="MyBatis" scheme="http://yoursite.com/tags/MyBatis/"/>
+    
+  </entry>
   
   <entry>
     <title>MyBatis(三):全局配置文件与映射文件</title>

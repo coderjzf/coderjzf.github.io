@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Spring," />
+  <meta name="keywords" content="MyBatis," />
 
 
 
@@ -89,17 +89,28 @@
 
 
 
-<meta name="description" content="一、什么是AOPAOP即面向切面编程,是对传统OOP的补充。AOP的主要编程对象是切面。">
-<meta name="keywords" content="Spring">
+<meta name="description" content="一、MyBtis缓存简介为什么要用缓存？如果缓存中有所需要的数据，就不用从数据库中获取数据，大大提高了系统性能。">
+<meta name="keywords" content="MyBatis">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring_Study Note(2)">
-<meta property="og:url" content="http://yoursite.com/spring-2/index.html">
+<meta property="og:title" content="MyBatis(四):一级、二级缓存">
+<meta property="og:url" content="http://yoursite.com/mybatis4/index.html">
 <meta property="og:site_name" content="coderjzf">
-<meta property="og:description" content="一、什么是AOPAOP即面向切面编程,是对传统OOP的补充。AOP的主要编程对象是切面。">
-<meta property="og:updated_time" content="2017-05-14T09:06:20.463Z">
+<meta property="og:description" content="一、MyBtis缓存简介为什么要用缓存？如果缓存中有所需要的数据，就不用从数据库中获取数据，大大提高了系统性能。">
+<meta property="og:image" content="http://yoursite.com/mybatis4/mapper.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/mapperxml.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test11.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test2.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test21.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test3.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test31.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test4.png">
+<meta property="og:image" content="http://yoursite.com/mybatis4/test41.png">
+<meta property="og:updated_time" content="2017-06-15T09:49:48.898Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring_Study Note(2)">
-<meta name="twitter:description" content="一、什么是AOPAOP即面向切面编程,是对传统OOP的补充。AOP的主要编程对象是切面。">
+<meta name="twitter:title" content="MyBatis(四):一级、二级缓存">
+<meta name="twitter:description" content="一、MyBtis缓存简介为什么要用缓存？如果缓存中有所需要的数据，就不用从数据库中获取数据，大大提高了系统性能。">
+<meta name="twitter:image" content="http://yoursite.com/mybatis4/mapper.png">
 
 
 
@@ -127,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/spring-2/"/>
+  <link rel="canonical" href="http://yoursite.com/mybatis4/"/>
 
 
 
 
 
-  <title> Spring_Study Note(2) | coderjzf </title>
+  <title> MyBatis(四):一级、二级缓存 | coderjzf </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -262,7 +273,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/spring-2/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/mybatis4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="coderjzf">
@@ -283,7 +294,7 @@
             
             
               
-                Spring_Study Note(2)
+                MyBatis(四):一级、二级缓存
               
             
           </h1>
@@ -298,8 +309,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-13T00:00:00+08:00">
-                2017-05-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T17:31:46+08:00">
+                2017-06-15
               </time>
             
 
@@ -356,138 +367,37 @@
       
 
       
-        <p><strong>一、什么是AOP</strong><br>AOP即面向切面编程,是对传统OOP的补充。AOP的主要编程对象是切面。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>二、AOP中的一些概念</strong><br>横切关注点(cross-cutting concern):散布于应用程序中多处的功能(需求)被称<br>为横切关注点从概念上来看是与业务逻辑相分离的。把横切关注点与业务逻辑代码分离<br>开来是面向切面编程所要解决的问题。<br>切面(aspect):横切关注点(一些共同需求)被模块化之后的特殊对象(通知和切点的结合)<br>通知(advice):切面是什么(切面必须完成的功能),切面什么时候被使用<br>目标(target):被通知的对象<br>代理(proxy):对目标对象应用通知后<br>连接点(JoinPoint):应用程序有数以千计的时间可以被应用通知，这些时机被称为连接点<br>切点(pointcut): 一个切面并不需要通知所有的连接点，切点缩小了所需通知的连接点的范围</p>
+        <h2 id="一、MyBtis缓存简介"><a href="#一、MyBtis缓存简介" class="headerlink" title="一、MyBtis缓存简介"></a>一、MyBtis缓存简介</h2><p>为什么要用缓存？<br>如果缓存中有所需要的数据，就不用从数据库中获取数据，大大提高了系统性能。<br><a id="more"></a></p>
+<h3 id="1-1-MyBtis的一级、二级缓存："><a href="#1-1-MyBtis的一级、二级缓存：" class="headerlink" title="1.1 MyBtis的一级、二级缓存："></a>1.1 MyBtis的一级、二级缓存：</h3><ul>
+<li><strong>一级缓存</strong>是sqlsession的缓存<br>sqlsession对象有一个数据结构(hashmap)，用于缓存数据。不同的sqlsession之间的缓存数据区域是互不影响的。</li>
+<li><strong>二级缓存</strong>是mapper.xml(映射文件)级别的缓存<br>多个sqlsession去操作同一个mapper.xml的statement(sql语句)，多个sqlsession可以用二级缓存来缓存数据，二级缓存是跨sqlsession的。<br>(二级缓存区域根据mapper的namespace来区分，不同mapper的二级缓存互不影响)</li>
+</ul>
+<p><strong>区别</strong>：二级缓存比一级缓存的范围大</p>
 <hr>
-<p><strong>三、使用AOP的好处:</strong><br>1.横切关注点被集中于一个地方(切面)，而不是分散到多处代码中<br>2.服务模块更简洁，服务模块只需关注与业务逻辑相关的代码</p>
-<hr>
-<p><strong>四、Spring对AOP的支持</strong><br>基于代理的经典AOP<br>纯POJO切面(基于XML，将纯POJO转换成切面)<br>@AspectJ注解驱动的切面(通过AspectJ提供注解驱动的AOP，本质上仍然是Spring基于代理的AOP)<br>注入式AspectJ注解驱动</p>
-<p>前三种都是Spring AOP实现的变体，Spring AOP构建在动态代理的基础之上。因此Spring对AOP的支持仅限于方法拦截<br>如果要实现更高的需求,如构造器或者属性拦截，则需要使用AspectJ来实现切面，即注入式AspectJ注解驱动</p>
-<hr>
-<p><strong>五、Spring中@AspectJ注解驱动的切面</strong></p>
-<p>基本步骤<br>1.通过切点来选择连接点(使用AspectJ切点表达式语言)<br>AspectJ指示器execution()：用于匹配是连接点的方法</p>
-<p>切点表达式的使用规则：<br>execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)</p>
-<p>有“?”号的部分表示可省略的，modifers-pattern表示修饰符如public、protected等，ret-type-pattern表示方法返回类型，declaring-type-pattern代表特定的类，name-pattern代表方法名称，param-pattern表示参数，throws-pattern表示抛出的异常。在切入点表达式中，可以使用*来代表任意字符，用..来表示任意个参数。</p>
-<p>2.创建切面<br>@Aspect声明切面</p>
-<p>五种通知<br>@Before 通知方法会在目标方法执行之前执行<br>@After  通知方法会在目标方法执行之后执行(无论目标是否发生异常)<br>@AfterReturning  通知方法会在目标方法正常返回之后执行<br>@AfterThrowing     通知方法会在目标方法抛出异常之后执行<br>@Around             通知方法会将目标方法包裹(封装)起来</p>
-<p>@order 声明切面的优先级<br>@pointcut 声明可重用的切点</p>
-<p>3.启用自动代理功能<br>在xml文件中使用aop命名空间中的<code>&lt;aop:aspectj-autoproxy /&gt;</code>标签启用自动代理(或者使用JavaConfig)</p>
-<hr>
-<p><strong>六、注解驱动的切面的具体实现:</strong></p>
-<pre><code>public interface Calculator {
-
-    public double add(double i,double j);
-
-    public double sub(double i,double j);
-
-    public double mul(double i,double j);
-
-    public double div(double i,double j);
-}
-</code></pre><hr>
-<pre><code>import org.springframework.stereotype.Component;
-
-@Component
-public class CalculatorImp implements Calculator {
-
-    @Override
-    public double add(double i, double j) {
-        double result = i + j;
-        return result;
-    }
-
-    @Override
-    public double sub(double i, double j) {
-        double result = i - j;
-        return result;
-    }
-
-    @Override
-    public double mul(double i, double j) {
-        double result = i * j;
-        return result;
-    }
-
-    @Override
-    public double div(double i, double j) {
-        double result = i / j;
-        return result;
-    }
-
-    }
-</code></pre><hr>
-<p>声明一个日志切面</p>
-<pre><code>import java.util.Arrays;
-import java.util.List;
-
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
-
-@Component
-@Aspect // 声明位一个切面类
-public class LoggingAspect {
-
-    @Pointcut(&quot;execution(public double  com.jzf.spring.aop.CalculatorImp.*(double,double))&quot;)
-    public void pointcut() {
-    }
-
-    // 声明前置通知方法(目标方法执行之前执行)
-    @Before(&quot;pointcut()&quot;)
-    public void beforeMethod(JoinPoint jp) {
-        String methodName = jp.getSignature().getName();
-        List&lt;Object&gt; list = (List&lt;Object&gt;) Arrays.asList(jp.getArgs());// 得到方法的参数
-        System.out.println(methodName + &quot; begin with&quot; + list);
-    }
-
-    // 后置通知方法(目标方法执行之后执行，无论方法是否出现异常;无法得到返回值,因为可能抛出异常)
-    @After(&quot;pointcut()&quot;)
-    public void afterMethod(JoinPoint jp) {
-        String methodName = jp.getSignature().getName();
-        System.out.println(methodName + &quot; end&quot;);
-    }
-
-    //返回通知方法
-    @AfterReturning(value=&quot;pointcut()&quot;,returning=&quot;result&quot;)
-    public void afterReturning(JoinPoint jp,double result){
-        String methodName = jp.getSignature().getName();
-        System.out.println(methodName+&quot; return with:&quot;+result);
-    }
-
-    //异常通知方法
-    @AfterThrowing(throwing = &quot;ex&quot;, value = &quot;pointcut()&quot;)
-    public void throwException(JoinPoint jp, Exception ex) {
-        String methodName = jp.getSignature().getName();
-        System.out.println(methodName + &quot; occurs exception: &quot; + ex);
-    }
-
-}
-</code></pre><hr>
-<p>xml文件中的配置</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
-    xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
-    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd&quot;&gt;
-
-&lt;!-- 启用自动扫描 --&gt;
-&lt;context:component-scan base-package=&quot;com.jzf.spring.aop&quot;&gt;&lt;/context:component-scan&gt;
-
-&lt;!-- 使aspect注解生效 --&gt;
-&lt;aop:aspectj-autoproxy&gt;&lt;/aop:aspectj-autoproxy&gt;
-&lt;/beans&gt;
-</code></pre><hr>
+<h2 id="二、MyBtis一级缓存"><a href="#二、MyBtis一级缓存" class="headerlink" title="二、MyBtis一级缓存"></a>二、MyBtis一级缓存</h2><p><strong>MyBtis默认支持一级缓存，不需要进行配置</strong></p>
+<h3 id="2-1-会从缓存中取数据的情况"><a href="#2-1-会从缓存中取数据的情况" class="headerlink" title="2.1 会从缓存中取数据的情况"></a>2.1 会从缓存中取数据的情况</h3><p>先查询用户id为1的用户。(会去缓存中查找;若没有,从数据库中查询)<br>再查询用户id为1的用户。(此时缓存中已经存在,则会直接取出数据，不需要从数据库查询，即不需要发出sql语句)</p>
+<p><strong>mapper接口</strong><br><img src="/mybatis4/mapper.png" alt="mapper"></p>
+<p><strong>UserMapper.xml</strong><br><img src="/mybatis4/mapperxml.png" alt="mapperxml"></p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test.png" alt="test"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test11.png" alt="test1"><br>可以看出第一次执行了一条sql语句,而第二次是直接从缓存中取出数据</p>
+<h3 id="2-2-不会从缓存中取数据取数据的情况"><a href="#2-2-不会从缓存中取数据取数据的情况" class="headerlink" title="2.2 不会从缓存中取数据取数据的情况"></a>2.2 不会从缓存中取数据取数据的情况</h3><p>先查询用户id为1的用户。<br>执行修改、删除、更新用户的sql语句即包含commit的操作。<br>再查询用户id为1的用户。(这时，为了避免脏读，不会从缓存中取数据而是从数据库中查询)</p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test2.png" alt="test2"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test21.png" alt="test21"><br>可以看到第三次查询没有从缓存中直接取出数据，而是从数据库中查询</p>
+<h2 id="三、MyBtis二级缓存"><a href="#三、MyBtis二级缓存" class="headerlink" title="三、MyBtis二级缓存"></a>三、MyBtis二级缓存</h2><h3 id="3-1首先要开启MyBtis的二级缓存"><a href="#3-1首先要开启MyBtis的二级缓存" class="headerlink" title="3.1首先要开启MyBtis的二级缓存"></a>3.1首先要开启MyBtis的二级缓存</h3><ol>
+<li><p>在全局配置文件中开启二级缓存<br><code>&lt;setting name=&quot;cacheEnabled&quot; value=&quot;true&quot;/&gt;</code></p>
+</li>
+<li><p>还需在mapper.xml(映射文件)中开启二级缓存<br>添加一行<code>&lt;cache/&gt;</code></p>
+</li>
+</ol>
+<h3 id="3-2-例1-会从二级缓存中取数据的情况："><a href="#3-2-例1-会从二级缓存中取数据的情况：" class="headerlink" title="3.2 例1 会从二级缓存中取数据的情况："></a>3.2 例1 会从二级缓存中取数据的情况：</h3><p>sqlsession1先查询用户id为1的用户。(会去缓存中查找;若没有,从数据库中查询)<br>sqlsession2再查询用户id为1的用户。(会直接缓存中查找数据)</p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test3.png" alt="test3"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test31.png" alt="test31"><br>可以看出sqlsession2执行时并没有发出sql语句，而是直接从二级缓存区域中取出数据</p>
+<h3 id="3-3-例2不会从二级缓存中取数据的情况"><a href="#3-3-例2不会从二级缓存中取数据的情况" class="headerlink" title="3.3 例2不会从二级缓存中取数据的情况:"></a>3.3 例2不会从二级缓存中取数据的情况:</h3><p>sqlsession1先查询用户id为1的用户。(会去二级缓存中查找;若没有,从数据库中查询)<br>sqlSession3查询用户id为1的用户，再更新用户的信息<br>sqlsession2再查询用户id为1的用户。(会从数据库中查询)</p>
+<p><strong>测试方法</strong><br><img src="/mybatis4/test4.png" alt="test4"></p>
+<p><strong>输出日志</strong><br><img src="/mybatis4/test41.png" alt="test41"></p>
+<h3 id="3-3-与二级缓存有关的属性"><a href="#3-3-与二级缓存有关的属性" class="headerlink" title="3.3 与二级缓存有关的属性"></a>3.3 与二级缓存有关的属性</h3><p>禁用二级缓存<br><code>&lt;select id=&quot;findUserById&quot; parameterType=&quot;int&quot; resultType=&quot;User&quot; useCache=&quot;false&quot;&gt;</code></p>
+<p>设置<strong>select</strong>元素的<strong>usecache</strong>属性为true，将会导致本条语句的结果被二级缓存，默认值：对<strong>select</strong>元素为true。</p>
+<p>刷新二级缓存(清空缓存)<br><code>&lt;update id=&quot;updateUser&quot; parameterType=&quot;User&quot; flushCache=&quot;true&quot;&gt;</code><br>设置<strong>update、insert、delete</strong>元素的<strong>flushcache</strong>属性为 true，任何时候只要语句被调用，都会导致本地缓存和二级缓存都会被清空。<br>对于<strong>update、insert、delete</strong>元素默认值：true。</p>
 
       
     </div>
@@ -511,7 +421,7 @@ public class LoggingAspect {
       
         <div class="post-tags">
           
-            <a href="/tags/Spring/" rel="tag"># Spring</a>
+            <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
           
         </div>
       
@@ -524,18 +434,14 @@ public class LoggingAspect {
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/spring-1/" rel="next" title="Spring_Study Note(1)">
-                <i class="fa fa-chevron-left"></i> Spring_Study Note(1)
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/BeanUtils/" rel="prev" title="BeanUtils的使用">
-                BeanUtils的使用 <i class="fa fa-chevron-right"></i>
+              <a href="/mybatis3/" rel="prev" title="MyBatis(三):全局配置文件与映射文件">
+                MyBatis(三):全局配置文件与映射文件 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -668,7 +574,7 @@ public class LoggingAspect {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、MyBtis缓存简介"><span class="nav-number">1.</span> <span class="nav-text">一、MyBtis缓存简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-MyBtis的一级、二级缓存："><span class="nav-number">1.1.</span> <span class="nav-text">1.1 MyBtis的一级、二级缓存：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、MyBtis一级缓存"><span class="nav-number">2.</span> <span class="nav-text">二、MyBtis一级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-会从缓存中取数据的情况"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 会从缓存中取数据的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-不会从缓存中取数据取数据的情况"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 不会从缓存中取数据取数据的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、MyBtis二级缓存"><span class="nav-number">3.</span> <span class="nav-text">三、MyBtis二级缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1首先要开启MyBtis的二级缓存"><span class="nav-number">3.1.</span> <span class="nav-text">3.1首先要开启MyBtis的二级缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-例1-会从二级缓存中取数据的情况："><span class="nav-number">3.2.</span> <span class="nav-text">3.2 例1 会从二级缓存中取数据的情况：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-例2不会从二级缓存中取数据的情况"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 例2不会从二级缓存中取数据的情况:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-与二级缓存有关的属性"><span class="nav-number">3.4.</span> <span class="nav-text">3.3 与二级缓存有关的属性</span></a></li></ol></li></ol></div>
             
 
           </div>

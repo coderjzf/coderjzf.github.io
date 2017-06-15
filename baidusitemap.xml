@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://yoursite.com/mybatis4/</loc>
+    <lastmod>2017-06-15T09:49:48.898Z</lastmod>
+    <data>
+        <display>
+        <title>MyBatis(四):一级、二级缓存</title>
+        <pubTime>2017-06-15T09:31:46.000Z</pubTime>
+        
+        <tag>MyBatis</tag>
+         
+         
+           
+             
+              <breadCrumb title="JavaWeb" url="http://yoursite.com/categories/JavaWeb/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/mybatis3/</loc>
     <lastmod>2017-06-15T08:34:48.285Z</lastmod>
     <data>
