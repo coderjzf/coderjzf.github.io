@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-16T15:15:56.707Z</updated>
+  <updated>2017-06-17T12:29:10.855Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,98 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring(四):AOP</title>
+    <link href="http://yoursite.com/spring4/"/>
+    <id>http://yoursite.com/spring4/</id>
+    <published>2017-06-17T12:09:45.000Z</published>
+    <updated>2017-06-17T12:29:10.855Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、AOP简介"><a href="#一、AOP简介" class="headerlink" title="一、AOP简介"></a>一、AOP简介</h2><h3 id="1-1-AOP是什么"><a href="#1-1-AOP是什么" class="headerlink" title="1.1 AOP是什么"></a>1.1 AOP是什么</h3><p><em>AOP:面向切面编程思想，是对传统OOP的补充。通过AOP可以将核心关注点和横切关注点分离开。利用AOP可以完成权限校验,日志记录,性能监控,事务控制等功能。</em><br><a id="more"></a><br>Spring中AOP的底层实现：</p>
+<ul>
+<li>jdk动态代理:针对实现了接口的类产生代理对象</li>
+<li>Cglib动态代理:针对没有实现接口的类产生代理对象</li>
+</ul>
+<h3 id="1-2-Spring-AOP中的一些重要概念"><a href="#1-2-Spring-AOP中的一些重要概念" class="headerlink" title="1.2 Spring AOP中的一些重要概念"></a>1.2 Spring AOP中的一些重要概念</h3><ul>
+<li><strong>横切关注点(cross-cutting concern)</strong>:散布于应用程序中多处的<strong>功能</strong>(需求)被称<br>为横切关注点从概念上来看是与<strong>业务逻辑</strong>相分离的。把横切关注点与业务逻辑代码分离开来是面向切面编程所要解决的问题。</li>
+<li><strong>切面(aspect)</strong>:横切关注点(一些共同需求)被模块化之后的特殊对象(通知和切点的结合)</li>
+<li><strong>通知(advice)</strong>:切面是什么(切面必须完成的功能),切面什么时候被使用。具体来说就是拦截到方法后执行的代码。</li>
+<li><strong>目标(target)</strong>:<strong>被通知</strong>的对象。</li>
+<li><strong>代理(proxy)</strong>:对目标对象应用通知后生成的<strong>代理对象</strong>。</li>
+<li><strong>连接点(JoinPoint)</strong>:应用程序有数以千计的时间可以被应用通知，这些时机被称为连接点。<strong>具体来说就是可以被应用通知的方法。</strong></li>
+<li><strong>切点(pointcut)</strong>: 一个切面并不需要通知所有的连接点，切点缩小了所需通知的连接点的范围。</li>
+<li><strong>织入(wave)</strong>:<strong>将通知应用</strong>到目标对象的<strong>过程</strong>。</li>
+</ul>
+<h3 id="1-3-使用AOP的好处"><a href="#1-3-使用AOP的好处" class="headerlink" title="1.3 使用AOP的好处"></a>1.3 使用AOP的好处</h3><ol>
+<li>横切关注点被集中于一个地方(切面)，而不是分散到多处代码中</li>
+<li>服务模块更简洁，服务模块只需关注与业务逻辑相关的代码</li>
+</ol>
+<h3 id="1-4-Spring对AOP的支持"><a href="#1-4-Spring对AOP的支持" class="headerlink" title="1.4 Spring对AOP的支持"></a>1.4 Spring对AOP的支持</h3><ul>
+<li>基于代理的经典AOP</li>
+<li>纯POJO切面(基于XML，将纯POJO转换成切面)</li>
+<li>@AspectJ注解驱动的切面(通过AspectJ提供注解驱动的AOP，本质上仍然是Spring基于代理的AOP)</li>
+<li>注入式AspectJ注解驱动</li>
+</ul>
+<p>前三种都是Spring AOP实现的变体，Spring AOP构建在动态代理的基础之上。因此Spring对AOP的支持仅限于方法拦截<br>如果要实现更高的需求,如构造器或者属性拦截，则需要使用注入式AspectJ注解来实现切面，即注入式AspectJ注解驱动</p>
+<h3 id="1-5-通知的分类"><a href="#1-5-通知的分类" class="headerlink" title="1.5 通知的分类"></a>1.5 通知的分类</h3><p>Spring AOP提供了五种通知类型，分别是：</p>
+<ul>
+<li>前置通知：目标方法执行之前执行</li>
+<li>后置通知：目标方法执行之后执行，无论方法是否出现异常;无法得到返回值,因为可能抛出异常</li>
+<li>返回通知：目标方法正常执行返回后执行</li>
+<li>异常通知：目标方法抛出异常时执行</li>
+<li>环绕通知：通知方法会将目标方法封装起来，在目标方法执行之前与执行之后执行</li>
+</ul>
+<h2 id="二、使用注解配置AOP"><a href="#二、使用注解配置AOP" class="headerlink" title="二、使用注解配置AOP"></a>二、使用注解配置AOP</h2><h3 id="2-1-基本步骤"><a href="#2-1-基本步骤" class="headerlink" title="2.1 基本步骤"></a>2.1 基本步骤</h3><h4 id="2-1-1-创建切面"><a href="#2-1-1-创建切面" class="headerlink" title="2.1.1 创建切面"></a>2.1.1 创建切面</h4><p>使用@Aspect注解声明切面</p>
+<h4 id="2-1-2-创建切点"><a href="#2-1-2-创建切点" class="headerlink" title="2.1.2 创建切点"></a>2.1.2 创建切点</h4><p>通过切点来选择连接点(使用AspectJ切点表达式语言)<br>AspectJ指示器execution()：用于匹配是连接点的方法</p>
+<p><strong>切点表达式</strong>的使用规则：<br>execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)</p>
+<p>规则解释：</p>
+<ul>
+<li>有“?”号的部分表示可省略的。</li>
+<li>modifers-pattern表示修饰符如public、protected等。</li>
+<li>ret-type-pattern表示方法返回类型。</li>
+<li>declaring-type-pattern代表特定的类。</li>
+<li>name-pattern代表方法名称，param-pattern表示参数。</li>
+<li>throws-pattern表示抛出的异常。</li>
+<li>在切点表达式中，可以使用*来代表任意字符，用..来表示任意个参数。</li>
+</ul>
+<p>当切点被重复使用时，可以使用@ponintcut注解声明可重用的切点<br><img src="/spring4/pointcut.png" alt="pointcut"><br>在使用切点时，用方法名作为切点名。</p>
+<h4 id="2-1-3-启用自动代理功能"><a href="#2-1-3-启用自动代理功能" class="headerlink" title="2.1.3 启用自动代理功能"></a>2.1.3 启用自动代理功能</h4><p>在applicationContext.xml文件中使用aop命名空间中的<code>&lt;aop:aspectj-autoproxy /&gt;</code>来启用自动代理</p>
+<h3 id="2-2-示例"><a href="#2-2-示例" class="headerlink" title="2.2 示例"></a>2.2 示例</h3><h4 id="2-2-1-准备工作"><a href="#2-2-1-准备工作" class="headerlink" title="2.2.1 准备工作"></a>2.2.1 准备工作</h4><h5 id="2-2-1-1-开发环境"><a href="#2-2-1-1-开发环境" class="headerlink" title="2.2.1.1 开发环境"></a>2.2.1.1 开发环境</h5><p>Eclipse Neon+JDK1.8</p>
+<h5 id="2-2-1-2-导入相关jar包"><a href="#2-2-1-2-导入相关jar包" class="headerlink" title="2.2.1.2 导入相关jar包"></a>2.2.1.2 导入相关jar包</h5><ul>
+<li>spring-aop-4.2.4.RELEASE.jar</li>
+<li>spring-aspects-4.2.4.RELEASE.jar    </li>
+<li>spring-beans-4.2.4.RELEASE.jar    </li>
+<li>spring-context-4.2.4.RELEASE.jar</li>
+<li>spring-context-support-4.2.4.RELEASE.jar</li>
+<li>spring-core-4.2.4.RELEASE.jar</li>
+<li>spring-expression-4.2.4.RELEASE.jar</li>
+<li>com.springsource.org.apache.commons.logging-1.1.1.jar (日志支持jar包)</li>
+<li>com.springsource.org.aopalliance-1.0.0.jar (aop依赖包)</li>
+<li>com.springsource.org.aspectj.weaver-1.6.8.RELEASE.jar(aop依赖包)</li>
+</ul>
+<h5 id="2-2-1-3-工程结构"><a href="#2-2-1-3-工程结构" class="headerlink" title="2.2.1.3 工程结构"></a>2.2.1.3 工程结构</h5><p><img src="/spring4/project.png" alt="project"></p>
+<h3 id="2-2-2-目标对象"><a href="#2-2-2-目标对象" class="headerlink" title="2.2.2 目标对象"></a>2.2.2 目标对象</h3><p>接口<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> jzf.spring.bean;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">add</span><span class="params">(<span class="keyword">double</span> i,<span class="keyword">double</span> j)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">sub</span><span class="params">(<span class="keyword">double</span> i,<span class="keyword">double</span> j)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">mul</span><span class="params">(<span class="keyword">double</span> i,<span class="keyword">double</span> j)</span></span>;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">div</span><span class="params">(<span class="keyword">double</span> i,<span class="keyword">double</span> j)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>目标对象<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> jzf.spring.bean;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorImp</span> <span class="keyword">implements</span> <span class="title">Calculator</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">add</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i + j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">sub</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i - j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">mul</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i * j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">div</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i / j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="2-2-3-切面-通知-对象"><a href="#2-2-3-切面-通知-对象" class="headerlink" title="2.2.3 切面(通知)对象"></a>2.2.3 切面(通知)对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> jzf.spring.bean;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.aspectj.lang.JoinPoint;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.After;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.AfterReturning;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.AfterThrowing;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Before;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Pointcut;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="meta">@Aspect</span> <span class="comment">// 声明为切面类</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoggingAspect</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="comment">// 定义一个可重用的切点</span></div><div class="line">	<span class="meta">@Pointcut</span>(value=<span class="string">"execution(public double  jzf.spring.bean.CalculatorImp.*(double,double))"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcut</span><span class="params">()</span> </span>&#123;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*</span></div><div class="line">	声明前置通知方法(目标方法执行之前执行) </div><div class="line">	JoinPoint:连接点，通过这个类可以得到关于拦截到的方法名等信息</div><div class="line">	*/</div><div class="line">	<span class="meta">@Before</span>(value=<span class="string">"pointcut()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeMethod</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		List&lt;Object&gt; list = (List&lt;Object&gt;) Arrays.asList(jp.getArgs());<span class="comment">// 得到方法的参数</span></div><div class="line">		System.out.println(methodName + <span class="string">" begin with"</span> + list);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 后置通知方法(目标方法执行之后执行，无论方法是否出现异常;无法得到返回值,因为可能抛出异常)</span></div><div class="line">	<span class="meta">@After</span>(<span class="string">"pointcut()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterMethod</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		System.out.println(methodName + <span class="string">" end"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*</span></div><div class="line">	 *  返回通知方法 </div><div class="line">	 *  returning:返回值</div><div class="line">	 */</div><div class="line">	<span class="meta">@AfterReturning</span>(value = <span class="string">"pointcut()"</span>, returning = <span class="string">"result"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(JoinPoint jp, <span class="keyword">double</span> result)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		System.out.println(methodName + <span class="string">" return with:"</span> + result);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 异常通知方法 </span></div><div class="line">	<span class="comment">//throwing:抛出的异常</span></div><div class="line"></div><div class="line">	<span class="meta">@AfterThrowing</span>(value = <span class="string">"pointcut()"</span>, throwing = <span class="string">"ex"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">throwException</span><span class="params">(JoinPoint jp, Exception ex)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		System.out.println(methodName + <span class="string">" occurs exception: "</span> + ex);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 环绕通知 ProceedingJoinPoint:必须通过调用这个类proceed方法，让被拦截的方法继续执行</div><div class="line">	 * returnValue:ProceedingJoinPoint的proceed方法的返回值就是被拦截方法的返回值</div><div class="line">	 */</div><div class="line">	<span class="meta">@Around</span>(value = <span class="string">"pointcut()"</span>)</div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">		System.out.println(<span class="string">"环绕通知方法执行前"</span>);</div><div class="line">		Object returnValue = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			returnValue = pjp.proceed();</div><div class="line">			System.out.println(returnValue);</div><div class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		System.out.println(<span class="string">"环绕通知方法执行后"</span>);</div><div class="line">		<span class="keyword">return</span> returnValue;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="2-2-4-配置文件"><a href="#2-2-4-配置文件" class="headerlink" title="2.2.4 配置文件"></a>2.2.4 配置文件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line">	<span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></div><div class="line">	<span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></div><div class="line">	<span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></div><div class="line">	<span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd</span></div><div class="line">		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd</div><div class="line">		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd"&gt;</div><div class="line">	</div><div class="line"><span class="comment">&lt;!-- 开启组件自动扫描：</span></div><div class="line">	 base-package:spring会扫描该包即其子包中所有类的注解 --&gt;</div><div class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"jzf.spring.bean"</span>&gt;</span><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 启用@AsjectJ支持 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">aop:aspectj-autoproxy</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="三、使用xml文件配置AOP"><a href="#三、使用xml文件配置AOP" class="headerlink" title="三、使用xml文件配置AOP"></a>三、使用xml文件配置AOP</h2><h3 id="3-1-目标对象"><a href="#3-1-目标对象" class="headerlink" title="3.1 目标对象"></a>3.1 目标对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> jzf.spring.test2;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorImp</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">add</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i + j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">sub</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i - j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">mul</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i * j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">div</span><span class="params">(<span class="keyword">double</span> i, <span class="keyword">double</span> j)</span> </span>&#123;</div><div class="line">        <span class="keyword">double</span> result = i / j;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h3 id="3-2-切面类"><a href="#3-2-切面类" class="headerlink" title="3.2 切面类"></a>3.2 切面类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> jzf.spring.test2;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.aspectj.lang.JoinPoint;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoggingAspect</span> </span>&#123;</div><div class="line">	<span class="comment">//前置通知方法</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeMethod</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		List&lt;Object&gt; list =Arrays.asList(jp.getArgs());</div><div class="line">		System.out.println(methodName+<span class="string">" begin with "</span>+list);</div><div class="line">	&#125;</div><div class="line">	<span class="comment">//后置通知方法</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterMethod</span><span class="params">(JoinPoint jp)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		System.out.println(methodName+<span class="string">" end"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">//返回通知方法</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterReturning</span><span class="params">(JoinPoint jp,<span class="keyword">double</span> result)</span> </span>&#123;</div><div class="line">		String methodName = jp.getSignature().getName();</div><div class="line">		System.out.println(methodName+<span class="string">" return with "</span>+result);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">//异常通知方法</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">throwException</span><span class="params">(Exception ex)</span> </span>&#123;</div><div class="line">		System.out.println(ex.getStackTrace());</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">/**</span></div><div class="line">	 * 环绕通知 ProceedingJoinPoint:必须通过调用这个类proceed方法，让被拦截的方法继续执行</div><div class="line">	 * returnValue:ProceedingJoinPoint的proceed方法的返回值就是被拦截方法的返回值</div><div class="line">	 */</div><div class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">around</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</div><div class="line">		System.out.println(<span class="string">"环绕通知方法执行前"</span>);</div><div class="line">		Object returnValue = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			returnValue = pjp.proceed();</div><div class="line">			System.out.println(returnValue);</div><div class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		System.out.println(<span class="string">"环绕通知方法执行后"</span>);</div><div class="line">		<span class="keyword">return</span> returnValue;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-3-配置文件"><a href="#3-3-配置文件" class="headerlink" title="3.3 配置文件"></a>3.3 配置文件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></div><div class="line">	<span class="attr">xmlns</span>=<span class="string">"http://www.springframework.org/schema/beans"</span></div><div class="line">	<span class="attr">xmlns:context</span>=<span class="string">"http://www.springframework.org/schema/context"</span></div><div class="line">	<span class="attr">xmlns:aop</span>=<span class="string">"http://www.springframework.org/schema/aop"</span></div><div class="line">	<span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd</span></div><div class="line">		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd</div><div class="line">		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd"&gt;</div><div class="line"><span class="comment">&lt;!-- 目标对象 --&gt;</span>	</div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"calculatorImp"</span> <span class="attr">class</span>=<span class="string">"jzf.spring.test2.CalculatorImp"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 切面 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"log"</span> <span class="attr">class</span>=<span class="string">"jzf.spring.test2.LoggingAspect"</span>&gt;</span><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">aop:config</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 用切点表达式配置切点 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">aop:pointcut</span> <span class="attr">expression</span>=<span class="string">"execution(public double jzf.spring.test2.*.*(double, double))"</span> </span></div><div class="line">		<span class="attr">id</span>=<span class="string">"pc"</span>/&gt;</div><div class="line">	<span class="comment">&lt;!-- </span></div><div class="line">		配置切面</div><div class="line">		method:指定通知方法</div><div class="line">		pointcut-ref：引用已定义的切点</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">aop:aspect</span> <span class="attr">ref</span>=<span class="string">"log"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:before</span> <span class="attr">method</span>=<span class="string">"beforeMethod"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pc"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:after</span> <span class="attr">method</span>=<span class="string">"afterMethod"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pc"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:after-returning</span> <span class="attr">method</span>=<span class="string">"afterReturning"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pc"</span> <span class="attr">returning</span>=<span class="string">"result"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:after-throwing</span> <span class="attr">method</span>=<span class="string">"throwException"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pc"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">aop:around</span> <span class="attr">method</span>=<span class="string">"around"</span> <span class="attr">pointcut-ref</span>=<span class="string">"pc"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">aop:aspect</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">aop:config</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、AOP简介&quot;&gt;&lt;a href=&quot;#一、AOP简介&quot; class=&quot;headerlink&quot; title=&quot;一、AOP简介&quot;&gt;&lt;/a&gt;一、AOP简介&lt;/h2&gt;&lt;h3 id=&quot;1-1-AOP是什么&quot;&gt;&lt;a href=&quot;#1-1-AOP是什么&quot; class=&quot;headerlink&quot; title=&quot;1.1 AOP是什么&quot;&gt;&lt;/a&gt;1.1 AOP是什么&lt;/h3&gt;&lt;p&gt;&lt;em&gt;AOP:面向切面编程思想，是对传统OOP的补充。通过AOP可以将核心关注点和横切关注点分离开。利用AOP可以完成权限校验,日志记录,性能监控,事务控制等功能。&lt;/em&gt;&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="JavaWeb" scheme="http://yoursite.com/categories/JavaWeb/"/>
+    
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+  </entry>
   
   <entry>
     <title>Spring(三):使用注解配置&amp;整合JUnit测试</title>
@@ -71,7 +163,7 @@
     <link href="http://yoursite.com/spring2/"/>
     <id>http://yoursite.com/spring2/</id>
     <published>2017-06-16T14:48:54.000Z</published>
-    <updated>2017-06-16T14:57:48.825Z</updated>
+    <updated>2017-06-17T09:42:55.159Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、IoC-amp-DI是什么"><a href="#一、IoC-amp-DI是什么" class="headerlink" title="一、IoC&amp;DI是什么"></a>一、IoC&amp;DI是什么</h2><h3 id="1-1-IoC-Inverse-Of-Control-反转控制-："><a href="#1-1-IoC-Inverse-Of-Control-反转控制-：" class="headerlink" title="1.1 IoC:Inverse Of Control(反转控制)："></a>1.1 IoC:Inverse Of Control(反转控制)：</h3><a id="more"></a>
 <ul>
@@ -145,105 +237,8 @@
 <li>Map</li>
 <li>Properties</li>
 </ul>
-<h4 id="4-3-1-示例："><a href="#4-3-1-示例：" class="headerlink" title="4.3.1 示例："></a>4.3.1 示例：</h4><h5 id="4-3-1-1-CollectionBean实体类"><a href="#4-3-1-1-CollectionBean实体类" class="headerlink" title="4.3.1.1 CollectionBean实体类"></a>4.3.1.1 CollectionBean实体类</h5><pre><code>import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-public class CollectionBean {
-    private Object[] array;// 数组类型属性的注入
-    private List list; // List类型属性的注入
-    private Map map; // Map类型属性的注入
-    private Properties proerties; // Properties类型属性的注入
-
-    public Object[] getArray() {
-        return array;
-    }
-
-    public void setArray(Object[] array) {
-        this.array = array;
-    }
-
-    public List getList() {
-        return list;
-    }
-
-    public void setList(List list) {
-        this.list = list;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
-    public Properties getProerties() {
-        return proerties;
-    }
-
-    public void setProerties(Properties proerties) {
-        this.proerties = proerties;
-    }
-
-    @Override
-    public String toString() {
-        return &quot;CollectionBean [array=&quot; + Arrays.toString(array) + &quot;, list=&quot; + list + &quot;, map=&quot; + map + &quot;, proerties=&quot;
-                + proerties + &quot;]&quot;;
-    }
-}
-</code></pre><h5 id="4-3-1-2-配置文件applicationContext-xml"><a href="#4-3-1-2-配置文件applicationContext-xml" class="headerlink" title="4.3.1.2 配置文件applicationContext.xml"></a>4.3.1.2 配置文件applicationContext.xml</h5><pre><code>&lt;bean name=&quot;collectionBean&quot; class=&quot;jzf.spring.inject.CollectionBean&quot;&gt;
-    &lt;!-- 如果数组中只存放一个值，可以直接用value/ref子属性来配置 --&gt;
-    &lt;!-- &lt;property name=&quot;array&quot; value=&quot;Mike&quot;&gt;&lt;/property&gt; --&gt;
-    &lt;!-- 数组类型注入：
-         array:包含数组的元素
-         value:数组元素
-         ref:引用其他类型作为数组的元素
-     --&gt;
-    &lt;property name=&quot;array&quot;&gt;
-        &lt;array&gt;
-            &lt;value&gt;Mike&lt;/value&gt;
-            &lt;value&gt;Jack&lt;/value&gt;
-            &lt;ref bean=&quot;user&quot; /&gt;
-        &lt;/array&gt;
-    &lt;/property&gt;
-
-    &lt;!-- 如果List中只存放一个值，也可以直接用value/ref子属性来配置 --&gt;
-    &lt;property name=&quot;list&quot;&gt;
-        &lt;list&gt;
-            &lt;value&gt;Rose&lt;/value&gt;
-            &lt;ref bean=&quot;user&quot; /&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-
-    &lt;!--Map类型的注入： 
-        entry:map中的键值对 
-        key:键
-        key-ref:引用其他类型作为键 
-        value:值 
-        value-ref:引用其他类型作为值 --&gt;
-    &lt;property name=&quot;map&quot;&gt;
-        &lt;map&gt;
-            &lt;entry key=&quot;username&quot; value=&quot;root&quot;&gt;&lt;/entry&gt;
-            &lt;entry key=&quot;u&quot; value-ref=&quot;user&quot;&gt;&lt;/entry&gt;
-        &lt;/map&gt;
-    &lt;/property&gt;
-
-    &lt;!-- Proerties类型注入
-         props:Proerties中的元素必须包含在其中
-         key:键
-         prop:标签体内即为值
-    --&gt;
-    &lt;property name=&quot;proerties&quot;&gt;
-        &lt;props&gt;
-            &lt;prop key=&quot;driver&quot;&gt;com.mysql.jdbc.Driver&lt;/prop&gt;
-            &lt;prop key=&quot;url&quot;&gt;jdbc:mysql:///test&lt;/prop&gt;
-        &lt;/props&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-</code></pre>]]></content>
+<h4 id="4-3-1-示例："><a href="#4-3-1-示例：" class="headerlink" title="4.3.1 示例："></a>4.3.1 示例：</h4><h5 id="4-3-1-1-CollectionBean实体类"><a href="#4-3-1-1-CollectionBean实体类" class="headerlink" title="4.3.1.1 CollectionBean实体类"></a>4.3.1.1 CollectionBean实体类</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"><span class="keyword">import</span> java.util.Map;</div><div class="line"><span class="keyword">import</span> java.util.Properties;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CollectionBean</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> Object[] array;<span class="comment">// 数组类型属性的注入</span></div><div class="line">	<span class="keyword">private</span> List list; <span class="comment">// List类型属性的注入</span></div><div class="line">	<span class="keyword">private</span> Map map; <span class="comment">// Map类型属性的注入</span></div><div class="line">	<span class="keyword">private</span> Properties proerties; <span class="comment">// Properties类型属性的注入</span></div><div class="line"></div><div class="line">	<span class="keyword">public</span> Object[] getArray() &#123;</div><div class="line">		<span class="keyword">return</span> array;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setArray</span><span class="params">(Object[] array)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.array = array;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> List <span class="title">getList</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setList</span><span class="params">(List list)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.list = list;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> Map <span class="title">getMap</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> map;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMap</span><span class="params">(Map map)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.map = map;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> Properties <span class="title">getProerties</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> proerties;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProerties</span><span class="params">(Properties proerties)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.proerties = proerties;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> <span class="string">"CollectionBean [array="</span> + Arrays.toString(array) + <span class="string">", list="</span> + list + <span class="string">", map="</span> + map + <span class="string">", proerties="</span></div><div class="line">				+ proerties + <span class="string">"]"</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="4-3-1-2-配置文件applicationContext-xml"><a href="#4-3-1-2-配置文件applicationContext-xml" class="headerlink" title="4.3.1.2 配置文件applicationContext.xml"></a>4.3.1.2 配置文件applicationContext.xml</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">name</span>=<span class="string">"collectionBean"</span> <span class="attr">class</span>=<span class="string">"jzf.spring.inject.CollectionBean"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 如果数组中只存放一个值，可以直接用value/ref子属性来配置 --&gt;</span></div><div class="line">	<span class="comment">&lt;!-- &lt;property name="array" value="Mike"&gt;&lt;/property&gt; --&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 数组类型注入：</span></div><div class="line">		 array:包含数组的元素</div><div class="line">		 value:数组元素</div><div class="line">		 ref:引用其他类型作为数组的元素</div><div class="line">	 --&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"array"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">array</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">value</span>&gt;</span>Mike<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">value</span>&gt;</span>Jack<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">"user"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">array</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	</div><div class="line">	<span class="comment">&lt;!-- 如果List中只存放一个值，也可以直接用value/ref子属性来配置 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"list"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">list</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">value</span>&gt;</span>Rose<span class="tag">&lt;/<span class="name">value</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">"user"</span> /&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">list</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"></div><div class="line">	<span class="comment">&lt;!--Map类型的注入： </span></div><div class="line">		entry:map中的键值对 </div><div class="line">		key:键</div><div class="line">		key-ref:引用其他类型作为键 </div><div class="line">		value:值 </div><div class="line">		value-ref:引用其他类型作为值 --&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"map"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">map</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">entry</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"u"</span> <span class="attr">value-ref</span>=<span class="string">"user"</span>&gt;</span><span class="tag">&lt;/<span class="name">entry</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">map</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line">	</div><div class="line">	<span class="comment">&lt;!-- Proerties类型注入</span></div><div class="line">		 props:Proerties中的元素必须包含在其中</div><div class="line">		 key:键</div><div class="line">		 prop:标签体内即为值</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"proerties"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">props</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">"driver"</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">prop</span> <span class="attr">key</span>=<span class="string">"url"</span>&gt;</span>jdbc:mysql:///test<span class="tag">&lt;/<span class="name">prop</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">props</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
@@ -467,7 +462,7 @@ com.springsource.org.apache.commons.logging-1.1.1.jar
     <link href="http://yoursite.com/mybatis2/"/>
     <id>http://yoursite.com/mybatis2/</id>
     <published>2017-06-14T09:53:19.000Z</published>
-    <updated>2017-06-14T10:00:31.440Z</updated>
+    <updated>2017-06-17T09:49:06.564Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、原始的DAO开发方法"><a href="#一、原始的DAO开发方法" class="headerlink" title="一、原始的DAO开发方法"></a>一、原始的DAO开发方法</h2><p>原始的DAO开发方法需要程序员自行开发DAO接口和DAO的实现类，存在不少弊端 :</p>
 <ol>
@@ -496,187 +491,12 @@ com.springsource.org.apache.commons.logging-1.1.1.jar
 <li>mysql-connector-java-5.1.18-bin</li>
 </ul>
 <hr>
-<h4 id="2-2-2-全局配置文件-mybatis-config-xml"><a href="#2-2-2-全局配置文件-mybatis-config-xml" class="headerlink" title="2.2.2 全局配置文件 mybatis-config.xml"></a>2.2.2 全局配置文件 mybatis-config.xml</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE configuration
-  PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
-
-
-&lt;configuration&gt;
-    &lt;!-- 外部属性文件 --&gt;
-    &lt;properties resource=&quot;config/mysql.properties&quot;&gt;&lt;/properties&gt;
-    &lt;!-- 数据源及事务管理 --&gt;
-    &lt;environments default=&quot;development&quot;&gt;
-        &lt;environment id=&quot;development&quot;&gt;
-            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
-            &lt;dataSource type=&quot;POOLED&quot;&gt;
-                &lt;property name=&quot;driver&quot; value=&quot;${driver}&quot; /&gt;
-                &lt;property name=&quot;url&quot; value=&quot;${url}&quot; /&gt;
-                &lt;property name=&quot;username&quot; value=&quot;${username}&quot; /&gt;
-                &lt;property name=&quot;password&quot; value=&quot;${password}&quot; /&gt;
-            &lt;/dataSource&gt;
-        &lt;/environment&gt;
-    &lt;/environments&gt;
-    &lt;!-- 映射文件注册 --&gt;
-    &lt;mappers&gt;
-        &lt;mapper resource=&quot;config/mapper/UserMapper.xml&quot;/&gt;
-    &lt;/mappers&gt;
-&lt;/configuration&gt;
-</code></pre><hr>
-<h4 id="2-2-3-UserMapper接口"><a href="#2-2-3-UserMapper接口" class="headerlink" title="2.2.3 UserMapper接口"></a>2.2.3 UserMapper接口</h4><pre><code>package com.jzf.mybatis.mapper;
-
-import com.jzf.mybatis.domain.User;
-
-public interface UserMapper {
-
-    public User findUserById(int id);
-
-    public void insertUser(User user);
-
-    public void updateUser(User user);
-
-    public void deleteUserById(int id);
-}
-</code></pre><hr>
-<h4 id="2-2-4-UserMapper-xml映射文件"><a href="#2-2-4-UserMapper-xml映射文件" class="headerlink" title="2.2.4 UserMapper.xml映射文件"></a>2.2.4 UserMapper.xml映射文件</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE mapper
-  PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-&lt;!-- namespace --&gt;
-&lt;mapper namespace=&quot;com.jzf.mybatis.mapper.UserMapper&quot;&gt;
-    &lt;!-- 
-        select语句 id:唯一表示一条sql语句 
-        parameterType:输入参数类型
-        resultType:输出类型
-        #{}:输入参数占位符 
-    --&gt;
-    &lt;select id=&quot;findUserById&quot; parameterType=&quot;int&quot; resultType=&quot;com.jzf.mybatis.domain.User&quot;&gt;
-        select * from user where id=#{id}
-    &lt;/select&gt;
-    &lt;!--
-         插入语句
-        useGeneratedKeys:仅对 insert和 update有用,
-        设置为true,会令 MyBatis使用 JDBC的 getGeneratedKeys 方法来取出由数据库内部生成的主键
-    --&gt;
-    &lt;insert id=&quot;insertUser&quot; parameterType=&quot;com.jzf.mybatis.domain.User&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;
-        insert into user(name,password) value(#{name},#{password})
-    &lt;/insert&gt;
-    &lt;!--
-         更新语句
-    --&gt;
-    &lt;update id=&quot;updateUser&quot; parameterType=&quot;com.jzf.mybatis.domain.User&quot;&gt;
-        update user set name=#{name},password=#{password} where id=#{id}
-    &lt;/update&gt;
-    &lt;!--
-         删除语句
-    --&gt;
-    &lt;delete id=&quot;deleteUserById&quot; parameterType=&quot;int&quot;&gt;
-        delete from user where id=#{id}
-    &lt;/delete&gt;    
-&lt;/mapper&gt;
-</code></pre><hr>
-<h4 id="2-2-5-测试程序"><a href="#2-2-5-测试程序" class="headerlink" title="2.2.5 测试程序"></a>2.2.5 测试程序</h4><pre><code>package com.jzf.mybatis.test;
-
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.jzf.mybatis.domain.User;
-import com.jzf.mybatis.mapper.UserMapper;
-
-public class UserMapperTest2 {
-    private SqlSessionFactory sqlSessionFactory;
-
-    @Before
-    public void setUp() throws Exception {
-        String resource = &quot;config/mybatis-config.xml&quot;;
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        // 读取配置文件并创建会话工厂
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
-    }
-
-    @Test
-    public void testFindUserById() {
-        SqlSession sqlSession = null;
-        User user = null;
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            // 通过代理对象执行响应的方法
-            user = userMapper.findUserById(1);
-            System.out.println(user);
-        } finally {
-            sqlSession.close();
-        }
-
-    }
-
-    @Test
-    public void testInsertUser() {
-        SqlSession sqlSession = null;
-        User user = new User(&quot;王二麻子&quot;, &quot;333333&quot;);
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            // 通过代理对象执行响应的方法
-            userMapper.insertUser(user);
-            // 执行除了查询以外的操作必须提交
-            sqlSession.commit();
-            //查看是否已获得自增主键
-            System.out.println(user);
-        } finally {
-            sqlSession.close();
-        }
-    }
-
-    @Test
-    public void testUpdateUser() {
-        SqlSession sqlSession = null;
-        User user = null;
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            //获取用户
-            user = userMapper.findUserById(1);
-            //更新用户
-            user.setName(&quot;小张三&quot;);
-            userMapper.updateUser(user);
-            sqlSession.commit();
-            //再次获取用户
-            user = userMapper.findUserById(1);
-            System.out.println(user);
-        } finally {
-            sqlSession.close();
-        }
-    }
-
-    @Test
-    public void testDeleteUser() {
-        SqlSession sqlSession = null;
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            // 通过代理对象执行响应的方法
-            userMapper.deleteUserById(9);
-            sqlSession.commit();
-        } finally {
-            sqlSession.close();
-        }
-    }
-}
-</code></pre>]]></content>
+<h4 id="2-2-2-全局配置文件-mybatis-config-xml"><a href="#2-2-2-全局配置文件-mybatis-config-xml" class="headerlink" title="2.2.2 全局配置文件 mybatis-config.xml"></a>2.2.2 全局配置文件 mybatis-config.xml</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">	&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">	<span class="meta">&lt;!DOCTYPE configuration</span></div><div class="line">	  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</div><div class="line">	  "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 外部属性文件 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"config/mysql.properties"</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 数据源及事务管理 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"$&#123;driver&#125;"</span> /&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;url&#125;"</span> /&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;username&#125;"</span> /&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;password&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">environment</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">environments</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 映射文件注册 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">mappers</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"config/mapper/UserMapper.xml"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div><div class="line">```	</div><div class="line">-----</div><div class="line"></div><div class="line"></div><div class="line">#### 2.2.3 UserMapper接口</div><div class="line">```java</div><div class="line">	package com.jzf.mybatis.mapper;</div><div class="line"></div><div class="line">	import com.jzf.mybatis.domain.User;</div><div class="line"></div><div class="line">	public interface UserMapper &#123;</div><div class="line">		</div><div class="line">		public User findUserById(int id);</div><div class="line">		</div><div class="line">		public void insertUser(User user);</div><div class="line">		</div><div class="line">		public void updateUser(User user);</div><div class="line">		</div><div class="line">		public void deleteUserById(int id);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="2-2-4-UserMapper-xml映射文件"><a href="#2-2-4-UserMapper-xml映射文件" class="headerlink" title="2.2.4 UserMapper.xml映射文件"></a>2.2.4 UserMapper.xml映射文件</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE mapper</span></div><div class="line">  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line"><span class="comment">&lt;!-- namespace --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.jzf.mybatis.mapper.UserMapper"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- </span></div><div class="line">		select语句 id:唯一表示一条sql语句 </div><div class="line">		parameterType:输入参数类型</div><div class="line">		resultType:输出类型</div><div class="line">		#&#123;&#125;:输入参数占位符 </div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span>&gt;</span></div><div class="line">		select * from user where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">select</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--</span></div><div class="line">		 插入语句</div><div class="line">		useGeneratedKeys:仅对 insert和 update有用,</div><div class="line">		设置为true,会令 MyBatis使用 JDBC的 getGeneratedKeys 方法来取出由数据库内部生成的主键</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"insertUser"</span> <span class="attr">parameterType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span> <span class="attr">useGeneratedKeys</span>=<span class="string">"true"</span> <span class="attr">keyProperty</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">		insert into user(name,password) value(#&#123;name&#125;,#&#123;password&#125;)</div><div class="line">	<span class="tag">&lt;/<span class="name">insert</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--</span></div><div class="line">		 更新语句</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"updateUser"</span> <span class="attr">parameterType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span>&gt;</span></div><div class="line">		update user set name=#&#123;name&#125;,password=#&#123;password&#125; where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">update</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--</span></div><div class="line">		 删除语句</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"deleteUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span>&gt;</span></div><div class="line">		delete from user where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">delete</span>&gt;</span>	</div><div class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h4 id="2-2-5-测试程序"><a href="#2-2-5-测试程序" class="headerlink" title="2.2.5 测试程序"></a>2.2.5 测试程序</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.jzf.mybatis.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.InputStream;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.jzf.mybatis.domain.User;</div><div class="line"><span class="keyword">import</span> com.jzf.mybatis.mapper.UserMapper;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest2</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> SqlSessionFactory sqlSessionFactory;</div><div class="line"></div><div class="line">	<span class="meta">@Before</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		String resource = <span class="string">"config/mybatis-config.xml"</span>;</div><div class="line">		InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">		<span class="comment">// 读取配置文件并创建会话工厂</span></div><div class="line">		sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserById</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		User user = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">// 通过代理对象执行响应的方法</span></div><div class="line">			user = userMapper.findUserById(<span class="number">1</span>);</div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testInsertUser</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		User user = <span class="keyword">new</span> User(<span class="string">"王二麻子"</span>, <span class="string">"333333"</span>);</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">// 通过代理对象执行响应的方法</span></div><div class="line">			userMapper.insertUser(user);</div><div class="line">			<span class="comment">// 执行除了查询以外的操作必须提交</span></div><div class="line">			sqlSession.commit();</div><div class="line">			<span class="comment">//查看是否已获得自增主键</span></div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpdateUser</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		User user = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">//获取用户</span></div><div class="line">			user = userMapper.findUserById(<span class="number">1</span>);</div><div class="line">			<span class="comment">//更新用户</span></div><div class="line">			user.setName(<span class="string">"小张三"</span>);</div><div class="line">			userMapper.updateUser(user);</div><div class="line">			sqlSession.commit();</div><div class="line">			<span class="comment">//再次获取用户</span></div><div class="line">			user = userMapper.findUserById(<span class="number">1</span>);</div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDeleteUser</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">// 通过代理对象执行响应的方法</span></div><div class="line">			userMapper.deleteUserById(<span class="number">9</span>);</div><div class="line">			sqlSession.commit();</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
     
     <summary type="html">
     
@@ -698,7 +518,7 @@ public class UserMapperTest2 {
     <link href="http://yoursite.com/mybatis1/"/>
     <id>http://yoursite.com/mybatis1/</id>
     <published>2017-06-14T08:14:07.000Z</published>
-    <updated>2017-06-14T10:49:58.287Z</updated>
+    <updated>2017-06-17T09:44:33.158Z</updated>
     
     <content type="html"><![CDATA[<h2 id="一、Mybatis简介"><a href="#一、Mybatis简介" class="headerlink" title="一、Mybatis简介"></a>一、Mybatis简介</h2><p><em>MyBatis是支持普通 SQL查询，存储过程和高级映射的优秀持久层框架。</em><br><em>，消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。</em><br><a id="more"></a><br><em>MyBatis使用简单的 XML或注解用于配置和原始映射，将接口和 Java 的POJOs（Plain Old Java Objects，普通的 Java对象）映射成数据库中的记录。</em></p>
 <p>传统JDBC存在的弊端：</p>
@@ -721,14 +541,8 @@ public class UserMapperTest2 {
 <li>SqlSessionFactoryBuilder:作用域为方法作用域。可作为一个工具使用，创建了SqlSessionFactory后就不在需要它了。</li>
 <li>SqlSessionFactory:作用域为应用作用域。SqlSessionFactory一旦被创建就应该在应用的运行期间一直存在，没有任何理由对它进行清除或重建。</li>
 <li>SqlSession:作用域为请求或方法作用域。每个线程都应该有它自己的 SqlSession 实例。SqlSession 的实例不是线程安全的，因此是不能被共享的。<br>标准模式：<br> SqlSession session = sqlSessionFactory.openSession();<br> try {<br>   // do work<br> } finally {<br>   session.close();<br> }</li>
-<li>Mapper Instances(映射器实例):映射器是用来绑定statement(sql语句)接口。作用域是方法作用域。<br>标准模式：<pre><code>SqlSession session = sqlSessionFactory.openSession();
- try {
-   BlogMapper mapper = session.getMapper(BlogMapper.class);
-   // do work
- } finally {
-   session.close();
- }
-</code></pre></li>
+<li>Mapper Instances(映射器实例):映射器是用来绑定statement(sql语句)接口。作用域是方法作用域。<br>标准模式： <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">  SqlSession session = sqlSessionFactory.openSession();</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  BlogMapper mapper = session.getMapper(BlogMapper.class);</div><div class="line">  <span class="comment">// do work</span></div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">  session.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
 <h2 id="三、第一个Mybatis小程序"><a href="#三、第一个Mybatis小程序" class="headerlink" title="三、第一个Mybatis小程序"></a>三、第一个Mybatis小程序</h2><h3 id="3-1准备工作："><a href="#3-1准备工作：" class="headerlink" title="3.1准备工作："></a>3.1准备工作：</h3><ol>
@@ -744,87 +558,10 @@ public class UserMapperTest2 {
 <li>mysql-connector-java-5.1.18-bin</li>
 </ul>
 <h3 id="3-2-log4j日志文件"><a href="#3-2-log4j日志文件" class="headerlink" title="3.2  log4j日志文件"></a>3.2  log4j日志文件</h3><p><img src="/mybatis1/log4j.jpg" alt="log4j"></p>
-<h3 id="3-3-全局配置文件mybatis-config-xml"><a href="#3-3-全局配置文件mybatis-config-xml" class="headerlink" title="3.3  全局配置文件mybatis-config.xml"></a>3.3  全局配置文件mybatis-config.xml</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE configuration
-  PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
-
-&lt;configuration&gt;
-    &lt;!-- 外部属性文件 --&gt;
-    &lt;properties resource=&quot;config/mysql.properties&quot;&gt;&lt;/properties&gt;
-    &lt;!-- 数据源及事务管理 --&gt;
-    &lt;environments default=&quot;development&quot;&gt;
-        &lt;environment id=&quot;development&quot;&gt;
-            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
-            &lt;dataSource type=&quot;POOLED&quot;&gt;
-                &lt;property name=&quot;driver&quot; value=&quot;${driver}&quot; /&gt;
-                &lt;property name=&quot;url&quot; value=&quot;${url}&quot; /&gt;
-                &lt;property name=&quot;username&quot; value=&quot;${username}&quot; /&gt;
-                &lt;property name=&quot;password&quot; value=&quot;${password}&quot; /&gt;
-            &lt;/dataSource&gt;
-        &lt;/environment&gt;
-    &lt;/environments&gt;
-    &lt;!-- 映射文件注册 --&gt;
-    &lt;mappers&gt;
-        &lt;mapper resource=&quot;config/mapper/UserMapper.xml&quot;/&gt;
-    &lt;/mappers&gt;
-&lt;/configuration&gt;
-</code></pre><h3 id="3-4-映射文件"><a href="#3-4-映射文件" class="headerlink" title="3.4  映射文件"></a>3.4  映射文件</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE mapper
-  PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-
-&lt;!-- namespace 唯一标识映射文件--&gt;
-&lt;mapper namespace=&quot;userMapper&quot;&gt;
-    &lt;!-- 
-        select语句 id:唯一表示一条sql语句 
-        parameterType:输入参数类型
-        resultType:输出类型
-        #{}:输入参数占位符 
-    --&gt;
-    &lt;select id=&quot;findUserById&quot; parameterType=&quot;int&quot; resultType=&quot;com.jzf.mybatis.domain.User&quot;&gt;
-        select * from user where id=#{id}
-    &lt;/select&gt;
-&lt;/mapper&gt;
-</code></pre><h3 id="3-5-测试程序"><a href="#3-5-测试程序" class="headerlink" title="3.5  测试程序"></a>3.5  测试程序</h3><pre><code>package com.jzf.mybatis.test;
-
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Test;
-
-import com.jzf.mybatis.domain.User;
-
-public class UserMapperTest {
-
-    @Test
-    public void test() throws IOException {
-        String resource = &quot;config/mybatis-config.xml&quot;;
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        //读取配置文件并创建会话工厂
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = null;
-
-        try {
-            //创建会话
-            sqlSession = sqlSessionFactory.openSession();
-            String statement = &quot;userMapper.findUserById&quot;;
-            //通过会话执行具体sql语句
-            User user = sqlSession.selectOne(statement, 1);
-            System.out.println(user);
-        } finally {
-            //及时关闭会话
-            sqlSession.close();
-        }
-    }
-}
-</code></pre><h3 id="3-6-输出"><a href="#3-6-输出" class="headerlink" title="3.6 输出"></a>3.6 输出</h3><p><img src="/mybatis1/out.jpg" alt="out"></p>
+<h3 id="3-3-全局配置文件mybatis-config-xml"><a href="#3-3-全局配置文件mybatis-config-xml" class="headerlink" title="3.3  全局配置文件mybatis-config.xml"></a>3.3  全局配置文件mybatis-config.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE configuration</span></div><div class="line">  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</div><div class="line">  "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 外部属性文件 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"config/mysql.properties"</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 数据源及事务管理 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"$&#123;driver&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;url&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;username&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;password&#125;"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">environment</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">environments</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 映射文件注册 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">mappers</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"config/mapper/UserMapper.xml"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="3-4-映射文件"><a href="#3-4-映射文件" class="headerlink" title="3.4  映射文件"></a>3.4  映射文件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE mapper</span></div><div class="line">  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">  </div><div class="line"><span class="comment">&lt;!-- namespace 唯一标识映射文件--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"userMapper"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- </span></div><div class="line">		select语句 id:唯一表示一条sql语句 </div><div class="line">		parameterType:输入参数类型</div><div class="line">		resultType:输出类型</div><div class="line">		#&#123;&#125;:输入参数占位符 </div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span>&gt;</span></div><div class="line">		select * from user where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">select</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="3-5-测试程序"><a href="#3-5-测试程序" class="headerlink" title="3.5  测试程序"></a>3.5  测试程序</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.jzf.mybatis.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.io.InputStream;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.jzf.mybatis.domain.User;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">		String resource = <span class="string">"config/mybatis-config.xml"</span>;</div><div class="line">		InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">		<span class="comment">//读取配置文件并创建会话工厂</span></div><div class="line">		SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="comment">//创建会话</span></div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			String statement = <span class="string">"userMapper.findUserById"</span>;</div><div class="line">			<span class="comment">//通过会话执行具体sql语句</span></div><div class="line">			User user = sqlSession.selectOne(statement, <span class="number">1</span>);</div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">		    <span class="comment">//及时关闭会话</span></div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-6-输出"><a href="#3-6-输出" class="headerlink" title="3.6 输出"></a>3.6 输出</h3><p><img src="/mybatis1/out.jpg" alt="out"></p>
 ]]></content>
     
     <summary type="html">
@@ -1702,161 +1439,6 @@ return &quot;success&quot;;
     
     
       <category term="SpringMVC" scheme="http://yoursite.com/tags/SpringMVC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Spring_Study Note(2)</title>
-    <link href="http://yoursite.com/spring-2/"/>
-    <id>http://yoursite.com/spring-2/</id>
-    <published>2017-05-12T16:00:00.000Z</published>
-    <updated>2017-05-14T09:06:20.463Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>一、什么是AOP</strong><br>AOP即面向切面编程,是对传统OOP的补充。AOP的主要编程对象是切面。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>二、AOP中的一些概念</strong><br>横切关注点(cross-cutting concern):散布于应用程序中多处的功能(需求)被称<br>为横切关注点从概念上来看是与业务逻辑相分离的。把横切关注点与业务逻辑代码分离<br>开来是面向切面编程所要解决的问题。<br>切面(aspect):横切关注点(一些共同需求)被模块化之后的特殊对象(通知和切点的结合)<br>通知(advice):切面是什么(切面必须完成的功能),切面什么时候被使用<br>目标(target):被通知的对象<br>代理(proxy):对目标对象应用通知后<br>连接点(JoinPoint):应用程序有数以千计的时间可以被应用通知，这些时机被称为连接点<br>切点(pointcut): 一个切面并不需要通知所有的连接点，切点缩小了所需通知的连接点的范围</p>
-<hr>
-<p><strong>三、使用AOP的好处:</strong><br>1.横切关注点被集中于一个地方(切面)，而不是分散到多处代码中<br>2.服务模块更简洁，服务模块只需关注与业务逻辑相关的代码</p>
-<hr>
-<p><strong>四、Spring对AOP的支持</strong><br>基于代理的经典AOP<br>纯POJO切面(基于XML，将纯POJO转换成切面)<br>@AspectJ注解驱动的切面(通过AspectJ提供注解驱动的AOP，本质上仍然是Spring基于代理的AOP)<br>注入式AspectJ注解驱动</p>
-<p>前三种都是Spring AOP实现的变体，Spring AOP构建在动态代理的基础之上。因此Spring对AOP的支持仅限于方法拦截<br>如果要实现更高的需求,如构造器或者属性拦截，则需要使用AspectJ来实现切面，即注入式AspectJ注解驱动</p>
-<hr>
-<p><strong>五、Spring中@AspectJ注解驱动的切面</strong></p>
-<p>基本步骤<br>1.通过切点来选择连接点(使用AspectJ切点表达式语言)<br>AspectJ指示器execution()：用于匹配是连接点的方法</p>
-<p>切点表达式的使用规则：<br>execution(modifiers-pattern? ret-type-pattern declaring-type-pattern? name-pattern(param-pattern) throws-pattern?)</p>
-<p>有“?”号的部分表示可省略的，modifers-pattern表示修饰符如public、protected等，ret-type-pattern表示方法返回类型，declaring-type-pattern代表特定的类，name-pattern代表方法名称，param-pattern表示参数，throws-pattern表示抛出的异常。在切入点表达式中，可以使用*来代表任意字符，用..来表示任意个参数。</p>
-<p>2.创建切面<br>@Aspect声明切面</p>
-<p>五种通知<br>@Before 通知方法会在目标方法执行之前执行<br>@After  通知方法会在目标方法执行之后执行(无论目标是否发生异常)<br>@AfterReturning  通知方法会在目标方法正常返回之后执行<br>@AfterThrowing     通知方法会在目标方法抛出异常之后执行<br>@Around             通知方法会将目标方法包裹(封装)起来</p>
-<p>@order 声明切面的优先级<br>@pointcut 声明可重用的切点</p>
-<p>3.启用自动代理功能<br>在xml文件中使用aop命名空间中的<code>&lt;aop:aspectj-autoproxy /&gt;</code>标签启用自动代理(或者使用JavaConfig)</p>
-<hr>
-<p><strong>六、注解驱动的切面的具体实现:</strong></p>
-<pre><code>public interface Calculator {
-
-    public double add(double i,double j);
-
-    public double sub(double i,double j);
-
-    public double mul(double i,double j);
-
-    public double div(double i,double j);
-}
-</code></pre><hr>
-<pre><code>import org.springframework.stereotype.Component;
-
-@Component
-public class CalculatorImp implements Calculator {
-
-    @Override
-    public double add(double i, double j) {
-        double result = i + j;
-        return result;
-    }
-
-    @Override
-    public double sub(double i, double j) {
-        double result = i - j;
-        return result;
-    }
-
-    @Override
-    public double mul(double i, double j) {
-        double result = i * j;
-        return result;
-    }
-
-    @Override
-    public double div(double i, double j) {
-        double result = i / j;
-        return result;
-    }
-
-    }
-</code></pre><hr>
-<p>声明一个日志切面</p>
-<pre><code>import java.util.Arrays;
-import java.util.List;
-
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
-
-@Component
-@Aspect // 声明位一个切面类
-public class LoggingAspect {
-
-    @Pointcut(&quot;execution(public double  com.jzf.spring.aop.CalculatorImp.*(double,double))&quot;)
-    public void pointcut() {
-    }
-
-    // 声明前置通知方法(目标方法执行之前执行)
-    @Before(&quot;pointcut()&quot;)
-    public void beforeMethod(JoinPoint jp) {
-        String methodName = jp.getSignature().getName();
-        List&lt;Object&gt; list = (List&lt;Object&gt;) Arrays.asList(jp.getArgs());// 得到方法的参数
-        System.out.println(methodName + &quot; begin with&quot; + list);
-    }
-
-    // 后置通知方法(目标方法执行之后执行，无论方法是否出现异常;无法得到返回值,因为可能抛出异常)
-    @After(&quot;pointcut()&quot;)
-    public void afterMethod(JoinPoint jp) {
-        String methodName = jp.getSignature().getName();
-        System.out.println(methodName + &quot; end&quot;);
-    }
-
-    //返回通知方法
-    @AfterReturning(value=&quot;pointcut()&quot;,returning=&quot;result&quot;)
-    public void afterReturning(JoinPoint jp,double result){
-        String methodName = jp.getSignature().getName();
-        System.out.println(methodName+&quot; return with:&quot;+result);
-    }
-
-    //异常通知方法
-    @AfterThrowing(throwing = &quot;ex&quot;, value = &quot;pointcut()&quot;)
-    public void throwException(JoinPoint jp, Exception ex) {
-        String methodName = jp.getSignature().getName();
-        System.out.println(methodName + &quot; occurs exception: &quot; + ex);
-    }
-
-}
-</code></pre><hr>
-<p>xml文件中的配置</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
-    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;
-    xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
-    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
-    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
-        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd&quot;&gt;
-
-&lt;!-- 启用自动扫描 --&gt;
-&lt;context:component-scan base-package=&quot;com.jzf.spring.aop&quot;&gt;&lt;/context:component-scan&gt;
-
-&lt;!-- 使aspect注解生效 --&gt;
-&lt;aop:aspectj-autoproxy&gt;&lt;/aop:aspectj-autoproxy&gt;
-&lt;/beans&gt;
-</code></pre><hr>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;一、什么是AOP&lt;/strong&gt;&lt;br&gt;AOP即面向切面编程,是对传统OOP的补充。AOP的主要编程对象是切面。&lt;/p&gt;
-&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
-    
-    </summary>
-    
-      <category term="JavaWeb" scheme="http://yoursite.com/categories/JavaWeb/"/>
-    
-    
-      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
     
   </entry>
   

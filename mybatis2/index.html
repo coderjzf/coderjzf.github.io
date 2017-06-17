@@ -97,7 +97,7 @@
 <meta property="og:site_name" content="coderjzf">
 <meta property="og:description" content="一、原始的DAO开发方法原始的DAO开发方法需要程序员自行开发DAO接口和DAO的实现类，存在不少弊端 :  DAO接口实现类方法中存在大量模板方法，设想能否将这些代码提取出来，大大减轻程序员的工作量。">
 <meta property="og:image" content="http://yoursite.com/mybatis2/project2.jpg">
-<meta property="og:updated_time" content="2017-06-14T10:00:31.440Z">
+<meta property="og:updated_time" content="2017-06-17T09:49:06.564Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyBatis(二)：使用mapper代理方法进行增删改查操作">
 <meta name="twitter:description" content="一、原始的DAO开发方法原始的DAO开发方法需要程序员自行开发DAO接口和DAO的实现类，存在不少弊端 :  DAO接口实现类方法中存在大量模板方法，设想能否将这些代码提取出来，大大减轻程序员的工作量。">
@@ -385,187 +385,12 @@
 <li>mysql-connector-java-5.1.18-bin</li>
 </ul>
 <hr>
-<h4 id="2-2-2-全局配置文件-mybatis-config-xml"><a href="#2-2-2-全局配置文件-mybatis-config-xml" class="headerlink" title="2.2.2 全局配置文件 mybatis-config.xml"></a>2.2.2 全局配置文件 mybatis-config.xml</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE configuration
-  PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+<h4 id="2-2-2-全局配置文件-mybatis-config-xml"><a href="#2-2-2-全局配置文件-mybatis-config-xml" class="headerlink" title="2.2.2 全局配置文件 mybatis-config.xml"></a>2.2.2 全局配置文件 mybatis-config.xml</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">	&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line">	<span class="meta">&lt;!DOCTYPE configuration</span></div><div class="line">	  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</div><div class="line">	  "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 外部属性文件 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"config/mysql.properties"</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 数据源及事务管理 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"$&#123;driver&#125;"</span> /&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;url&#125;"</span> /&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;username&#125;"</span> /&gt;</span></div><div class="line">					<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;password&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">environment</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">environments</span>&gt;</span></div><div class="line">		<span class="comment">&lt;!-- 映射文件注册 --&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">mappers</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"config/mapper/UserMapper.xml"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div><div class="line">```	</div><div class="line">-----</div><div class="line"></div><div class="line"></div><div class="line">#### 2.2.3 UserMapper接口</div><div class="line">```java</div><div class="line">	package com.jzf.mybatis.mapper;</div><div class="line"></div><div class="line">	import com.jzf.mybatis.domain.User;</div><div class="line"></div><div class="line">	public interface UserMapper &#123;</div><div class="line">		</div><div class="line">		public User findUserById(int id);</div><div class="line">		</div><div class="line">		public void insertUser(User user);</div><div class="line">		</div><div class="line">		public void updateUser(User user);</div><div class="line">		</div><div class="line">		public void deleteUserById(int id);</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="2-2-4-UserMapper-xml映射文件"><a href="#2-2-4-UserMapper-xml映射文件" class="headerlink" title="2.2.4 UserMapper.xml映射文件"></a>2.2.4 UserMapper.xml映射文件</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE mapper</span></div><div class="line">  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line"><span class="comment">&lt;!-- namespace --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.jzf.mybatis.mapper.UserMapper"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- </span></div><div class="line">		select语句 id:唯一表示一条sql语句 </div><div class="line">		parameterType:输入参数类型</div><div class="line">		resultType:输出类型</div><div class="line">		#&#123;&#125;:输入参数占位符 </div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span>&gt;</span></div><div class="line">		select * from user where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">select</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--</span></div><div class="line">		 插入语句</div><div class="line">		useGeneratedKeys:仅对 insert和 update有用,</div><div class="line">		设置为true,会令 MyBatis使用 JDBC的 getGeneratedKeys 方法来取出由数据库内部生成的主键</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"insertUser"</span> <span class="attr">parameterType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span> <span class="attr">useGeneratedKeys</span>=<span class="string">"true"</span> <span class="attr">keyProperty</span>=<span class="string">"id"</span>&gt;</span></div><div class="line">		insert into user(name,password) value(#&#123;name&#125;,#&#123;password&#125;)</div><div class="line">	<span class="tag">&lt;/<span class="name">insert</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--</span></div><div class="line">		 更新语句</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"updateUser"</span> <span class="attr">parameterType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span>&gt;</span></div><div class="line">		update user set name=#&#123;name&#125;,password=#&#123;password&#125; where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">update</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!--</span></div><div class="line">		 删除语句</div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"deleteUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span>&gt;</span></div><div class="line">		delete from user where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">delete</span>&gt;</span>	</div><div class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></div></pre></td></tr></table></figure>
+<hr>
+<h4 id="2-2-5-测试程序"><a href="#2-2-5-测试程序" class="headerlink" title="2.2.5 测试程序"></a>2.2.5 测试程序</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.jzf.mybatis.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.InputStream;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</div><div class="line"><span class="keyword">import</span> org.junit.Before;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.jzf.mybatis.domain.User;</div><div class="line"><span class="keyword">import</span> com.jzf.mybatis.mapper.UserMapper;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest2</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> SqlSessionFactory sqlSessionFactory;</div><div class="line"></div><div class="line">	<span class="meta">@Before</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">		String resource = <span class="string">"config/mybatis-config.xml"</span>;</div><div class="line">		InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">		<span class="comment">// 读取配置文件并创建会话工厂</span></div><div class="line">		sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindUserById</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		User user = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">// 通过代理对象执行响应的方法</span></div><div class="line">			user = userMapper.findUserById(<span class="number">1</span>);</div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testInsertUser</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		User user = <span class="keyword">new</span> User(<span class="string">"王二麻子"</span>, <span class="string">"333333"</span>);</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">// 通过代理对象执行响应的方法</span></div><div class="line">			userMapper.insertUser(user);</div><div class="line">			<span class="comment">// 执行除了查询以外的操作必须提交</span></div><div class="line">			sqlSession.commit();</div><div class="line">			<span class="comment">//查看是否已获得自增主键</span></div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpdateUser</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		User user = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">//获取用户</span></div><div class="line">			user = userMapper.findUserById(<span class="number">1</span>);</div><div class="line">			<span class="comment">//更新用户</span></div><div class="line">			user.setName(<span class="string">"小张三"</span>);</div><div class="line">			userMapper.updateUser(user);</div><div class="line">			sqlSession.commit();</div><div class="line">			<span class="comment">//再次获取用户</span></div><div class="line">			user = userMapper.findUserById(<span class="number">1</span>);</div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDeleteUser</span><span class="params">()</span> </span>&#123;</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			<span class="comment">// 获得MyBatis自动生成的代理对象</span></div><div class="line">			UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">			<span class="comment">// 通过代理对象执行响应的方法</span></div><div class="line">			userMapper.deleteUserById(<span class="number">9</span>);</div><div class="line">			sqlSession.commit();</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
-
-&lt;configuration&gt;
-    &lt;!-- 外部属性文件 --&gt;
-    &lt;properties resource=&quot;config/mysql.properties&quot;&gt;&lt;/properties&gt;
-    &lt;!-- 数据源及事务管理 --&gt;
-    &lt;environments default=&quot;development&quot;&gt;
-        &lt;environment id=&quot;development&quot;&gt;
-            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
-            &lt;dataSource type=&quot;POOLED&quot;&gt;
-                &lt;property name=&quot;driver&quot; value=&quot;${driver}&quot; /&gt;
-                &lt;property name=&quot;url&quot; value=&quot;${url}&quot; /&gt;
-                &lt;property name=&quot;username&quot; value=&quot;${username}&quot; /&gt;
-                &lt;property name=&quot;password&quot; value=&quot;${password}&quot; /&gt;
-            &lt;/dataSource&gt;
-        &lt;/environment&gt;
-    &lt;/environments&gt;
-    &lt;!-- 映射文件注册 --&gt;
-    &lt;mappers&gt;
-        &lt;mapper resource=&quot;config/mapper/UserMapper.xml&quot;/&gt;
-    &lt;/mappers&gt;
-&lt;/configuration&gt;
-</code></pre><hr>
-<h4 id="2-2-3-UserMapper接口"><a href="#2-2-3-UserMapper接口" class="headerlink" title="2.2.3 UserMapper接口"></a>2.2.3 UserMapper接口</h4><pre><code>package com.jzf.mybatis.mapper;
-
-import com.jzf.mybatis.domain.User;
-
-public interface UserMapper {
-
-    public User findUserById(int id);
-
-    public void insertUser(User user);
-
-    public void updateUser(User user);
-
-    public void deleteUserById(int id);
-}
-</code></pre><hr>
-<h4 id="2-2-4-UserMapper-xml映射文件"><a href="#2-2-4-UserMapper-xml映射文件" class="headerlink" title="2.2.4 UserMapper.xml映射文件"></a>2.2.4 UserMapper.xml映射文件</h4><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE mapper
-  PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-&lt;!-- namespace --&gt;
-&lt;mapper namespace=&quot;com.jzf.mybatis.mapper.UserMapper&quot;&gt;
-    &lt;!-- 
-        select语句 id:唯一表示一条sql语句 
-        parameterType:输入参数类型
-        resultType:输出类型
-        #{}:输入参数占位符 
-    --&gt;
-    &lt;select id=&quot;findUserById&quot; parameterType=&quot;int&quot; resultType=&quot;com.jzf.mybatis.domain.User&quot;&gt;
-        select * from user where id=#{id}
-    &lt;/select&gt;
-    &lt;!--
-         插入语句
-        useGeneratedKeys:仅对 insert和 update有用,
-        设置为true,会令 MyBatis使用 JDBC的 getGeneratedKeys 方法来取出由数据库内部生成的主键
-    --&gt;
-    &lt;insert id=&quot;insertUser&quot; parameterType=&quot;com.jzf.mybatis.domain.User&quot; useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;
-        insert into user(name,password) value(#{name},#{password})
-    &lt;/insert&gt;
-    &lt;!--
-         更新语句
-    --&gt;
-    &lt;update id=&quot;updateUser&quot; parameterType=&quot;com.jzf.mybatis.domain.User&quot;&gt;
-        update user set name=#{name},password=#{password} where id=#{id}
-    &lt;/update&gt;
-    &lt;!--
-         删除语句
-    --&gt;
-    &lt;delete id=&quot;deleteUserById&quot; parameterType=&quot;int&quot;&gt;
-        delete from user where id=#{id}
-    &lt;/delete&gt;    
-&lt;/mapper&gt;
-</code></pre><hr>
-<h4 id="2-2-5-测试程序"><a href="#2-2-5-测试程序" class="headerlink" title="2.2.5 测试程序"></a>2.2.5 测试程序</h4><pre><code>package com.jzf.mybatis.test;
-
-import static org.junit.Assert.*;
-
-import java.io.InputStream;
-
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.jzf.mybatis.domain.User;
-import com.jzf.mybatis.mapper.UserMapper;
-
-public class UserMapperTest2 {
-    private SqlSessionFactory sqlSessionFactory;
-
-    @Before
-    public void setUp() throws Exception {
-        String resource = &quot;config/mybatis-config.xml&quot;;
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        // 读取配置文件并创建会话工厂
-        sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
-    }
-
-    @Test
-    public void testFindUserById() {
-        SqlSession sqlSession = null;
-        User user = null;
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            // 通过代理对象执行响应的方法
-            user = userMapper.findUserById(1);
-            System.out.println(user);
-        } finally {
-            sqlSession.close();
-        }
-
-    }
-
-    @Test
-    public void testInsertUser() {
-        SqlSession sqlSession = null;
-        User user = new User(&quot;王二麻子&quot;, &quot;333333&quot;);
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            // 通过代理对象执行响应的方法
-            userMapper.insertUser(user);
-            // 执行除了查询以外的操作必须提交
-            sqlSession.commit();
-            //查看是否已获得自增主键
-            System.out.println(user);
-        } finally {
-            sqlSession.close();
-        }
-    }
-
-    @Test
-    public void testUpdateUser() {
-        SqlSession sqlSession = null;
-        User user = null;
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            //获取用户
-            user = userMapper.findUserById(1);
-            //更新用户
-            user.setName(&quot;小张三&quot;);
-            userMapper.updateUser(user);
-            sqlSession.commit();
-            //再次获取用户
-            user = userMapper.findUserById(1);
-            System.out.println(user);
-        } finally {
-            sqlSession.close();
-        }
-    }
-
-    @Test
-    public void testDeleteUser() {
-        SqlSession sqlSession = null;
-        try {
-            sqlSession = sqlSessionFactory.openSession();
-            // 获得MyBatis自动生成的代理对象
-            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-            // 通过代理对象执行响应的方法
-            userMapper.deleteUserById(9);
-            sqlSession.commit();
-        } finally {
-            sqlSession.close();
-        }
-    }
-}
-</code></pre>
       
     </div>
 
@@ -745,7 +570,7 @@ public class UserMapperTest2 {
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、原始的DAO开发方法"><span class="nav-number">1.</span> <span class="nav-text">一、原始的DAO开发方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、使用mapper代理的方法开发DAO"><span class="nav-number">2.</span> <span class="nav-text">二、使用mapper代理的方法开发DAO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-mapper代理方法需要遵循的规范"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 mapper代理方法需要遵循的规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2实例"><span class="nav-number">2.2.</span> <span class="nav-text">2.2实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-准备工作"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-全局配置文件-mybatis-config-xml"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 全局配置文件 mybatis-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-UserMapper接口"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 UserMapper接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-UserMapper-xml映射文件"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.2.4 UserMapper.xml映射文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-5-测试程序"><span class="nav-number">2.2.5.</span> <span class="nav-text">2.2.5 测试程序</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、原始的DAO开发方法"><span class="nav-number">1.</span> <span class="nav-text">一、原始的DAO开发方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、使用mapper代理的方法开发DAO"><span class="nav-number">2.</span> <span class="nav-text">二、使用mapper代理的方法开发DAO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-mapper代理方法需要遵循的规范"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 mapper代理方法需要遵循的规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2实例"><span class="nav-number">2.2.</span> <span class="nav-text">2.2实例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-准备工作"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-全局配置文件-mybatis-config-xml"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 全局配置文件 mybatis-config.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-UserMapper-xml映射文件"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.4 UserMapper.xml映射文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-5-测试程序"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.2.5 测试程序</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

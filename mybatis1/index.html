@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://yoursite.com/mybatis1/project.jpg">
 <meta property="og:image" content="http://yoursite.com/mybatis1/log4j.jpg">
 <meta property="og:image" content="http://yoursite.com/mybatis1/out.jpg">
-<meta property="og:updated_time" content="2017-06-14T10:49:58.287Z">
+<meta property="og:updated_time" content="2017-06-17T09:44:33.158Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MyBatis(一)：简介及入门程序">
 <meta name="twitter:description" content="一、Mybatis简介MyBatis是支持普通 SQL查询，存储过程和高级映射的优秀持久层框架。，消除了几乎所有的JDBC代码和参数的手工设置以及结果集的检索。">
@@ -381,14 +381,8 @@
 <li>SqlSessionFactoryBuilder:作用域为方法作用域。可作为一个工具使用，创建了SqlSessionFactory后就不在需要它了。</li>
 <li>SqlSessionFactory:作用域为应用作用域。SqlSessionFactory一旦被创建就应该在应用的运行期间一直存在，没有任何理由对它进行清除或重建。</li>
 <li>SqlSession:作用域为请求或方法作用域。每个线程都应该有它自己的 SqlSession 实例。SqlSession 的实例不是线程安全的，因此是不能被共享的。<br>标准模式：<br> SqlSession session = sqlSessionFactory.openSession();<br> try {<br>   // do work<br> } finally {<br>   session.close();<br> }</li>
-<li>Mapper Instances(映射器实例):映射器是用来绑定statement(sql语句)接口。作用域是方法作用域。<br>标准模式：<pre><code>SqlSession session = sqlSessionFactory.openSession();
- try {
-   BlogMapper mapper = session.getMapper(BlogMapper.class);
-   // do work
- } finally {
-   session.close();
- }
-</code></pre></li>
+<li>Mapper Instances(映射器实例):映射器是用来绑定statement(sql语句)接口。作用域是方法作用域。<br>标准模式： <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">  SqlSession session = sqlSessionFactory.openSession();</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  BlogMapper mapper = session.getMapper(BlogMapper.class);</div><div class="line">  <span class="comment">// do work</span></div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">  session.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
 <h2 id="三、第一个Mybatis小程序"><a href="#三、第一个Mybatis小程序" class="headerlink" title="三、第一个Mybatis小程序"></a>三、第一个Mybatis小程序</h2><h3 id="3-1准备工作："><a href="#3-1准备工作：" class="headerlink" title="3.1准备工作："></a>3.1准备工作：</h3><ol>
@@ -404,87 +398,10 @@
 <li>mysql-connector-java-5.1.18-bin</li>
 </ul>
 <h3 id="3-2-log4j日志文件"><a href="#3-2-log4j日志文件" class="headerlink" title="3.2  log4j日志文件"></a>3.2  log4j日志文件</h3><p><img src="/mybatis1/log4j.jpg" alt="log4j"></p>
-<h3 id="3-3-全局配置文件mybatis-config-xml"><a href="#3-3-全局配置文件mybatis-config-xml" class="headerlink" title="3.3  全局配置文件mybatis-config.xml"></a>3.3  全局配置文件mybatis-config.xml</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
-&lt;!DOCTYPE configuration
-  PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
-
-&lt;configuration&gt;
-    &lt;!-- 外部属性文件 --&gt;
-    &lt;properties resource=&quot;config/mysql.properties&quot;&gt;&lt;/properties&gt;
-    &lt;!-- 数据源及事务管理 --&gt;
-    &lt;environments default=&quot;development&quot;&gt;
-        &lt;environment id=&quot;development&quot;&gt;
-            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
-            &lt;dataSource type=&quot;POOLED&quot;&gt;
-                &lt;property name=&quot;driver&quot; value=&quot;${driver}&quot; /&gt;
-                &lt;property name=&quot;url&quot; value=&quot;${url}&quot; /&gt;
-                &lt;property name=&quot;username&quot; value=&quot;${username}&quot; /&gt;
-                &lt;property name=&quot;password&quot; value=&quot;${password}&quot; /&gt;
-            &lt;/dataSource&gt;
-        &lt;/environment&gt;
-    &lt;/environments&gt;
-    &lt;!-- 映射文件注册 --&gt;
-    &lt;mappers&gt;
-        &lt;mapper resource=&quot;config/mapper/UserMapper.xml&quot;/&gt;
-    &lt;/mappers&gt;
-&lt;/configuration&gt;
-</code></pre><h3 id="3-4-映射文件"><a href="#3-4-映射文件" class="headerlink" title="3.4  映射文件"></a>3.4  映射文件</h3><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE mapper
-  PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
-  &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
-
-&lt;!-- namespace 唯一标识映射文件--&gt;
-&lt;mapper namespace=&quot;userMapper&quot;&gt;
-    &lt;!-- 
-        select语句 id:唯一表示一条sql语句 
-        parameterType:输入参数类型
-        resultType:输出类型
-        #{}:输入参数占位符 
-    --&gt;
-    &lt;select id=&quot;findUserById&quot; parameterType=&quot;int&quot; resultType=&quot;com.jzf.mybatis.domain.User&quot;&gt;
-        select * from user where id=#{id}
-    &lt;/select&gt;
-&lt;/mapper&gt;
-</code></pre><h3 id="3-5-测试程序"><a href="#3-5-测试程序" class="headerlink" title="3.5  测试程序"></a>3.5  测试程序</h3><pre><code>package com.jzf.mybatis.test;
-
-import static org.junit.Assert.*;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Test;
-
-import com.jzf.mybatis.domain.User;
-
-public class UserMapperTest {
-
-    @Test
-    public void test() throws IOException {
-        String resource = &quot;config/mybatis-config.xml&quot;;
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        //读取配置文件并创建会话工厂
-        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        SqlSession sqlSession = null;
-
-        try {
-            //创建会话
-            sqlSession = sqlSessionFactory.openSession();
-            String statement = &quot;userMapper.findUserById&quot;;
-            //通过会话执行具体sql语句
-            User user = sqlSession.selectOne(statement, 1);
-            System.out.println(user);
-        } finally {
-            //及时关闭会话
-            sqlSession.close();
-        }
-    }
-}
-</code></pre><h3 id="3-6-输出"><a href="#3-6-输出" class="headerlink" title="3.6 输出"></a>3.6 输出</h3><p><img src="/mybatis1/out.jpg" alt="out"></p>
+<h3 id="3-3-全局配置文件mybatis-config-xml"><a href="#3-3-全局配置文件mybatis-config-xml" class="headerlink" title="3.3  全局配置文件mybatis-config.xml"></a>3.3  全局配置文件mybatis-config.xml</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE configuration</span></div><div class="line">  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</div><div class="line">  "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 外部属性文件 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"config/mysql.properties"</span>&gt;</span><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 数据源及事务管理 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"$&#123;driver&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"$&#123;url&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"$&#123;username&#125;"</span> /&gt;</span></div><div class="line">				<span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"$&#123;password&#125;"</span> /&gt;</span></div><div class="line">			<span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">environment</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">environments</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 映射文件注册 --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">mappers</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"config/mapper/UserMapper.xml"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="3-4-映射文件"><a href="#3-4-映射文件" class="headerlink" title="3.4  映射文件"></a>3.4  映射文件</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE mapper</span></div><div class="line">  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">  </div><div class="line"><span class="comment">&lt;!-- namespace 唯一标识映射文件--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"userMapper"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- </span></div><div class="line">		select语句 id:唯一表示一条sql语句 </div><div class="line">		parameterType:输入参数类型</div><div class="line">		resultType:输出类型</div><div class="line">		#&#123;&#125;:输入参数占位符 </div><div class="line">	--&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"findUserById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultType</span>=<span class="string">"com.jzf.mybatis.domain.User"</span>&gt;</span></div><div class="line">		select * from user where id=#&#123;id&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">select</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="3-5-测试程序"><a href="#3-5-测试程序" class="headerlink" title="3.5  测试程序"></a>3.5  测试程序</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.jzf.mybatis.test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> <span class="keyword">static</span> org.junit.Assert.*;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.io.IOException;</div><div class="line"><span class="keyword">import</span> java.io.InputStream;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.apache.ibatis.io.Resources;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSession;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</div><div class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactoryBuilder;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.jzf.mybatis.domain.User;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserMapperTest</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="meta">@Test</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">		String resource = <span class="string">"config/mybatis-config.xml"</span>;</div><div class="line">		InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">		<span class="comment">//读取配置文件并创建会话工厂</span></div><div class="line">		SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">		SqlSession sqlSession = <span class="keyword">null</span>;</div><div class="line">		</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			<span class="comment">//创建会话</span></div><div class="line">			sqlSession = sqlSessionFactory.openSession();</div><div class="line">			String statement = <span class="string">"userMapper.findUserById"</span>;</div><div class="line">			<span class="comment">//通过会话执行具体sql语句</span></div><div class="line">			User user = sqlSession.selectOne(statement, <span class="number">1</span>);</div><div class="line">			System.out.println(user);</div><div class="line">		&#125; <span class="keyword">finally</span> &#123;</div><div class="line">		    <span class="comment">//及时关闭会话</span></div><div class="line">			sqlSession.close();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-6-输出"><a href="#3-6-输出" class="headerlink" title="3.6 输出"></a>3.6 输出</h3><p><img src="/mybatis1/out.jpg" alt="out"></p>
 
       
     </div>
