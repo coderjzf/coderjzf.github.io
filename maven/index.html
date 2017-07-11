@@ -1,0 +1,768 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Maven," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="coderjzf" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="一、Maven是什么？Maven是基于POM(工程对象模型),通过一小段描述来对项目的代码、报告、文件进行管理的工具。">
+<meta name="keywords" content="Maven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven(一):Maven简介及创建Maven工程">
+<meta property="og:url" content="http://yoursite.com/maven/index.html">
+<meta property="og:site_name" content="coderjzf">
+<meta property="og:description" content="一、Maven是什么？Maven是基于POM(工程对象模型),通过一小段描述来对项目的代码、报告、文件进行管理的工具。">
+<meta property="og:image" content="http://yoursite.com/maven/maven.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/maven2.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/maven3.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/cmd.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/settings2.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/settings3.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/settings.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/settings4.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/project.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/project2.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/HelloMaven.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/TestHelloMaven.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/pom.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/compile.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/compile.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/target.jpg">
+<meta property="og:image" content="http://yoursite.com/maven/package.jpg">
+<meta property="og:updated_time" content="2017-07-05T08:07:06.630Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven(一):Maven简介及创建Maven工程">
+<meta name="twitter:description" content="一、Maven是什么？Maven是基于POM(工程对象模型),通过一小段描述来对项目的代码、报告、文件进行管理的工具。">
+<meta name="twitter:image" content="http://yoursite.com/maven/maven.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/maven/"/>
+
+
+
+
+
+  <title> Maven(一):Maven简介及创建Maven工程 | coderjzf </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">coderjzf</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/maven/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="coderjzf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="coderjzf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Maven(一):Maven简介及创建Maven工程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T15:59:35+08:00">
+                2017-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index">
+                    <span itemprop="name">Tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、Maven是什么？"><a href="#一、Maven是什么？" class="headerlink" title="一、Maven是什么？"></a>一、Maven是什么？</h2><p>Maven是基于<strong>POM(工程对象模型)</strong>,通过一小段描述来对项目的代码、报告、文件进行管理的工具。<br><a id="more"></a><br>Maven也是一个<strong>跨平台</strong>的项目管理工具，是使用Java开发的，依赖jdk1.6以上。<br>Maven的<strong>主要功能</strong>是<strong>依赖管理</strong>和<strong>项目构建</strong>。</p>
+<h2 id="二、Maven的安装与配置"><a href="#二、Maven的安装与配置" class="headerlink" title="二、Maven的安装与配置"></a>二、Maven的安装与配置</h2><h3 id="2-1-Maven的安装"><a href="#2-1-Maven的安装" class="headerlink" title="2.1 Maven的安装"></a>2.1 Maven的安装</h3><p>Maven的下载地址：<a href="http://maven.apache.org" target="_blank" rel="external">http://maven.apache.org</a></p>
+<p>下载压缩文件后解压，解压之后打开，Maven目录如下<br><img src="/maven/maven.jpg" alt="maven"></p>
+<p>接下来配置环境变量：<br><img src="/maven/maven2.jpg" alt="maven"></p>
+<p><img src="/maven/maven3.jpg" alt="maven"></p>
+<p>照着这样配置了之后发现出错了，显示JAVA_HOME出错！可是，核对了几遍，并没有发现错误，并且java/javac命令都是可以运行的。。<br>百度了一下，可能是由于maven解析JAVA_HOME时出错，所以将JAVA_HOME等变量重新按照规范配置了一遍</p>
+<ul>
+<li>JAVA_HOME: C:\Program Files\Java\jdk1.8.0_121 (你自己jdk的实际目录)</li>
+<li>JRE_HOME:  C:\Program Files\Java\jre1.8.0_121</li>
+<li>PATH:      %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;</li>
+<li>CLASSPATH: .%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar;</li>
+</ul>
+<p>这样配置之后，打开cmd,运行”mvn -v”命令<br><img src="/maven/cmd.jpg" alt="maven"><br>如果出现这样的界面，就说明已经已经安装成功了。</p>
+<h3 id="2-2-Maven的配置"><a href="#2-2-Maven的配置" class="headerlink" title="2.2 Maven的配置"></a>2.2 Maven的配置</h3><h4 id="2-2-1-全局配置"><a href="#2-2-1-全局配置" class="headerlink" title="2.2.1 全局配置"></a>2.2.1 全局配置</h4><p>在Maven的conf目录下面，有一个settings.xml文件，用来存放全局配置<br><img src="/maven/settings2.jpg" alt="maven"></p>
+<p>该文件中可以设置本地仓库的地址<br><img src="/maven/settings3.jpg" alt="maven"></p>
+<p>默认的本地仓库地址是在C盘的用户目录下</p>
+<h4 id="2-2-2-用户配置"><a href="#2-2-2-用户配置" class="headerlink" title="2.2.2 用户配置"></a>2.2.2 用户配置</h4><p>安装好Maven之后，会在C盘的用户目录下，自动生成了一个本地仓库<br><img src="/maven/settings.jpg" alt="maven"></p>
+<p>在这个settings.xml文件中，可以更改用户配置，比如更改本地仓库的地址<br><img src="/maven/settings4.jpg" alt="maven"></p>
+<h2 id="三、创建Maven工程"><a href="#三、创建Maven工程" class="headerlink" title="三、创建Maven工程"></a>三、创建Maven工程</h2><p>一般的Maven工程结构如下：<br>MavenProject<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">|-src</div><div class="line">	|-main</div><div class="line">		|-java</div><div class="line">		|-resources</div><div class="line">	|-test</div><div class="line">		|-java</div><div class="line">		|-resources</div><div class="line">|-target</div><div class="line">|-pom.xml</div></pre></td></tr></table></figure></p>
+<p>各个目录的作用：<br><img src="/maven/project.jpg" alt="maven"></p>
+<p>按照上面的工程结构创建一个Maven工程<br><img src="/maven/project2.jpg" alt="maven"></p>
+<p>在src/main/java目录下创建一个包，包下面创建一个类<br><img src="/maven/HelloMaven.jpg" alt="maven"></p>
+<p>在src/test/java目录下创建同样的包，并在包下面创建一个测试类<br><img src="/maven/TestHelloMaven.jpg" alt="maven"></p>
+<p>编辑pom.xml文件<br><img src="/maven/pom.jpg" alt="maven"></p>
+<p>一个Maven工程就创建完成。</p>
+<h2 id="四、Maven命令"><a href="#四、Maven命令" class="headerlink" title="四、Maven命令"></a>四、Maven命令</h2><h3 id="4-1-mvn-compile"><a href="#4-1-mvn-compile" class="headerlink" title="4.1 mvn compile"></a>4.1 mvn compile</h3><p>编译命令(只会编译src/main/java下的源码)<br><img src="/maven/compile.jpg" alt="maven"><br>如果是创建maven工程后第一次编译，那么maven还会自动下载编译所需要的jar包和工程所依赖的jar包。</p>
+<h3 id="4-2-mvn-clean"><a href="#4-2-mvn-clean" class="headerlink" title="4.2 mvn clean"></a>4.2 mvn clean</h3><p>清除命令，会清除编译好的class文件，也就是清除target目录</p>
+<h3 id="4-3-mvn-test"><a href="#4-3-mvn-test" class="headerlink" title="4.3 mvn test"></a>4.3 mvn test</h3><p>测试命令<br><img src="/maven/compile.jpg" alt="maven"></p>
+<p>需要注意的时，test命令不仅会编译src/test/java下的源码，还会编译src/main/java下的源码。<br>同时在target目录下，会生成测试报告。<br><img src="/maven/target.jpg" alt="maven"></p>
+<h3 id="4-4-mvn-package"><a href="#4-4-mvn-package" class="headerlink" title="4.4 mvn package"></a>4.4 mvn package</h3><p>打包命令，如果创建的工程是jar包形式，则打包成jar包;如果是war包形式，则打包成war包。<br>执行打包命令后，会在target目录下生成工程的jar包。<br><img src="/maven/package.jpg" alt="maven"></p>
+<h3 id="4-5-mvn-install"><a href="#4-5-mvn-install" class="headerlink" title="4.5 mvn install"></a>4.5 mvn install</h3><p>安装命令，会将执行mvn package命令生成的工程的jar包安装到本地仓库</p>
+<h3 id="4-6-mvn-clean-compile"><a href="#4-6-mvn-clean-compile" class="headerlink" title="4.6 mvn clean compile"></a>4.6 mvn clean compile</h3><p>即先执行clean命令清空target目录内容，再执行compile命令编译源码</p>
+<h3 id="4-7-mvn-clean-test"><a href="#4-7-mvn-clean-test" class="headerlink" title="4.7 mvn clean test"></a>4.7 mvn clean test</h3><p>先执行clean命令清空target目录内容,再执行test命令进行测试</p>
+<h3 id="4-8-mvn-clean-package"><a href="#4-8-mvn-clean-package" class="headerlink" title="4.8 mvn clean package"></a>4.8 mvn clean package</h3><p>先执行clean命令清空target目录内容，再执行comile命令编译源码，再执行test命令进行测试，最后执行package命令进行打包。<br>即clean-&gt;compile-&gt;test-&gt;package</p>
+<h3 id="4-9-mvn-clean-deploy"><a href="#4-9-mvn-clean-deploy" class="headerlink" title="4.9 mvn clean deploy"></a>4.9 mvn clean deploy</h3><p>先执行clean命令清空target目录内容，再执行comile命令编译源码，再执行test命令进行测试，再执行package命令进行打包，最后执行install命令安装到本地仓库。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Maven/" rel="tag"># Maven</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/maven2/" rel="next" title="Maven(二):Eclipse中的Maven插件以及Maven中的核心概念">
+                <i class="fa fa-chevron-left"></i> Maven(二):Eclipse中的Maven插件以及Maven中的核心概念
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/spring4/" rel="prev" title="Spring(四):AOP">
+                Spring(四):AOP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="coderjzf" />
+          <p class="site-author-name" itemprop="name">coderjzf</p>
+           
+              <p class="site-description motion-element" itemprop="description">a primary coder</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Maven是什么？"><span class="nav-number">1.</span> <span class="nav-text">一、Maven是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Maven的安装与配置"><span class="nav-number">2.</span> <span class="nav-text">二、Maven的安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Maven的安装"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Maven的安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Maven的配置"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Maven的配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-全局配置"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 全局配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-用户配置"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 用户配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、创建Maven工程"><span class="nav-number">3.</span> <span class="nav-text">三、创建Maven工程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、Maven命令"><span class="nav-number">4.</span> <span class="nav-text">四、Maven命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-mvn-compile"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 mvn compile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-mvn-clean"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 mvn clean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-mvn-test"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 mvn test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-mvn-package"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 mvn package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-mvn-install"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 mvn install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-mvn-clean-compile"><span class="nav-number">4.6.</span> <span class="nav-text">4.6 mvn clean compile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-mvn-clean-test"><span class="nav-number">4.7.</span> <span class="nav-text">4.7 mvn clean test</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-8-mvn-clean-package"><span class="nav-number">4.8.</span> <span class="nav-text">4.8 mvn clean package</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-9-mvn-clean-deploy"><span class="nav-number">4.9.</span> <span class="nav-text">4.9 mvn clean deploy</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">coderjzf</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

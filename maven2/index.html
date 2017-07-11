@@ -1,0 +1,874 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Maven," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="coderjzf" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="一、使用Eclipse创建Maven工程新版本的Eclipse都已经集成了Maven插件，不需要手动下载。但是要对Maven的设置做一些修改。">
+<meta name="keywords" content="Maven">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven(二):Eclipse中的Maven插件以及Maven中的核心概念">
+<meta property="og:url" content="http://yoursite.com/maven2/index.html">
+<meta property="og:site_name" content="coderjzf">
+<meta property="og:description" content="一、使用Eclipse创建Maven工程新版本的Eclipse都已经集成了Maven插件，不需要手动下载。但是要对Maven的设置做一些修改。">
+<meta property="og:image" content="http://yoursite.com/maven2/maven.png">
+<meta property="og:image" content="http://yoursite.com/maven2/maven2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/maven3.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create3.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create4.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create5.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create7.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create20.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create21.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create22.png">
+<meta property="og:image" content="http://yoursite.com/maven2/create23.png">
+<meta property="og:image" content="http://yoursite.com/maven2/mvn.png">
+<meta property="og:image" content="http://yoursite.com/maven2/mvn2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen0.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen3.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen4.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen5.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen6.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen7.png">
+<meta property="og:image" content="http://yoursite.com/maven2/depen8.png">
+<meta property="og:image" content="http://yoursite.com/maven2/plugin.png">
+<meta property="og:image" content="http://yoursite.com/maven2/plugin2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/parent.png">
+<meta property="og:image" content="http://yoursite.com/maven2/parent2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/parent3.png">
+<meta property="og:image" content="http://yoursite.com/maven2/sub.png">
+<meta property="og:image" content="http://yoursite.com/maven2/sub2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/inh.png">
+<meta property="og:image" content="http://yoursite.com/maven2/inh2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/inh3.png">
+<meta property="og:image" content="http://yoursite.com/maven2/inh4.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe2.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe3.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe4.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe5.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe6.png">
+<meta property="og:image" content="http://yoursite.com/maven2/juhe7.png">
+<meta property="og:updated_time" content="2017-07-06T03:51:01.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven(二):Eclipse中的Maven插件以及Maven中的核心概念">
+<meta name="twitter:description" content="一、使用Eclipse创建Maven工程新版本的Eclipse都已经集成了Maven插件，不需要手动下载。但是要对Maven的设置做一些修改。">
+<meta name="twitter:image" content="http://yoursite.com/maven2/maven.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/maven2/"/>
+
+
+
+
+
+  <title> Maven(二):Eclipse中的Maven插件以及Maven中的核心概念 | coderjzf </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">coderjzf</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/maven2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="coderjzf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="coderjzf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Maven(二):Eclipse中的Maven插件以及Maven中的核心概念
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-06T11:39:48+08:00">
+                2017-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index">
+                    <span itemprop="name">Tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="一、使用Eclipse创建Maven工程"><a href="#一、使用Eclipse创建Maven工程" class="headerlink" title="一、使用Eclipse创建Maven工程"></a>一、使用Eclipse创建Maven工程</h2><p>新版本的Eclipse都已经集成了Maven插件，不需要手动下载。<br>但是要对Maven的设置做一些修改。<br><a id="more"></a></p>
+<h3 id="1-1-让Eclipse集成Maven插件指向自己下载的Maven"><a href="#1-1-让Eclipse集成Maven插件指向自己下载的Maven" class="headerlink" title="1.1 让Eclipse集成Maven插件指向自己下载的Maven"></a>1.1 让Eclipse集成Maven插件指向自己下载的Maven</h3><p><img src="/maven2/maven.png" alt="maven"><br><img src="/maven2/maven2.png" alt="maven"></p>
+<h3 id="1-2-设置用户配置文件"><a href="#1-2-设置用户配置文件" class="headerlink" title="1.2 设置用户配置文件"></a>1.2 设置用户配置文件</h3><p><img src="/maven2/maven3.png" alt="maven"></p>
+<h3 id="1-3-创建Maven工程的第一种方式"><a href="#1-3-创建Maven工程的第一种方式" class="headerlink" title="1.3 创建Maven工程的第一种方式"></a>1.3 创建Maven工程的第一种方式</h3><p>首先选择创建maven工程，会出现以下界面<br><img src="/maven2/create2.png" alt="maven"></p>
+<p>点击next<br><img src="/maven2/create3.png" alt="maven"></p>
+<p>在这里选择创建java工程,点击next<br><img src="/maven2/create4.png" alt="maven"></p>
+<p>填写完毕，点击finish,maven工程创建完成。</p>
+<p>创建的普通maven工程目录如下：<br><img src="/maven2/create5.png" alt="maven"></p>
+<p>pom.xml文件内容如下：<br><img src="/maven2/create7.png" alt="maven"></p>
+<h3 id="1-4-创建Maven工程的第二种方式"><a href="#1-4-创建Maven工程的第二种方式" class="headerlink" title="1.4 创建Maven工程的第二种方式"></a>1.4 创建Maven工程的第二种方式</h3><p>首先选择创建maven工程<br><img src="/maven2/create20.png" alt="maven"></p>
+<p>填写完毕，点击next<br><img src="/maven2/create21.png" alt="maven"></p>
+<p>填写完毕后，点击next,创建完成。</p>
+<p>使用这种方式创建的Maven工程目录如下：<br><img src="/maven2/create22.png" alt="maven"><br>可以看到与第一种方式创建的Maven工程基本一样，只是多了resources目录</p>
+<p>pom.xml文件如下：<br><img src="/maven2/create23.png" alt="maven"><br>与第一种方式创建得到的pom.xml文件相比，更加简洁。</p>
+<h3 id="1-5-执行mvn命令"><a href="#1-5-执行mvn命令" class="headerlink" title="1.5 执行mvn命令"></a>1.5 执行mvn命令</h3><p>右键工程<br><img src="/maven2/mvn.png" alt="maven"></p>
+<p>在上一步中如果选择了build，则会出现以下界面<br><img src="/maven2/mvn2.png" alt="maven"><br>可以选择输入compile、test等来执行相关命令。</p>
+<h2 id="二、Maven中的核心概念"><a href="#二、Maven中的核心概念" class="headerlink" title="二、Maven中的核心概念"></a>二、Maven中的核心概念</h2><h3 id="2-1-坐标"><a href="#2-1-坐标" class="headerlink" title="2.1 坐标"></a>2.1 坐标</h3><p>Maven中的坐标是用来唯一标识构件的。由groupId、artifactId、version等组成。</p>
+<ul>
+<li>groupId:组织名称，定义当前Maven组织名称。</li>
+<li>artifactId：模块名称，一般使用实际项目名称(作为前缀)。</li>
+<li>version：版本号。</li>
+<li>package：构件的打包方式。一般有：pom、jar、war等。</li>
+</ul>
+<h3 id="2-2-依赖管理"><a href="#2-2-依赖管理" class="headerlink" title="2.2 依赖管理"></a>2.2 依赖管理</h3><h4 id="2-2-1-依赖范围"><a href="#2-2-1-依赖范围" class="headerlink" title="2.2.1 依赖范围"></a>2.2.1 依赖范围</h4><p><img src="/maven2/depen0.png" alt="maven"><br>依赖范围(scope)用来控制所依赖的jar包在编译(主源码)、测试(测试源码)、运行时三种环境的classpath下是否有效。</p>
+<ul>
+<li>compile:编译依赖范围，是默认依赖范围。对于编译，测试，运行时三种环境的classpath都有效，例如log4j依赖包。</li>
+<li>test:测试依赖范围，只对测试环境下的classpath有效，例如junit依赖包。</li>
+<li>provide:提供依赖范围，对编译、测试环境的classpath有效，在运行时无效。例如servlet-api依赖包，因为在运行时会由容器来提供。</li>
+<li>runtime:运行时依赖范围，只对运行时环境下的classpath有效，例如JDBC驱动依赖包。</li>
+</ul>
+<p><img src="/maven2/depen.png" alt="maven"></p>
+<h4 id="2-2-2-依赖传递"><a href="#2-2-2-依赖传递" class="headerlink" title="2.2.2 依赖传递"></a>2.2.2 依赖传递</h4><p>若有三个工程，分别为A、B、C，其中B工程引入了A工程依赖，C工程又引入了B工程依赖，那么三个工程之间的关系如下：<br><img src="/maven2/depen2.png" alt="maven"></p>
+<p>依赖范围的传递如下：<br><img src="/maven2/depen3.png" alt="maven"><br>上面第一行表示第二直接依赖范围，左边第一列表示第一直接依赖范围，交叉单元格表示传递性依赖范围。</p>
+<p>总结：</p>
+<ul>
+<li>第二直接依赖的范围是compile的时候，传递性依赖的范围与第一直接依赖的范围一致。</li>
+<li>第二直接依赖的范围是test的时候，依赖不会得以传递。</li>
+<li>第二依赖的范围是provided的时候，只传递第一直接依赖范围也为provided的依赖，且传递性依赖的范围同样为 provided。</li>
+<li>第二直接依赖的范围是runtime的时候，传递性依赖的范围与第一直接依赖的范围一致，但compile例外，此时传递的依赖范围为runtime。</li>
+</ul>
+<h4 id="2-2-3-依赖冲突"><a href="#2-2-3-依赖冲突" class="headerlink" title="2.2.3 依赖冲突"></a>2.2.3 依赖冲突</h4><p>依赖冲突又分为两种，一种是同一个pom文件冲突，另一种是不同的pom文件冲突</p>
+<h5 id="2-2-3-1-同一个pom文件冲突"><a href="#2-2-3-1-同一个pom文件冲突" class="headerlink" title="2.2.3.1 同一个pom文件冲突"></a>2.2.3.1 同一个pom文件冲突</h5><p><img src="/maven2/depen4.png" alt="maven"></p>
+<h5 id="2-2-3-1-不同pom文件冲突"><a href="#2-2-3-1-不同pom文件冲突" class="headerlink" title="2.2.3.1 不同pom文件冲突"></a>2.2.3.1 不同pom文件冲突</h5><p>如果B工程依赖A工程，且A工程中引入了junit-4.8的依赖(依赖范围为compile)，而B工程又引入了junit-4.9的依赖，那么<br>B工程中就不会使用A工程传递的junit-4.8的依赖，而是使用自行引入的junit-4.9的依赖。<br><img src="/maven2/depen5.png" alt="maven"><br><img src="/maven2/depen6.png" alt="maven"></p>
+<h4 id="2-2-4-可选依赖"><a href="#2-2-4-可选依赖" class="headerlink" title="2.2.4 可选依赖"></a>2.2.4 可选依赖</h4><p>可以通过在pom文件中使用optional标签来设置工程的依赖是否向下传递：<br><img src="/maven2/depen7.png" alt="maven"></p>
+<h4 id="2-2-5-排除依赖"><a href="#2-2-5-排除依赖" class="headerlink" title="2.2.5 排除依赖"></a>2.2.5 排除依赖</h4><p>如果B工程引入了A工程依赖，却又不想引入A工程中某个具体的依赖，那么可以使用exclusions标签来排除依赖:<br><img src="/maven2/depen8.png" alt="maven"></p>
+<h3 id="2-3-生命周期"><a href="#2-3-生命周期" class="headerlink" title="2.3 生命周期"></a>2.3 生命周期</h3><p>Maven中的生命周期是由多个阶段组成的，每个阶段都是一个完整的功能。(如执行mvn clean命令，就是执行clean阶段)<br>Maven中有三个生命周期：</p>
+<ul>
+<li>clean生命周期</li>
+<li>default生命周期</li>
+<li>site生命周期</li>
+</ul>
+<h4 id="2-3-1-clean生命周期"><a href="#2-3-1-clean生命周期" class="headerlink" title="2.3.1 clean生命周期"></a>2.3.1 clean生命周期</h4><p>clean生命周期由三个阶段组成：</p>
+<ul>
+<li>pre-clean 执行一些需要在clean之前完成的工作 </li>
+<li>clean 移除所有上一次构建生成的文件 </li>
+<li>post-clean 执行一些需要在clean之后立刻完成的工作</li>
+</ul>
+<p>在maven中，在同一个生命周期中只要执行生命周期中后面的阶段，则前面的阶段会自动执行，而不用通过命令取控制。<br>例如，执行mvn clean命令，即执行了clean阶段，那么pre-clean阶段会自动执行，且在clean阶段之前执行。</p>
+<h4 id="2-3-2-default生命周期"><a href="#2-3-2-default生命周期" class="headerlink" title="2.3.2 default生命周期"></a>2.3.2 default生命周期</h4><p>default生命周期由以下阶段组成：</p>
+<ul>
+<li>validate </li>
+<li>generate-sources </li>
+<li>process-sources </li>
+<li>generate-resources </li>
+<li>process-resources 复制并处理资源文件，至目标目录，准备打包。 </li>
+<li><strong>compile</strong> 编译项目的源代码。 </li>
+<li>process-classes </li>
+<li>generate-test-sources </li>
+<li>process-test-sources </li>
+<li>generate-test-resources </li>
+<li>process-test-resources 复制并处理资源文件，至目标测试目录。 </li>
+<li>test-compile 编译测试源代码。 </li>
+<li>process-test-classes </li>
+<li><strong>test</strong> 测试</li>
+<li>prepare-package </li>
+<li><strong>package</strong> 打包阶段</li>
+<li>pre-integration-test </li>
+<li>integration-test </li>
+<li>post-integration-test </li>
+<li>verify </li>
+<li><strong>install</strong> 安装阶段，将包安装至本地仓库，以让其它项目依赖。 </li>
+<li><strong>deploy</strong> 将最终的包复制到远程的仓库，以让其它开发人员与项目共享。</li>
+</ul>
+<h4 id="2-3-3-site生命周期"><a href="#2-3-3-site生命周期" class="headerlink" title="2.3.3 site生命周期"></a>2.3.3 site生命周期</h4><p>site生命周期由以下阶段组成：</p>
+<ul>
+<li>pre-site 执行一些需要在生成站点文档之前完成的工作 </li>
+<li>site 生成项目的站点文档 </li>
+<li>post-site 执行一些需要在生成站点文档之后完成的工作，并且为部署做准备 </li>
+<li>site-deploy 将生成的站点文档部署到特定的服务器上 </li>
+</ul>
+<h3 id="2-4-插件"><a href="#2-4-插件" class="headerlink" title="2.4 插件"></a>2.4 插件</h3><h4 id="2-4-1-插件简介"><a href="#2-4-1-插件简介" class="headerlink" title="2.4.1 插件简介"></a>2.4.1 插件简介</h4><p>Maven实质是一个执行插件的框架，Maven的生命周期规定了阶段的执行顺序，而阶段都是通过插件来执行的。</p>
+<p>执行插件的命令语法：<br><strong>mvn [plugin-name]:[goal-name]</strong></p>
+<p>如mvn compiler:compile就可以执行compiler插件    </p>
+<p>mvn中的插件类型分为两种：</p>
+<ul>
+<li>构建插件：在运行时执行，可以在pom文件中通过build标签来配置</li>
+<li>报告插件：在网站生成期间执行，可以在pom文件中通过reporting标签来配置</li>
+</ul>
+<p>mvn中常用的插件有编译(compiler)插件、tomcat插件、打包插件等。</p>
+<h4 id="2-4-2-编译插件"><a href="#2-4-2-编译插件" class="headerlink" title="2.4.2 编译插件"></a>2.4.2 编译插件</h4><p><img src="/maven2/plugin.png" alt="maven"></p>
+<h4 id="2-4-3-tomcat插件"><a href="#2-4-3-tomcat插件" class="headerlink" title="2.4.3 tomcat插件"></a>2.4.3 tomcat插件</h4><p><img src="/maven2/plugin2.png" alt="maven"></p>
+<h3 id="2-5-继承"><a href="#2-5-继承" class="headerlink" title="2.5 继承"></a>2.5 继承</h3><p>Maven中的继承，其实指的是pom文件的继承。作为父工程，packageing类型必须为pom。</p>
+<p>创建父工程<br><img src="/maven2/parent.png" alt="maven"><br><img src="/maven2/parent2.png" alt="maven"><br><img src="/maven2/parent3.png" alt="maven"></p>
+<p>创建子工程<br><img src="/maven2/sub.png" alt="maven"><br>在子工程的pom文件中已经自动引入了父工程依赖<br><img src="/maven2/sub2.png" alt="maven"></p>
+<p>为什么要使用继承，直接引入工程依赖不行吗？</p>
+<p>通过继承可以实现很多功能：</p>
+<ul>
+<li>父工程统一依赖包</li>
+<li>父工程统一管理依赖版本号</li>
+<li>父工程抽取版本号</li>
+</ul>
+<h4 id="2-5-1-父工程统一依赖包"><a href="#2-5-1-父工程统一依赖包" class="headerlink" title="2.5.1 父工程统一依赖包"></a>2.5.1 父工程统一依赖包</h4><p>父工程中引入的依赖包，都会被子工程继承，所以使用父工程可以统一依赖包<br><img src="/maven2/inh.png" alt="maven"></p>
+<h4 id="2-5-2-父工程统一管理依赖版本号"><a href="#2-5-2-父工程统一管理依赖版本号" class="headerlink" title="2.5.2 父工程统一管理依赖版本号"></a>2.5.2 父工程统一管理依赖版本号</h4><p>父工程可以通过dependencyManagement标签来管理依赖，并没有实际引入依赖。这样由子工程实际引入依赖时，可以不用指定版本号，版本号交由父工程管理。<br><img src="/maven2/inh2.png" alt="maven"><br><img src="/maven2/inh3.png" alt="maven"></p>
+<h4 id="2-5-3-父工程抽取版本号"><a href="#2-5-3-父工程抽取版本号" class="headerlink" title="2.5.3 父工程抽取版本号"></a>2.5.3 父工程抽取版本号</h4><p>在实际项目中，若是有更改依赖版本号的需要，则需要在pom文件中更改。由于一个项目通常会有几十上百个依赖包，查找起来很不方便。</p>
+<p>所以Maven提供了抽取版本的功能：<br>在父工程管理依赖版本号的基础上，在父工程pom文件中，可以通过properties标签来指定依赖版本号。<br><img src="/maven2/inh4.png" alt="maven"></p>
+<h3 id="2-6-聚合"><a href="#2-6-聚合" class="headerlink" title="2.6 聚合"></a>2.6 聚合</h3><p>在实际项目中，一般都是分层的架构，有表现层、业务层、持久层等。<br>对于项目的分层，Maven也有相应的支持。在Maven中，可以创建一个<strong>聚合工程</strong>。再将每一层创建为一个单独的模块(module),可以单独使用，也可以在聚合工程中使用。</p>
+<h4 id="2-6-1-创建聚合工程"><a href="#2-6-1-创建聚合工程" class="headerlink" title="2.6.1 创建聚合工程"></a>2.6.1 创建聚合工程</h4><p><img src="/maven2/juhe.png" alt="maven"></p>
+<h4 id="2-6-2-创建持久层模块"><a href="#2-6-2-创建持久层模块" class="headerlink" title="2.6.2 创建持久层模块"></a>2.6.2 创建持久层模块</h4><p>首先右键聚合工程MavenWeb,选择创建模块<br><img src="/maven2/juhe2.png" alt="maven"><br><img src="/maven2/juhe3.png" alt="maven"><br><img src="/maven2/juhe4.png" alt="maven"> </p>
+<h4 id="2-6-3-创建业务层模块"><a href="#2-6-3-创建业务层模块" class="headerlink" title="2.6.3 创建业务层模块"></a>2.6.3 创建业务层模块</h4><p>与创建持久层模块步骤一致</p>
+<h4 id="2-6-4-创建表现层模块"><a href="#2-6-4-创建表现层模块" class="headerlink" title="2.6.4 创建表现层模块"></a>2.6.4 创建表现层模块</h4><p>首先右键聚合工程MavenWeb,选择创建模块<br><img src="/maven2/juhe5.png" alt="maven"><br><img src="/maven2/juhe6.png" alt="maven"></p>
+<p>创建完成后的聚合工程目录<br><img src="/maven2/juhe7.png" alt="maven"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Maven/" rel="tag"># Maven</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/maven/" rel="prev" title="Maven(一):Maven简介及创建Maven工程">
+                Maven(一):Maven简介及创建Maven工程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="coderjzf" />
+          <p class="site-author-name" itemprop="name">coderjzf</p>
+           
+              <p class="site-description motion-element" itemprop="description">a primary coder</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、使用Eclipse创建Maven工程"><span class="nav-number">1.</span> <span class="nav-text">一、使用Eclipse创建Maven工程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-让Eclipse集成Maven插件指向自己下载的Maven"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 让Eclipse集成Maven插件指向自己下载的Maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-设置用户配置文件"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 设置用户配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-创建Maven工程的第一种方式"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 创建Maven工程的第一种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-创建Maven工程的第二种方式"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 创建Maven工程的第二种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-执行mvn命令"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 执行mvn命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Maven中的核心概念"><span class="nav-number">2.</span> <span class="nav-text">二、Maven中的核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-坐标"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-依赖管理"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 依赖管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-依赖范围"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 依赖范围</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-依赖传递"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 依赖传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-3-依赖冲突"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 依赖冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-1-同一个pom文件冲突"><span class="nav-number">2.2.3.1.</span> <span class="nav-text">2.2.3.1 同一个pom文件冲突</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-1-不同pom文件冲突"><span class="nav-number">2.2.3.2.</span> <span class="nav-text">2.2.3.1 不同pom文件冲突</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-4-可选依赖"><span class="nav-number">2.2.4.</span> <span class="nav-text">2.2.4 可选依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-5-排除依赖"><span class="nav-number">2.2.5.</span> <span class="nav-text">2.2.5 排除依赖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-生命周期"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-clean生命周期"><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 clean生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-default生命周期"><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 default生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-site生命周期"><span class="nav-number">2.3.3.</span> <span class="nav-text">2.3.3 site生命周期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-插件"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-1-插件简介"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.4.1 插件简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-2-编译插件"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.4.2 编译插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-3-tomcat插件"><span class="nav-number">2.4.3.</span> <span class="nav-text">2.4.3 tomcat插件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-继承"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-1-父工程统一依赖包"><span class="nav-number">2.5.1.</span> <span class="nav-text">2.5.1 父工程统一依赖包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-2-父工程统一管理依赖版本号"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.5.2 父工程统一管理依赖版本号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-3-父工程抽取版本号"><span class="nav-number">2.5.3.</span> <span class="nav-text">2.5.3 父工程抽取版本号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-聚合"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 聚合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-1-创建聚合工程"><span class="nav-number">2.6.1.</span> <span class="nav-text">2.6.1 创建聚合工程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-2-创建持久层模块"><span class="nav-number">2.6.2.</span> <span class="nav-text">2.6.2 创建持久层模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-3-创建业务层模块"><span class="nav-number">2.6.3.</span> <span class="nav-text">2.6.3 创建业务层模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-4-创建表现层模块"><span class="nav-number">2.6.4.</span> <span class="nav-text">2.6.4 创建表现层模块</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">coderjzf</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>

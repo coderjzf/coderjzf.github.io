@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-17T12:29:10.855Z</updated>
+  <updated>2017-07-06T03:51:01.885Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,206 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Maven(二):Eclipse中的Maven插件以及Maven中的核心概念</title>
+    <link href="http://yoursite.com/maven2/"/>
+    <id>http://yoursite.com/maven2/</id>
+    <published>2017-07-06T03:39:48.000Z</published>
+    <updated>2017-07-06T03:51:01.885Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、使用Eclipse创建Maven工程"><a href="#一、使用Eclipse创建Maven工程" class="headerlink" title="一、使用Eclipse创建Maven工程"></a>一、使用Eclipse创建Maven工程</h2><p>新版本的Eclipse都已经集成了Maven插件，不需要手动下载。<br>但是要对Maven的设置做一些修改。<br><a id="more"></a></p>
+<h3 id="1-1-让Eclipse集成Maven插件指向自己下载的Maven"><a href="#1-1-让Eclipse集成Maven插件指向自己下载的Maven" class="headerlink" title="1.1 让Eclipse集成Maven插件指向自己下载的Maven"></a>1.1 让Eclipse集成Maven插件指向自己下载的Maven</h3><p><img src="/maven2/maven.png" alt="maven"><br><img src="/maven2/maven2.png" alt="maven"></p>
+<h3 id="1-2-设置用户配置文件"><a href="#1-2-设置用户配置文件" class="headerlink" title="1.2 设置用户配置文件"></a>1.2 设置用户配置文件</h3><p><img src="/maven2/maven3.png" alt="maven"></p>
+<h3 id="1-3-创建Maven工程的第一种方式"><a href="#1-3-创建Maven工程的第一种方式" class="headerlink" title="1.3 创建Maven工程的第一种方式"></a>1.3 创建Maven工程的第一种方式</h3><p>首先选择创建maven工程，会出现以下界面<br><img src="/maven2/create2.png" alt="maven"></p>
+<p>点击next<br><img src="/maven2/create3.png" alt="maven"></p>
+<p>在这里选择创建java工程,点击next<br><img src="/maven2/create4.png" alt="maven"></p>
+<p>填写完毕，点击finish,maven工程创建完成。</p>
+<p>创建的普通maven工程目录如下：<br><img src="/maven2/create5.png" alt="maven"></p>
+<p>pom.xml文件内容如下：<br><img src="/maven2/create7.png" alt="maven"></p>
+<h3 id="1-4-创建Maven工程的第二种方式"><a href="#1-4-创建Maven工程的第二种方式" class="headerlink" title="1.4 创建Maven工程的第二种方式"></a>1.4 创建Maven工程的第二种方式</h3><p>首先选择创建maven工程<br><img src="/maven2/create20.png" alt="maven"></p>
+<p>填写完毕，点击next<br><img src="/maven2/create21.png" alt="maven"></p>
+<p>填写完毕后，点击next,创建完成。</p>
+<p>使用这种方式创建的Maven工程目录如下：<br><img src="/maven2/create22.png" alt="maven"><br>可以看到与第一种方式创建的Maven工程基本一样，只是多了resources目录</p>
+<p>pom.xml文件如下：<br><img src="/maven2/create23.png" alt="maven"><br>与第一种方式创建得到的pom.xml文件相比，更加简洁。</p>
+<h3 id="1-5-执行mvn命令"><a href="#1-5-执行mvn命令" class="headerlink" title="1.5 执行mvn命令"></a>1.5 执行mvn命令</h3><p>右键工程<br><img src="/maven2/mvn.png" alt="maven"></p>
+<p>在上一步中如果选择了build，则会出现以下界面<br><img src="/maven2/mvn2.png" alt="maven"><br>可以选择输入compile、test等来执行相关命令。</p>
+<h2 id="二、Maven中的核心概念"><a href="#二、Maven中的核心概念" class="headerlink" title="二、Maven中的核心概念"></a>二、Maven中的核心概念</h2><h3 id="2-1-坐标"><a href="#2-1-坐标" class="headerlink" title="2.1 坐标"></a>2.1 坐标</h3><p>Maven中的坐标是用来唯一标识构件的。由groupId、artifactId、version等组成。</p>
+<ul>
+<li>groupId:组织名称，定义当前Maven组织名称。</li>
+<li>artifactId：模块名称，一般使用实际项目名称(作为前缀)。</li>
+<li>version：版本号。</li>
+<li>package：构件的打包方式。一般有：pom、jar、war等。</li>
+</ul>
+<h3 id="2-2-依赖管理"><a href="#2-2-依赖管理" class="headerlink" title="2.2 依赖管理"></a>2.2 依赖管理</h3><h4 id="2-2-1-依赖范围"><a href="#2-2-1-依赖范围" class="headerlink" title="2.2.1 依赖范围"></a>2.2.1 依赖范围</h4><p><img src="/maven2/depen0.png" alt="maven"><br>依赖范围(scope)用来控制所依赖的jar包在编译(主源码)、测试(测试源码)、运行时三种环境的classpath下是否有效。</p>
+<ul>
+<li>compile:编译依赖范围，是默认依赖范围。对于编译，测试，运行时三种环境的classpath都有效，例如log4j依赖包。</li>
+<li>test:测试依赖范围，只对测试环境下的classpath有效，例如junit依赖包。</li>
+<li>provide:提供依赖范围，对编译、测试环境的classpath有效，在运行时无效。例如servlet-api依赖包，因为在运行时会由容器来提供。</li>
+<li>runtime:运行时依赖范围，只对运行时环境下的classpath有效，例如JDBC驱动依赖包。</li>
+</ul>
+<p><img src="/maven2/depen.png" alt="maven"></p>
+<h4 id="2-2-2-依赖传递"><a href="#2-2-2-依赖传递" class="headerlink" title="2.2.2 依赖传递"></a>2.2.2 依赖传递</h4><p>若有三个工程，分别为A、B、C，其中B工程引入了A工程依赖，C工程又引入了B工程依赖，那么三个工程之间的关系如下：<br><img src="/maven2/depen2.png" alt="maven"></p>
+<p>依赖范围的传递如下：<br><img src="/maven2/depen3.png" alt="maven"><br>上面第一行表示第二直接依赖范围，左边第一列表示第一直接依赖范围，交叉单元格表示传递性依赖范围。</p>
+<p>总结：</p>
+<ul>
+<li>第二直接依赖的范围是compile的时候，传递性依赖的范围与第一直接依赖的范围一致。</li>
+<li>第二直接依赖的范围是test的时候，依赖不会得以传递。</li>
+<li>第二依赖的范围是provided的时候，只传递第一直接依赖范围也为provided的依赖，且传递性依赖的范围同样为 provided。</li>
+<li>第二直接依赖的范围是runtime的时候，传递性依赖的范围与第一直接依赖的范围一致，但compile例外，此时传递的依赖范围为runtime。</li>
+</ul>
+<h4 id="2-2-3-依赖冲突"><a href="#2-2-3-依赖冲突" class="headerlink" title="2.2.3 依赖冲突"></a>2.2.3 依赖冲突</h4><p>依赖冲突又分为两种，一种是同一个pom文件冲突，另一种是不同的pom文件冲突</p>
+<h5 id="2-2-3-1-同一个pom文件冲突"><a href="#2-2-3-1-同一个pom文件冲突" class="headerlink" title="2.2.3.1 同一个pom文件冲突"></a>2.2.3.1 同一个pom文件冲突</h5><p><img src="/maven2/depen4.png" alt="maven"></p>
+<h5 id="2-2-3-1-不同pom文件冲突"><a href="#2-2-3-1-不同pom文件冲突" class="headerlink" title="2.2.3.1 不同pom文件冲突"></a>2.2.3.1 不同pom文件冲突</h5><p>如果B工程依赖A工程，且A工程中引入了junit-4.8的依赖(依赖范围为compile)，而B工程又引入了junit-4.9的依赖，那么<br>B工程中就不会使用A工程传递的junit-4.8的依赖，而是使用自行引入的junit-4.9的依赖。<br><img src="/maven2/depen5.png" alt="maven"><br><img src="/maven2/depen6.png" alt="maven"></p>
+<h4 id="2-2-4-可选依赖"><a href="#2-2-4-可选依赖" class="headerlink" title="2.2.4 可选依赖"></a>2.2.4 可选依赖</h4><p>可以通过在pom文件中使用optional标签来设置工程的依赖是否向下传递：<br><img src="/maven2/depen7.png" alt="maven"></p>
+<h4 id="2-2-5-排除依赖"><a href="#2-2-5-排除依赖" class="headerlink" title="2.2.5 排除依赖"></a>2.2.5 排除依赖</h4><p>如果B工程引入了A工程依赖，却又不想引入A工程中某个具体的依赖，那么可以使用exclusions标签来排除依赖:<br><img src="/maven2/depen8.png" alt="maven"></p>
+<h3 id="2-3-生命周期"><a href="#2-3-生命周期" class="headerlink" title="2.3 生命周期"></a>2.3 生命周期</h3><p>Maven中的生命周期是由多个阶段组成的，每个阶段都是一个完整的功能。(如执行mvn clean命令，就是执行clean阶段)<br>Maven中有三个生命周期：</p>
+<ul>
+<li>clean生命周期</li>
+<li>default生命周期</li>
+<li>site生命周期</li>
+</ul>
+<h4 id="2-3-1-clean生命周期"><a href="#2-3-1-clean生命周期" class="headerlink" title="2.3.1 clean生命周期"></a>2.3.1 clean生命周期</h4><p>clean生命周期由三个阶段组成：</p>
+<ul>
+<li>pre-clean 执行一些需要在clean之前完成的工作 </li>
+<li>clean 移除所有上一次构建生成的文件 </li>
+<li>post-clean 执行一些需要在clean之后立刻完成的工作</li>
+</ul>
+<p>在maven中，在同一个生命周期中只要执行生命周期中后面的阶段，则前面的阶段会自动执行，而不用通过命令取控制。<br>例如，执行mvn clean命令，即执行了clean阶段，那么pre-clean阶段会自动执行，且在clean阶段之前执行。</p>
+<h4 id="2-3-2-default生命周期"><a href="#2-3-2-default生命周期" class="headerlink" title="2.3.2 default生命周期"></a>2.3.2 default生命周期</h4><p>default生命周期由以下阶段组成：</p>
+<ul>
+<li>validate </li>
+<li>generate-sources </li>
+<li>process-sources </li>
+<li>generate-resources </li>
+<li>process-resources 复制并处理资源文件，至目标目录，准备打包。 </li>
+<li><strong>compile</strong> 编译项目的源代码。 </li>
+<li>process-classes </li>
+<li>generate-test-sources </li>
+<li>process-test-sources </li>
+<li>generate-test-resources </li>
+<li>process-test-resources 复制并处理资源文件，至目标测试目录。 </li>
+<li>test-compile 编译测试源代码。 </li>
+<li>process-test-classes </li>
+<li><strong>test</strong> 测试</li>
+<li>prepare-package </li>
+<li><strong>package</strong> 打包阶段</li>
+<li>pre-integration-test </li>
+<li>integration-test </li>
+<li>post-integration-test </li>
+<li>verify </li>
+<li><strong>install</strong> 安装阶段，将包安装至本地仓库，以让其它项目依赖。 </li>
+<li><strong>deploy</strong> 将最终的包复制到远程的仓库，以让其它开发人员与项目共享。</li>
+</ul>
+<h4 id="2-3-3-site生命周期"><a href="#2-3-3-site生命周期" class="headerlink" title="2.3.3 site生命周期"></a>2.3.3 site生命周期</h4><p>site生命周期由以下阶段组成：</p>
+<ul>
+<li>pre-site 执行一些需要在生成站点文档之前完成的工作 </li>
+<li>site 生成项目的站点文档 </li>
+<li>post-site 执行一些需要在生成站点文档之后完成的工作，并且为部署做准备 </li>
+<li>site-deploy 将生成的站点文档部署到特定的服务器上 </li>
+</ul>
+<h3 id="2-4-插件"><a href="#2-4-插件" class="headerlink" title="2.4 插件"></a>2.4 插件</h3><h4 id="2-4-1-插件简介"><a href="#2-4-1-插件简介" class="headerlink" title="2.4.1 插件简介"></a>2.4.1 插件简介</h4><p>Maven实质是一个执行插件的框架，Maven的生命周期规定了阶段的执行顺序，而阶段都是通过插件来执行的。</p>
+<p>执行插件的命令语法：<br><strong>mvn [plugin-name]:[goal-name]</strong></p>
+<p>如mvn compiler:compile就可以执行compiler插件    </p>
+<p>mvn中的插件类型分为两种：</p>
+<ul>
+<li>构建插件：在运行时执行，可以在pom文件中通过build标签来配置</li>
+<li>报告插件：在网站生成期间执行，可以在pom文件中通过reporting标签来配置</li>
+</ul>
+<p>mvn中常用的插件有编译(compiler)插件、tomcat插件、打包插件等。</p>
+<h4 id="2-4-2-编译插件"><a href="#2-4-2-编译插件" class="headerlink" title="2.4.2 编译插件"></a>2.4.2 编译插件</h4><p><img src="/maven2/plugin.png" alt="maven"></p>
+<h4 id="2-4-3-tomcat插件"><a href="#2-4-3-tomcat插件" class="headerlink" title="2.4.3 tomcat插件"></a>2.4.3 tomcat插件</h4><p><img src="/maven2/plugin2.png" alt="maven"></p>
+<h3 id="2-5-继承"><a href="#2-5-继承" class="headerlink" title="2.5 继承"></a>2.5 继承</h3><p>Maven中的继承，其实指的是pom文件的继承。作为父工程，packageing类型必须为pom。</p>
+<p>创建父工程<br><img src="/maven2/parent.png" alt="maven"><br><img src="/maven2/parent2.png" alt="maven"><br><img src="/maven2/parent3.png" alt="maven"></p>
+<p>创建子工程<br><img src="/maven2/sub.png" alt="maven"><br>在子工程的pom文件中已经自动引入了父工程依赖<br><img src="/maven2/sub2.png" alt="maven"></p>
+<p>为什么要使用继承，直接引入工程依赖不行吗？</p>
+<p>通过继承可以实现很多功能：</p>
+<ul>
+<li>父工程统一依赖包</li>
+<li>父工程统一管理依赖版本号</li>
+<li>父工程抽取版本号</li>
+</ul>
+<h4 id="2-5-1-父工程统一依赖包"><a href="#2-5-1-父工程统一依赖包" class="headerlink" title="2.5.1 父工程统一依赖包"></a>2.5.1 父工程统一依赖包</h4><p>父工程中引入的依赖包，都会被子工程继承，所以使用父工程可以统一依赖包<br><img src="/maven2/inh.png" alt="maven"></p>
+<h4 id="2-5-2-父工程统一管理依赖版本号"><a href="#2-5-2-父工程统一管理依赖版本号" class="headerlink" title="2.5.2 父工程统一管理依赖版本号"></a>2.5.2 父工程统一管理依赖版本号</h4><p>父工程可以通过dependencyManagement标签来管理依赖，并没有实际引入依赖。这样由子工程实际引入依赖时，可以不用指定版本号，版本号交由父工程管理。<br><img src="/maven2/inh2.png" alt="maven"><br><img src="/maven2/inh3.png" alt="maven"></p>
+<h4 id="2-5-3-父工程抽取版本号"><a href="#2-5-3-父工程抽取版本号" class="headerlink" title="2.5.3 父工程抽取版本号"></a>2.5.3 父工程抽取版本号</h4><p>在实际项目中，若是有更改依赖版本号的需要，则需要在pom文件中更改。由于一个项目通常会有几十上百个依赖包，查找起来很不方便。</p>
+<p>所以Maven提供了抽取版本的功能：<br>在父工程管理依赖版本号的基础上，在父工程pom文件中，可以通过properties标签来指定依赖版本号。<br><img src="/maven2/inh4.png" alt="maven"></p>
+<h3 id="2-6-聚合"><a href="#2-6-聚合" class="headerlink" title="2.6 聚合"></a>2.6 聚合</h3><p>在实际项目中，一般都是分层的架构，有表现层、业务层、持久层等。<br>对于项目的分层，Maven也有相应的支持。在Maven中，可以创建一个<strong>聚合工程</strong>。再将每一层创建为一个单独的模块(module),可以单独使用，也可以在聚合工程中使用。</p>
+<h4 id="2-6-1-创建聚合工程"><a href="#2-6-1-创建聚合工程" class="headerlink" title="2.6.1 创建聚合工程"></a>2.6.1 创建聚合工程</h4><p><img src="/maven2/juhe.png" alt="maven"></p>
+<h4 id="2-6-2-创建持久层模块"><a href="#2-6-2-创建持久层模块" class="headerlink" title="2.6.2 创建持久层模块"></a>2.6.2 创建持久层模块</h4><p>首先右键聚合工程MavenWeb,选择创建模块<br><img src="/maven2/juhe2.png" alt="maven"><br><img src="/maven2/juhe3.png" alt="maven"><br><img src="/maven2/juhe4.png" alt="maven"> </p>
+<h4 id="2-6-3-创建业务层模块"><a href="#2-6-3-创建业务层模块" class="headerlink" title="2.6.3 创建业务层模块"></a>2.6.3 创建业务层模块</h4><p>与创建持久层模块步骤一致</p>
+<h4 id="2-6-4-创建表现层模块"><a href="#2-6-4-创建表现层模块" class="headerlink" title="2.6.4 创建表现层模块"></a>2.6.4 创建表现层模块</h4><p>首先右键聚合工程MavenWeb,选择创建模块<br><img src="/maven2/juhe5.png" alt="maven"><br><img src="/maven2/juhe6.png" alt="maven"></p>
+<p>创建完成后的聚合工程目录<br><img src="/maven2/juhe7.png" alt="maven"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、使用Eclipse创建Maven工程&quot;&gt;&lt;a href=&quot;#一、使用Eclipse创建Maven工程&quot; class=&quot;headerlink&quot; title=&quot;一、使用Eclipse创建Maven工程&quot;&gt;&lt;/a&gt;一、使用Eclipse创建Maven工程&lt;/h2&gt;&lt;p&gt;新版本的Eclipse都已经集成了Maven插件，不需要手动下载。&lt;br&gt;但是要对Maven的设置做一些修改。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://yoursite.com/categories/Tools/"/>
+    
+    
+      <category term="Maven" scheme="http://yoursite.com/tags/Maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven(一):Maven简介及创建Maven工程</title>
+    <link href="http://yoursite.com/maven/"/>
+    <id>http://yoursite.com/maven/</id>
+    <published>2017-07-05T07:59:35.000Z</published>
+    <updated>2017-07-05T08:07:06.630Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="一、Maven是什么？"><a href="#一、Maven是什么？" class="headerlink" title="一、Maven是什么？"></a>一、Maven是什么？</h2><p>Maven是基于<strong>POM(工程对象模型)</strong>,通过一小段描述来对项目的代码、报告、文件进行管理的工具。<br><a id="more"></a><br>Maven也是一个<strong>跨平台</strong>的项目管理工具，是使用Java开发的，依赖jdk1.6以上。<br>Maven的<strong>主要功能</strong>是<strong>依赖管理</strong>和<strong>项目构建</strong>。</p>
+<h2 id="二、Maven的安装与配置"><a href="#二、Maven的安装与配置" class="headerlink" title="二、Maven的安装与配置"></a>二、Maven的安装与配置</h2><h3 id="2-1-Maven的安装"><a href="#2-1-Maven的安装" class="headerlink" title="2.1 Maven的安装"></a>2.1 Maven的安装</h3><p>Maven的下载地址：<a href="http://maven.apache.org" target="_blank" rel="external">http://maven.apache.org</a></p>
+<p>下载压缩文件后解压，解压之后打开，Maven目录如下<br><img src="/maven/maven.jpg" alt="maven"></p>
+<p>接下来配置环境变量：<br><img src="/maven/maven2.jpg" alt="maven"></p>
+<p><img src="/maven/maven3.jpg" alt="maven"></p>
+<p>照着这样配置了之后发现出错了，显示JAVA_HOME出错！可是，核对了几遍，并没有发现错误，并且java/javac命令都是可以运行的。。<br>百度了一下，可能是由于maven解析JAVA_HOME时出错，所以将JAVA_HOME等变量重新按照规范配置了一遍</p>
+<ul>
+<li>JAVA_HOME: C:\Program Files\Java\jdk1.8.0_121 (你自己jdk的实际目录)</li>
+<li>JRE_HOME:  C:\Program Files\Java\jre1.8.0_121</li>
+<li>PATH:      %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;</li>
+<li>CLASSPATH: .%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar;</li>
+</ul>
+<p>这样配置之后，打开cmd,运行”mvn -v”命令<br><img src="/maven/cmd.jpg" alt="maven"><br>如果出现这样的界面，就说明已经已经安装成功了。</p>
+<h3 id="2-2-Maven的配置"><a href="#2-2-Maven的配置" class="headerlink" title="2.2 Maven的配置"></a>2.2 Maven的配置</h3><h4 id="2-2-1-全局配置"><a href="#2-2-1-全局配置" class="headerlink" title="2.2.1 全局配置"></a>2.2.1 全局配置</h4><p>在Maven的conf目录下面，有一个settings.xml文件，用来存放全局配置<br><img src="/maven/settings2.jpg" alt="maven"></p>
+<p>该文件中可以设置本地仓库的地址<br><img src="/maven/settings3.jpg" alt="maven"></p>
+<p>默认的本地仓库地址是在C盘的用户目录下</p>
+<h4 id="2-2-2-用户配置"><a href="#2-2-2-用户配置" class="headerlink" title="2.2.2 用户配置"></a>2.2.2 用户配置</h4><p>安装好Maven之后，会在C盘的用户目录下，自动生成了一个本地仓库<br><img src="/maven/settings.jpg" alt="maven"></p>
+<p>在这个settings.xml文件中，可以更改用户配置，比如更改本地仓库的地址<br><img src="/maven/settings4.jpg" alt="maven"></p>
+<h2 id="三、创建Maven工程"><a href="#三、创建Maven工程" class="headerlink" title="三、创建Maven工程"></a>三、创建Maven工程</h2><p>一般的Maven工程结构如下：<br>MavenProject<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">|-src</div><div class="line">	|-main</div><div class="line">		|-java</div><div class="line">		|-resources</div><div class="line">	|-test</div><div class="line">		|-java</div><div class="line">		|-resources</div><div class="line">|-target</div><div class="line">|-pom.xml</div></pre></td></tr></table></figure></p>
+<p>各个目录的作用：<br><img src="/maven/project.jpg" alt="maven"></p>
+<p>按照上面的工程结构创建一个Maven工程<br><img src="/maven/project2.jpg" alt="maven"></p>
+<p>在src/main/java目录下创建一个包，包下面创建一个类<br><img src="/maven/HelloMaven.jpg" alt="maven"></p>
+<p>在src/test/java目录下创建同样的包，并在包下面创建一个测试类<br><img src="/maven/TestHelloMaven.jpg" alt="maven"></p>
+<p>编辑pom.xml文件<br><img src="/maven/pom.jpg" alt="maven"></p>
+<p>一个Maven工程就创建完成。</p>
+<h2 id="四、Maven命令"><a href="#四、Maven命令" class="headerlink" title="四、Maven命令"></a>四、Maven命令</h2><h3 id="4-1-mvn-compile"><a href="#4-1-mvn-compile" class="headerlink" title="4.1 mvn compile"></a>4.1 mvn compile</h3><p>编译命令(只会编译src/main/java下的源码)<br><img src="/maven/compile.jpg" alt="maven"><br>如果是创建maven工程后第一次编译，那么maven还会自动下载编译所需要的jar包和工程所依赖的jar包。</p>
+<h3 id="4-2-mvn-clean"><a href="#4-2-mvn-clean" class="headerlink" title="4.2 mvn clean"></a>4.2 mvn clean</h3><p>清除命令，会清除编译好的class文件，也就是清除target目录</p>
+<h3 id="4-3-mvn-test"><a href="#4-3-mvn-test" class="headerlink" title="4.3 mvn test"></a>4.3 mvn test</h3><p>测试命令<br><img src="/maven/compile.jpg" alt="maven"></p>
+<p>需要注意的时，test命令不仅会编译src/test/java下的源码，还会编译src/main/java下的源码。<br>同时在target目录下，会生成测试报告。<br><img src="/maven/target.jpg" alt="maven"></p>
+<h3 id="4-4-mvn-package"><a href="#4-4-mvn-package" class="headerlink" title="4.4 mvn package"></a>4.4 mvn package</h3><p>打包命令，如果创建的工程是jar包形式，则打包成jar包;如果是war包形式，则打包成war包。<br>执行打包命令后，会在target目录下生成工程的jar包。<br><img src="/maven/package.jpg" alt="maven"></p>
+<h3 id="4-5-mvn-install"><a href="#4-5-mvn-install" class="headerlink" title="4.5 mvn install"></a>4.5 mvn install</h3><p>安装命令，会将执行mvn package命令生成的工程的jar包安装到本地仓库</p>
+<h3 id="4-6-mvn-clean-compile"><a href="#4-6-mvn-clean-compile" class="headerlink" title="4.6 mvn clean compile"></a>4.6 mvn clean compile</h3><p>即先执行clean命令清空target目录内容，再执行compile命令编译源码</p>
+<h3 id="4-7-mvn-clean-test"><a href="#4-7-mvn-clean-test" class="headerlink" title="4.7 mvn clean test"></a>4.7 mvn clean test</h3><p>先执行clean命令清空target目录内容,再执行test命令进行测试</p>
+<h3 id="4-8-mvn-clean-package"><a href="#4-8-mvn-clean-package" class="headerlink" title="4.8 mvn clean package"></a>4.8 mvn clean package</h3><p>先执行clean命令清空target目录内容，再执行comile命令编译源码，再执行test命令进行测试，最后执行package命令进行打包。<br>即clean-&gt;compile-&gt;test-&gt;package</p>
+<h3 id="4-9-mvn-clean-deploy"><a href="#4-9-mvn-clean-deploy" class="headerlink" title="4.9 mvn clean deploy"></a>4.9 mvn clean deploy</h3><p>先执行clean命令清空target目录内容，再执行comile命令编译源码，再执行test命令进行测试，再执行package命令进行打包，最后执行install命令安装到本地仓库。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、Maven是什么？&quot;&gt;&lt;a href=&quot;#一、Maven是什么？&quot; class=&quot;headerlink&quot; title=&quot;一、Maven是什么？&quot;&gt;&lt;/a&gt;一、Maven是什么？&lt;/h2&gt;&lt;p&gt;Maven是基于&lt;strong&gt;POM(工程对象模型)&lt;/strong&gt;,通过一小段描述来对项目的代码、报告、文件进行管理的工具。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Tools" scheme="http://yoursite.com/categories/Tools/"/>
+    
+    
+      <category term="Maven" scheme="http://yoursite.com/tags/Maven/"/>
+    
+  </entry>
   
   <entry>
     <title>Spring(四):AOP</title>
@@ -1740,210 +1940,6 @@ public void test3() {
     
     
       <category term="Utils" scheme="http://yoursite.com/tags/Utils/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>防表单重复提交</title>
-    <link href="http://yoursite.com/DuplicateForm/"/>
-    <id>http://yoursite.com/DuplicateForm/</id>
-    <published>2017-05-03T16:00:00.000Z</published>
-    <updated>2017-05-21T15:23:17.888Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>主要分为三步</strong></p>
-<ol>
-<li>先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面</li>
-<li>在表单提交页面通过隐藏域取出令牌，提交表单</li>
-<li>跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提交表单。</li>
-</ol>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>生成令牌的servlet代码</strong></p>
-<pre><code>import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Random;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import sun.misc.BASE64Encoder;
-
-public class FormServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    doPost(request, response);
-}
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    request.setCharacterEncoding(&quot;utf-8&quot;);
-    response.setContentType(&quot;text/html;charset=utf-8&quot;);
-
-    TokenProcess tp = TokenProcess.getInsetance();
-    String token = tp.generateToken(); // 生成令牌
-    request.getSession().setAttribute(&quot;token&quot;, token); // 将令牌存于session域
-    request.getRequestDispatcher(&quot;/Login4.jsp&quot;).forward(request, response);
-
-}
-}
-
-/**
- * 使用单例模式创建一个令牌类
- * @author jiazhengfeng
- */
-class TokenProcess {
-    private static TokenProcess instance = new TokenProcess();
-
-    private TokenProcess() {
-    };
-
-    public static TokenProcess getInsetance() {
-        return instance;
-    }
-
-    public String generateToken() {
-        String token = System.currentTimeMillis() + new Random().nextInt() + &quot;&quot;;
-
-        try {
-            MessageDigest md = MessageDigest.getInstance(&quot;md5&quot;);
-            byte[] md5 = md.digest(token.getBytes()); // 得到token的消息摘要
-            BASE64Encoder encoder = new BASE64Encoder();
-            return encoder.encode(md5); // 用base64编码摘要并返回
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}
-</code></pre><hr>
-<p><strong>一个简单的jsp登录页面</strong></p>
-<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
-pageEncoding=&quot;utf-8&quot;%&gt;
-&lt;%@taglib prefix=&quot;simpletag&quot; uri=&quot;http://www.simpletag.com&quot; %&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;&gt;
-&lt;title&gt;Insert title here&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-   &lt;form action=&quot;/LoginWithVerifyCode/DoFormServlet&quot; method=&quot;post&quot; &gt;
-  &lt;fieldset&gt;
-  &lt;legend&gt;请登录&lt;/legend&gt;
-  &lt;input type=&quot;hidden&quot; name=&quot;token&quot; value=&quot;${token}&quot;&gt;  &lt;%--隐藏域 用于传递token --%&gt;
-   User:&lt;br/&gt;
-   &lt;input type=&quot;text&quot; name=&quot;user&quot;&gt;&lt;br/&gt;
-   Password:&lt;br/&gt;
-   &lt;input type=&quot;password&quot; name=&quot;password&quot;&gt;&lt;br/&gt;
-   &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
-   &lt;/fieldset&gt;
-   &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><hr>
-<p><strong>验证表单的servlet代码</strong></p>
-<pre><code>import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class DoFormServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-    doPost(request, response);
-}
-
-/**
-     * 利用令牌防止表单重复提交
-     */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-        request.setCharacterEncoding(&quot;utf-8&quot;);
-        response.setContentType(&quot;text/html;charset=utf-8&quot;);
-
-        boolean b = isTokenValid(request);
-        if (!b) {
-            System.out.println(&quot;请勿重复提交表单&quot;);
-            return;
-        }
-
-        request.getSession().removeAttribute(&quot;token&quot;);
-        System.out.println(&quot;向数据库存入数据&quot;);
-
-    }
-
-    /**
-     * 判断令牌是否有效
-     * 
-     * @param request
-     * @return
-     */
-    private boolean isTokenValid(HttpServletRequest request) {
-        String client_token = request.getParameter(&quot;token&quot;); // 得到表单隐藏域的令牌
-        String server_token = (String) request.getSession().getAttribute(&quot;token&quot;); // 得到服务器端session域的令牌
-
-        if (client_token == null) { // 如果表单格式有错误或者伪造表单
-            return false;
-        }
-
-        if (server_token == null) { // 如果服务器端不存在令牌
-            return false;
-        }
-
-        if (server_token.equals(client_token)) {
-            return true;
-        }
-
-        return false;
-    }
-    }
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;主要分为三步&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;先通过向一个servlet发起请求，生成令牌，存入session域中，跳转到表单提交页面&lt;/li&gt;
-&lt;li&gt;在表单提交页面通过隐藏域取出令牌，提交表单&lt;/li&gt;
-&lt;li&gt;跳转到表单验证页面，取出session中的令牌与用户携带的令牌比较，若相等，则是第一次提交，通过验证，随即删除session域中的令牌。则如果再次请求（直接请求表单验证页面），刷新等，由于服务端，即session域中的令牌已经不存在，则提示请勿重复提交表单。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
-    
-    </summary>
-    
-      <category term="JavaWeb" scheme="http://yoursite.com/categories/JavaWeb/"/>
-    
-    
-      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于java.util.Date与java.sql.Date</title>
-    <link href="http://yoursite.com/Date/"/>
-    <id>http://yoursite.com/Date/</id>
-    <published>2017-05-02T16:00:00.000Z</published>
-    <updated>2017-05-07T02:14:29.953Z</updated>
-    
-    <content type="html"><![CDATA[<p>1.java.sql.Date是java.util.Date的子类<br>2.将java.util.Date转成java.sql.Date<br><a id="more"></a><br>Date utilDate=new Date(); //java.util.Date<br>Date sqlDate=new Date(utilDate.getTime());//java.sql.Date</p>
-<p>3.将字符串转成java.util.Date<br>String str=”1995-9-2”;<br>SimpleDateFormat sdf=new SimpleDateFormat(“yyyy-MM-dd”);<br>sdf.parse(str);</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;1.java.sql.Date是java.util.Date的子类&lt;br&gt;2.将java.util.Date转成java.sql.Date&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-      <category term="JavaSE" scheme="http://yoursite.com/tags/JavaSE/"/>
     
   </entry>
   

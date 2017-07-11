@@ -4,6 +4,46 @@
 
     
   <url>
+    <loc>http://yoursite.com/maven2/</loc>
+    <lastmod>2017-07-06T03:51:01.885Z</lastmod>
+    <data>
+        <display>
+        <title>Maven(二):Eclipse中的Maven插件以及Maven中的核心概念</title>
+        <pubTime>2017-07-06T03:39:48.000Z</pubTime>
+        
+        <tag>Maven</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tools" url="http://yoursite.com/categories/Tools/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/maven/</loc>
+    <lastmod>2017-07-05T08:07:06.630Z</lastmod>
+    <data>
+        <display>
+        <title>Maven(一):Maven简介及创建Maven工程</title>
+        <pubTime>2017-07-05T07:59:35.000Z</pubTime>
+        
+        <tag>Maven</tag>
+         
+         
+           
+             
+              <breadCrumb title="Tools" url="http://yoursite.com/categories/Tools/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://yoursite.com/spring4/</loc>
     <lastmod>2017-06-17T12:29:10.855Z</lastmod>
     <data>
