@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-07-06T03:51:01.885Z</updated>
+  <updated>2017-08-01T01:27:46.790Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,104 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HashMap源码学习</title>
+    <link href="http://yoursite.com/hashmap/"/>
+    <id>http://yoursite.com/hashmap/</id>
+    <published>2017-08-01T01:08:36.000Z</published>
+    <updated>2017-08-01T01:27:46.790Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>HashMap是存储键-值对映射的集合，继承了AbstractMap类并实现了Map接口，可以通过put、remove、get等方法插入、更改、移除、获取键-值对映射。<br>HashMap内部的数据结构是哈希表，由数组、链表和红黑树组成，采用链地址法来解决哈希冲突。<br><a id="more"></a></p>
+<h3 id="主要成员变量和构造函数"><a href="#主要成员变量和构造函数" class="headerlink" title="主要成员变量和构造函数"></a>主要成员变量和构造函数</h3><h4 id="静态常量"><a href="#静态常量" class="headerlink" title="静态常量"></a>静态常量</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//序列化ID</span></div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">362498820763181265L</span>;</div><div class="line"><span class="comment">//默认容量大小为16，必须为2的幂</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_INITIAL_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">4</span>; <span class="comment">// aka 16</span></div><div class="line"><span class="comment">//最大容量为2^30，必须为2的幂</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAXIMUM_CAPACITY = <span class="number">1</span> &lt;&lt; <span class="number">30</span>;</div><div class="line"><span class="comment">//默认平衡因子为0.75</span></div><div class="line">tatic <span class="keyword">final</span> <span class="keyword">float</span> DEFAULT_LOAD_FACTOR = <span class="number">0.75f</span>;</div><div class="line"><span class="comment">//桶中的节点数大于这个阈值，链表变成红黑树</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TREEIFY_THRESHOLD = <span class="number">8</span>;</div><div class="line">桶中的节点数小于这个阈值，红黑树变成链表</div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> UNTREEIFY_THRESHOLD = <span class="number">6</span>;</div><div class="line"><span class="comment">//最小树化容量。若链表节点数达到8，且哈希表容量大于等于64，则将冲突的链表变成红黑树	</span></div><div class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_TREEIFY_CAPACITY = <span class="number">64</span>;</div><div class="line"><span class="comment">//存储节点的数组，每个数组中的元素都是一个桶(bucket),桶中可能是一个链表的头节点(Node)，也可能是红黑树的根节点(TreeNode)</span></div></pre></td></tr></table></figure>
+<h4 id="成员变量"><a href="#成员变量" class="headerlink" title="成员变量"></a>成员变量</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">transient</span> Node&lt;K,V&gt;[] table;</div><div class="line"><span class="comment">//节点的集合</span></div><div class="line"><span class="keyword">transient</span> Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet;</div><div class="line"><span class="comment">//阈值=容量X平衡因子</span></div><div class="line"><span class="keyword">int</span> threshold;</div><div class="line"><span class="comment">//平衡因子，哈希表在容量自动增长之前可以达到多满的一个尺度(一种度量方式)。当哈希表中的键值对数超过了阈值(平衡因子X容量)，则哈希表会resize</span></div><div class="line"><span class="comment">//平衡因子不宜过大，这样查找链表中元素的效率会变低;平衡因子也不宜过小</span></div><div class="line"><span class="keyword">final</span> <span class="keyword">float</span> loadFactor;</div><div class="line"><span class="comment">//实际存储的键值对数，不是容量大小</span></div><div class="line"><span class="keyword">transient</span> <span class="keyword">int</span> size;</div></pre></td></tr></table></figure>
+<h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div></pre></td><td class="code"><pre><div class="line">			/*参数为初始容量和平衡因子的构造函数*/</div><div class="line">			public HashMap(int initialCapacity, float loadFactor) &#123;</div><div class="line">				if (initialCapacity &lt; 0)</div><div class="line">					throw new IllegalArgumentException("Illegal initial capacity: " +</div><div class="line">													   initialCapacity);</div><div class="line">				if (initialCapacity &gt; MAXIMUM_CAPACITY)//如果容量大于2^30,则被赋值为2^30</div><div class="line">					initialCapacity = MAXIMUM_CAPACITY;</div><div class="line">				if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))</div><div class="line">					throw new IllegalArgumentException("Illegal load factor: " +</div><div class="line">													   loadFactor);</div><div class="line">				this.loadFactor = loadFactor;</div><div class="line">				this.threshold = tableSizeFor(initialCapacity);//初始化阈值</div><div class="line">			&#125;</div><div class="line">			/*参数为Map的构造函数*/</div><div class="line">			public HashMap(Map&lt;? extends K, ? extends V&gt; m) &#123;</div><div class="line">				this.loadFactor = DEFAULT_LOAD_FACTOR;</div><div class="line">				putMapEntries(m, false);//将所有节点添加到新的HashMap中</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			/*返回大于初始容量的最小的2次幂数值*/</div><div class="line">			static final int tableSizeFor(int cap) &#123;</div><div class="line">				int n = cap - 1;</div><div class="line">				n |= n &gt;&gt;&gt; 1;</div><div class="line">				n |= n &gt;&gt;&gt; 2;</div><div class="line">				n |= n &gt;&gt;&gt; 4;</div><div class="line">				n |= n &gt;&gt;&gt; 8;</div><div class="line">				n |= n &gt;&gt;&gt; 16;</div><div class="line">				return (n &lt; 0) ? 1 : (n &gt;= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;</div><div class="line">	&#125;				</div><div class="line">```	</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">-----	</div><div class="line"></div><div class="line"></div><div class="line">### 插入/更改键值对的方法</div><div class="line"></div><div class="line">```java</div><div class="line">			/*put方法*/</div><div class="line">			public V put(K key, V value) &#123;</div><div class="line">				/*调用putVal*/</div><div class="line">				return putVal(hash(key), key, value, false, true);</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			/*hash函数*/</div><div class="line">			static final int hash(Object key) &#123;</div><div class="line">				int h;</div><div class="line">				return (key == null) ? 0 : (h = key.hashCode()) ^ (h &gt;&gt;&gt; 16);//若key==null返回0</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			/*插入键值对的方法*/</div><div class="line">			final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) &#123;</div><div class="line">				Node&lt;K, V&gt;[] tab;</div><div class="line">				Node&lt;K, V&gt; p;</div><div class="line">				int n, i;</div><div class="line">				/*如果节点数组为null或者长度为0*/</div><div class="line">				if ((tab = table) == null || (n = tab.length) == 0)</div><div class="line">					/*调用resize方法进行扩容，并将返回的新的节点数组的长度赋值给n*/</div><div class="line">					n = (tab = resize()).length;</div><div class="line">				/*(n - 1) &amp; hash计算得到索引值，得到新节点在哈希表中的插入位置，p为此桶中原来的节点,如果p==null,说明桶中原来没有节点,则直接创建新节点并插入*/</div><div class="line">				if ((p = tab[i = (n - 1) &amp; hash]) == null)</div><div class="line">					tab[i] = newNode(hash, key, value, null);</div><div class="line">				else &#123;</div><div class="line">					Node&lt;K, V&gt; e;</div><div class="line">					K k;</div><div class="line">					/*执行到这说明桶中有一个及以上的节点。如果p的hash值等于新节点的值,键等于新节点的键,则将p赋值给e*/</div><div class="line">					if (p.hash == hash &amp;&amp; ((k = p.key) == key || (key != null &amp;&amp; key.equals(k))))</div><div class="line">						e = p;</div><div class="line">					/*如果是树节点，则按照红黑树的方式插入新节点*/</div><div class="line">					else if (p instanceof TreeNode)</div><div class="line">						e = ((TreeNode&lt;K, V&gt;) p).putTreeVal(this, tab, hash, key, value);</div><div class="line">					else &#123;</div><div class="line">						/*如果是链表中的节点，遍历链表*/</div><div class="line">						for (int binCount = 0;; ++binCount) &#123;</div><div class="line">							/*在链表尾插入新节点*/</div><div class="line">							if ((e = p.next) == null) &#123;</div><div class="line">								p.next = newNode(hash, key, value, null);</div><div class="line">								/*如果链表中节点大于等于8个*/</div><div class="line">								if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for 1st</div><div class="line">									/*进行扩容或者将链表结构改为红黑树*/</div><div class="line">									treeifyBin(tab, hash);</div><div class="line">								break;</div><div class="line">							&#125;</div><div class="line">							/*如果要插入节点的键与链表中的节点键相同*/</div><div class="line">							if (e.hash == hash &amp;&amp; ((k = e.key) == key || (key != null &amp;&amp; key.equals(k))))</div><div class="line">								break;</div><div class="line">							p = e;</div><div class="line">						&#125;</div><div class="line">					&#125;</div><div class="line">					/*如果e！=null说明已经存在跟要插入的节点相同键值的节点*/</div><div class="line">					if (e != null) &#123; </div><div class="line">						V oldValue = e.value;</div><div class="line">						if (!onlyIfAbsent || oldValue == null)</div><div class="line">							e.value = value;</div><div class="line">						afterNodeAccess(e);</div><div class="line">						return oldValue;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				++modCount;</div><div class="line">				if (++size &gt; threshold)//如果哈希表中节点数超过阈值，则扩容</div><div class="line">					resize();</div><div class="line">				afterNodeInsertion(evict);</div><div class="line">				return null;</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			/*扩容方法*/</div><div class="line">			final Node&lt;K, V&gt;[] resize() &#123;</div><div class="line">				Node&lt;K, V&gt;[] oldTab = table;</div><div class="line">				/*如果原节点数组为null,则返回0;否则返回原节点数组的长度*/</div><div class="line">				int oldCap = (oldTab == null) ? 0 : oldTab.length;</div><div class="line">				/*保存原阈值*/</div><div class="line">				int oldThr = threshold;</div><div class="line">				int newCap, newThr = 0;</div><div class="line">				/*如果原容量大于0,说明已经初始化*/</div><div class="line">				if (oldCap &gt; 0) &#123;</div><div class="line">					/*如果原容量大于或等于最大容量，新阈值等于2^31-1，并返回原哈希表*/</div><div class="line">					if (oldCap &gt;= MAXIMUM_CAPACITY) &#123;</div><div class="line">						threshold = Integer.MAX_VALUE;</div><div class="line">						return oldTab;</div><div class="line">					&#125;</div><div class="line">					/*如果新容量变为原容量的2倍后还是小于最大容量且原容量大于初始容量16，则新阈值等于原阈值的2倍。即将阈值和容量都加倍*/</div><div class="line">					else if ((newCap = oldCap &lt;&lt; 1) &lt; MAXIMUM_CAPACITY &amp;&amp; oldCap &gt;= DEFAULT_INITIAL_CAPACITY)</div><div class="line">						newThr = oldThr &lt;&lt; 1; // double threshold</div><div class="line">					&#125;</div><div class="line">					/*如果原阈值大于0，则新容量等于原阈值*/</div><div class="line">					else if (oldThr &gt; 0) // initial capacity was placed in threshold</div><div class="line">						newCap = oldThr;</div><div class="line">					/*若原容量与原阈值都等于0，新容量等于初始容量(16),新阈值等于平衡因子x初始容量(16)*/</div><div class="line">					else &#123; // zero initial threshold signifies using defaults</div><div class="line">						newCap = DEFAULT_INITIAL_CAPACITY;</div><div class="line">						newThr = (int) (DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);</div><div class="line">					&#125;</div><div class="line">				</div><div class="line">				</div><div class="line">				if (newThr == 0) &#123;</div><div class="line">					float ft = (float) newCap * loadFactor;</div><div class="line">					newThr = (newCap &lt; MAXIMUM_CAPACITY &amp;&amp; ft &lt; (float) MAXIMUM_CAPACITY ? (int) ft : Integer.MAX_VALUE);</div><div class="line">				&#125;</div><div class="line">				threshold = newThr;</div><div class="line">				@SuppressWarnings(&#123; "rawtypes", "unchecked" &#125;)</div><div class="line">				/*创建新的节点(桶)数组*/</div><div class="line">				Node&lt;K, V&gt;[] newTab = (Node&lt;K, V&gt;[]) new Node[newCap];</div><div class="line">				table = newTab;</div><div class="line">				/*如果原数组不为null,则说明数组中有节点需要迁移*/</div><div class="line">				if (oldTab != null) &#123;</div><div class="line">					for (int j = 0; j &lt; oldCap; ++j) &#123;</div><div class="line">						Node&lt;K, V&gt; e;</div><div class="line">						/*如果数组中的元素不为空*/</div><div class="line">						if ((e = oldTab[j]) != null) &#123;</div><div class="line">							oldTab[j] = null;</div><div class="line">							/*如果链表中只有一个节点*/</div><div class="line">							if (e.next == null)</div><div class="line">								/*将节点迁移到新数组中*/</div><div class="line">								newTab[e.hash &amp; (newCap - 1)] = e;</div><div class="line">							/*如果是红黑树的节点*/</div><div class="line">							else if (e instanceof TreeNode)</div><div class="line">								((TreeNode&lt;K, V&gt;) e).split(this, newTab, j, oldCap);</div><div class="line">							/*否则，迁移链表中每个节点*/</div><div class="line">							else &#123;</div><div class="line">								Node&lt;K, V&gt; loHead = null, loTail = null;</div><div class="line">								Node&lt;K, V&gt; hiHead = null, hiTail = null;</div><div class="line">								Node&lt;K, V&gt; next;</div><div class="line">								do &#123;</div><div class="line">									next = e.next;</div><div class="line">									if ((e.hash &amp; oldCap) == 0) &#123;</div><div class="line">										if (loTail == null)</div><div class="line">											loHead = e;</div><div class="line">										else</div><div class="line">											loTail.next = e;</div><div class="line">										loTail = e;</div><div class="line">									&#125; else &#123;</div><div class="line">										if (hiTail == null)</div><div class="line">											hiHead = e;</div><div class="line">										else</div><div class="line">											hiTail.next = e;</div><div class="line">										hiTail = e;</div><div class="line">									&#125;</div><div class="line">								&#125; while ((e = next) != null);</div><div class="line">								if (loTail != null) &#123;</div><div class="line">									loTail.next = null;</div><div class="line">									newTab[j] = loHead;</div><div class="line">								&#125;</div><div class="line">								if (hiTail != null) &#123;</div><div class="line">									hiTail.next = null;</div><div class="line">									newTab[j + oldCap] = hiHead;</div><div class="line">								&#125;</div><div class="line">							&#125;</div><div class="line">						&#125;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				return newTab;</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">			/*进行扩容或者将链表结构变为红黑树结构*/</div><div class="line">			final void treeifyBin(Node&lt;K,V&gt;[] tab, int hash) &#123;</div><div class="line">				int n, index; Node&lt;K,V&gt; e;</div><div class="line">				/*如果哈希表为null或者容量小于64，则进行扩容*/</div><div class="line">				if (tab == null || (n = tab.length) &lt; MIN_TREEIFY_CAPACITY)</div><div class="line">					resize();</div><div class="line">				/*将冲突节点达到8个的链表改为红黑树*/</div><div class="line">				else if ((e = tab[index = (n - 1) &amp; hash]) != null) &#123;</div><div class="line">					TreeNode&lt;K,V&gt; hd = null, tl = null;</div><div class="line">					do &#123;</div><div class="line">						TreeNode&lt;K,V&gt; p = replacementTreeNode(e, null);</div><div class="line">						if (tl == null)</div><div class="line">							hd = p;</div><div class="line">						else &#123;</div><div class="line">							p.prev = tl;</div><div class="line">							tl.next = p;</div><div class="line">						&#125;</div><div class="line">						tl = p;</div><div class="line">					&#125; while ((e = e.next) != null);</div><div class="line">					if ((tab[index] = hd) != null)</div><div class="line">						hd.treeify(tab);</div><div class="line">				&#125;</div><div class="line">			&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="获取值的方法"><a href="#获取值的方法" class="headerlink" title="获取值的方法"></a>获取值的方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*根据键获取值的方法*/</span></div><div class="line">   <span class="function"><span class="keyword">public</span> V <span class="title">get</span><span class="params">(Object key)</span> </span>&#123;</div><div class="line">	Node&lt;K,V&gt; e;</div><div class="line">		<span class="comment">/*通过键的哈希值和键，调用getNode方法查找是否有对应的节点。若不存在，返回null,否则，返回节点的值*/</span></div><div class="line">		<span class="keyword">return</span> (e = getNode(hash(key), key)) == <span class="keyword">null</span> ? <span class="keyword">null</span> : e.value;</div><div class="line">	&#125;</div><div class="line"></div><div class="line"><span class="comment">/*获取节点的方法*/</span></div><div class="line"><span class="function"><span class="keyword">final</span> Node&lt;K,V&gt; <span class="title">getNode</span><span class="params">(<span class="keyword">int</span> hash, Object key)</span> </span>&#123;</div><div class="line">	Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; first, e; <span class="keyword">int</span> n; K k;</div><div class="line">	<span class="comment">/*根据(n - 1) &amp; hash计算出索引值，得到桶的位置。如果桶中第一个节点不为null,继续执行*/</span></div><div class="line">	<span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp;</div><div class="line">		(first = tab[(n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;</div><div class="line">		<span class="comment">/*如果第一个节点的键值等于要查找的键值，直接返回第一个节点，否则继续向下执行*/</span></div><div class="line">		<span class="keyword">if</span> (first.hash == hash &amp;&amp; <span class="comment">// always check first node</span></div><div class="line">			((k = first.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</div><div class="line">			<span class="keyword">return</span> first;</div><div class="line">		<span class="comment">/*如果桶中不止一个节点，分为链表和红黑树两种情况查找*/</span></div><div class="line">		<span class="keyword">if</span> ((e = first.next) != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="comment">/*如果桶中是红黑树，则按照红黑树的方法查找*/</span></div><div class="line">			<span class="keyword">if</span> (first <span class="keyword">instanceof</span> TreeNode)</div><div class="line">				<span class="keyword">return</span> ((TreeNode&lt;K,V&gt;)first).getTreeNode(hash, key);</div><div class="line">			<span class="keyword">do</span> &#123;</div><div class="line">			<span class="comment">/*如果是链表，则遍历所有节点*/</span></div><div class="line">				<span class="keyword">if</span> (e.hash == hash &amp;&amp;</div><div class="line">					((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</div><div class="line">					<span class="keyword">return</span> e;</div><div class="line">			&#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h3 id="移除键-值对的方法"><a href="#移除键-值对的方法" class="headerlink" title="移除键-值对的方法"></a>移除键-值对的方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/*删除节点的方法*/</span></div><div class="line"><span class="function"><span class="keyword">final</span> Node&lt;K, V&gt; <span class="title">removeNode</span><span class="params">(<span class="keyword">int</span> hash, Object key, Object value, <span class="keyword">boolean</span> matchValue, <span class="keyword">boolean</span> movable)</span> </span>&#123;</div><div class="line">	Node&lt;K, V&gt;[] tab;</div><div class="line">	Node&lt;K, V&gt; p;</div><div class="line">	<span class="keyword">int</span> n, index;</div><div class="line">	<span class="comment">/*根据哈希值计算出索引值，即桶的位置，如果桶不为空，继续执行*/</span></div><div class="line">	<span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; (n = tab.length) &gt; <span class="number">0</span> &amp;&amp; (p = tab[index = (n - <span class="number">1</span>) &amp; hash]) != <span class="keyword">null</span>) &#123;</div><div class="line">		Node&lt;K, V&gt; node = <span class="keyword">null</span>, e;</div><div class="line">		K k;</div><div class="line">		V v;</div><div class="line">		<span class="comment">/*p为桶中的节点(链表第一个节点或红黑树的根结点),如果第一个节点的哈希值与键值等于要删除的节点，则保存节点p*/</span></div><div class="line">		<span class="keyword">if</span> (p.hash == hash &amp;&amp; ((k = p.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k))))</div><div class="line">			node = p;</div><div class="line">		<span class="comment">/*如果第一个节点不是要删除的节点，则继续向下执行，分为链表和红黑树两种方式进行查找*/</span></div><div class="line">		<span class="keyword">else</span> <span class="keyword">if</span> ((e = p.next) != <span class="keyword">null</span>) &#123;</div><div class="line">			<span class="comment">/*如果是红黑树，则按照红黑的方式找到该节点并删除*/</span></div><div class="line">			<span class="keyword">if</span> (p <span class="keyword">instanceof</span> TreeNode)</div><div class="line">				node = ((TreeNode&lt;K, V&gt;) p).getTreeNode(hash, key);</div><div class="line">			<span class="keyword">else</span> &#123;</div><div class="line">				<span class="comment">/*如果是链表，则遍历链表，并保存要删除的节点node和要删除的节点的上一个节点p*/</span></div><div class="line">				<span class="keyword">do</span> &#123;</div><div class="line">					<span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || (key != <span class="keyword">null</span> &amp;&amp; key.equals(k)))) &#123;</div><div class="line">						node = e;</div><div class="line">						<span class="keyword">break</span>;</div><div class="line">					&#125;</div><div class="line">					p = e;</div><div class="line">				&#125; <span class="keyword">while</span> ((e = e.next) != <span class="keyword">null</span>);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="comment">/*如果node不为null，即要删除的节点存在*/</span></div><div class="line">		<span class="keyword">if</span> (node != <span class="keyword">null</span> &amp;&amp; (!matchValue || (v = node.value) == value || (value != <span class="keyword">null</span> &amp;&amp; value.equals(v)))) &#123;</div><div class="line">			<span class="comment">/*如果是红黑树的节点，则按照红黑树的方式删除该节点*/</span></div><div class="line">			<span class="keyword">if</span> (node <span class="keyword">instanceof</span> TreeNode)</div><div class="line">				((TreeNode&lt;K, V&gt;) node).removeTreeNode(<span class="keyword">this</span>, tab, movable);</div><div class="line">			<span class="comment">/*如果要删除的是链表的第一个节点，则将第一个节点的后一个节点赋值给桶*/</span></div><div class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (node == p)</div><div class="line">				tab[index] = node.next;</div><div class="line">			<span class="keyword">else</span></div><div class="line">			<span class="comment">/**</span></div><div class="line">			 * 如果要删除的不是链表的第一个节点，根据上面的代码，node是要删除的节点，此处的p等于要删除的节点的前一个节点</div><div class="line">			 * 将p的next指向要删除的节点的后一个节点</div><div class="line">			 */</div><div class="line">				p.next = node.next;</div><div class="line">			++modCount;</div><div class="line">			--size;</div><div class="line">			afterNodeRemoval(node);</div><div class="line">			<span class="keyword">return</span> node;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/*清空哈希表方法*/</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</div><div class="line">	Node&lt;K,V&gt;[] tab;</div><div class="line">	modCount++;</div><div class="line">	<span class="comment">/*如果哈希表不为null且存储的键值对数大于0*/</span></div><div class="line">	<span class="keyword">if</span> ((tab = table) != <span class="keyword">null</span> &amp;&amp; size &gt; <span class="number">0</span>) &#123;</div><div class="line">		<span class="comment">/*将存储的键值对数置0*/</span></div><div class="line">		size = <span class="number">0</span>;</div><div class="line">		<span class="comment">/*遍历哈希表，将哈希表置空*/</span></div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; tab.length; ++i)</div><div class="line">			tab[i] = <span class="keyword">null</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h3&gt;&lt;p&gt;HashMap是存储键-值对映射的集合，继承了AbstractMap类并实现了Map接口，可以通过put、remove、get等方法插入、更改、移除、获取键-值对映射。&lt;br&gt;HashMap内部的数据结构是哈希表，由数组、链表和红黑树组成，采用链地址法来解决哈希冲突。&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>LinkedList源码学习</title>
+    <link href="http://yoursite.com/linkedlist/"/>
+    <id>http://yoursite.com/linkedlist/</id>
+    <published>2017-07-30T16:00:00.000Z</published>
+    <updated>2017-07-31T06:37:37.002Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="主要成员变量"><a href="#主要成员变量" class="headerlink" title="主要成员变量"></a>主要成员变量</h3><a id="more"></a>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div></pre></td><td class="code"><pre><div class="line">	public class &lt;E&gt;</div><div class="line">		extends AbstractSequentialList&lt;E&gt;</div><div class="line">		implements List&lt;E&gt;, Deque&lt;E&gt;, Cloneable, java.io.Serializable</div><div class="line">	&#123;</div><div class="line">		transient int size = 0;</div><div class="line"></div><div class="line">		transient Node&lt;E&gt; first;//头节点</div><div class="line"></div><div class="line">		transient Node&lt;E&gt; last;//尾节点</div><div class="line"></div><div class="line">		public LinkedList() &#123;//默认构造函数，啥也没干</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		public LinkedList(Collection&lt;? extends E&gt; c) &#123;//入参为Collection的构造函数,将Collection中的元素全部添加到LinkedList中</div><div class="line">			this();</div><div class="line">			addAll(c);</div><div class="line">		&#125;</div><div class="line">		...</div><div class="line">		</div><div class="line">		//静态内部类Node</div><div class="line">		private static class Node&lt;E&gt; &#123;</div><div class="line">			E item;</div><div class="line">			Node&lt;E&gt; next;</div><div class="line">			Node&lt;E&gt; prev;</div><div class="line"></div><div class="line">			Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) &#123;</div><div class="line">				this.item = element;</div><div class="line">				this.next = next;</div><div class="line">				this.prev = prev;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">```		</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">### 添加、删除、获取节点的方法</div><div class="line">```java</div><div class="line">		//将元素e添加到第一个节点的位置(作为头节点)</div><div class="line">		private void linkFirst(E e) &#123;</div><div class="line">			final Node&lt;E&gt; f = first;//保存原来的头节点</div><div class="line">			final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);//构造要插入的节点</div><div class="line">			first = newNode;//将新节点赋值给头节点的引用</div><div class="line">			if (f == null)//如果原头节点为null,说明原链表为空</div><div class="line">				last = newNode;//原链表为空，则尾节点引用也应该指向这个新节点</div><div class="line">			else</div><div class="line">				f.prev = newNode;//如果原头节点不为null，则原头节点的prev(前驱指针)指向这个新节点(头节点)</div><div class="line">			size++;//链表长度+1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//将元素e添加到最后一个节点的位置(作为尾节点)</div><div class="line">		void linkLast(E e) &#123;</div><div class="line">			final Node&lt;E&gt; l = last;//保存原尾节点</div><div class="line">			final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);//构造要插入的新节点</div><div class="line">			last = newNode;//将新节点赋值给尾节点的引用</div><div class="line">			if (l == null)//如果原头节点为null,说明原链表为空</div><div class="line">				first = newNode;//原链表为空，则头节点也引用都应该指向这个新节点</div><div class="line">			else//原链表不为空</div><div class="line">				l.next = newNode;//原尾节点的next(后驱指针)指向新的尾节点</div><div class="line">			size++;//链表长度+1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//将元素e插入到指定的不为空的节点之前</div><div class="line">		void linkBefore(E e, Node&lt;E&gt; succ) &#123;</div><div class="line">			final Node&lt;E&gt; pred = succ.prev;//将succ的前一个节点赋值给pred</div><div class="line">			final Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, succ);//构造要插入的新节点</div><div class="line">			succ.prev = newNode;//将succ的prev(前驱指针)指向要插入新节点</div><div class="line">			if (pred == null)//如果新节点的前一个节点为null(即succ原来的前一个节点为null,说明原来succ是头节点)</div><div class="line">				first = newNode;//新插入的节点赋值给头节点的引用</div><div class="line">			else//如果新节点的前一个节点不为null</div><div class="line">				pred.next = newNode;//前一个节点的nex(后驱指针)指向新插入的节点</div><div class="line">			size++;//链表长度+1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除头节点，并返回头节点的值</div><div class="line">		private E unlinkFirst(Node&lt;E&gt; f) &#123;</div><div class="line">			final E element = f.item;//保存头节点的值</div><div class="line">			final Node&lt;E&gt; next = f.next;//将头节点的下一个节点赋值给next(否则可能会找不到)</div><div class="line">			f.item = null;//将头节点的值置空</div><div class="line">			f.next = null; //将头节点的next引用置空 help GC</div><div class="line">			first = next;//将原头节点的下一个节点赋值给头节点</div><div class="line">			if (next == null)//如果next=null,说明原头节点没有下一个节点，即原头节点也是尾节点</div><div class="line">				last = null;//将尾节点的引用置空</div><div class="line">			else//如果next!=null</div><div class="line">				next.prev = null;//将头节点的prev置空</div><div class="line">			size--;//链表长度-1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">			return element;//返回原头节点的值</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除尾节点,并返回尾节点的值。过程与删除头节点类似。</div><div class="line">		private E unlinkLast(Node&lt;E&gt; l) &#123;</div><div class="line">			final E element = l.item;</div><div class="line">			final Node&lt;E&gt; prev = l.prev;</div><div class="line">			l.item = null;</div><div class="line">			l.prev = null; // help GC</div><div class="line">			last = prev;</div><div class="line">			if (prev == null)</div><div class="line">				first = null;</div><div class="line">			else</div><div class="line">				prev.next = null;</div><div class="line">			size--;</div><div class="line">			modCount++;</div><div class="line">			return element;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		</div><div class="line">		//删除指定的节点x</div><div class="line">	   E unlink(Node&lt;E&gt; x) &#123;</div><div class="line">	        /**</div><div class="line">	         * 先保存要删除节点x的值、前一个节点、后一个节点</div><div class="line">	         */</div><div class="line">	        final E element = x.item;</div><div class="line">	        final Node&lt;E&gt; next = x.next;</div><div class="line">	        final Node&lt;E&gt; prev = x.prev;</div><div class="line">	        </div><div class="line">	        </div><div class="line">	        /**</div><div class="line">	         * 如果x的前一个节点为null,说明要删除的节点x是头节点，则将x的后一个节点赋值给头节点的引用</div><div class="line">	         * 否则，将x的前一个节点的next指向x的后一个节点</div><div class="line">	         */</div><div class="line">	        if (prev == null) &#123;</div><div class="line">	            first = next;</div><div class="line">	        &#125; else &#123;</div><div class="line">	            prev.next = next;</div><div class="line">	            x.prev = null;</div><div class="line">	        &#125;</div><div class="line">	        </div><div class="line">	        /**</div><div class="line">	         * 如果x的后一个节点为null,说明要删除的节点x是尾节点，则将x的前一个节点赋值给尾节点的引用</div><div class="line">	         * 否则，将x的后一个节点的prev指向x的前一个节点</div><div class="line">	         */</div><div class="line">	        if (next == null) &#123;</div><div class="line">	            last = prev;</div><div class="line">	        &#125; else &#123;</div><div class="line">	            next.prev = prev;</div><div class="line">	            x.next = null;</div><div class="line">	        &#125;</div><div class="line">			    x.item = null;</div><div class="line">				size--;</div><div class="line">				modCount++;</div><div class="line">				return element;</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">		//通过索引获取节点</div><div class="line">		Node&lt;E&gt; node(int index) &#123;</div><div class="line">			if (index &lt; (size &gt;&gt; 1)) &#123;// size&gt;&gt;1也就是链表长度的一半,如果索引值小于链表长度的一半，从头节点开始遍历</div><div class="line">				Node&lt;E&gt; x = first;</div><div class="line">				for (int i = 0; i &lt; index; i++)</div><div class="line">					x = x.next;</div><div class="line">				return x;</div><div class="line">			&#125; else &#123;// 如果索引值大于或等于链表长度的一半，从尾节点开始遍历</div><div class="line">				Node&lt;E&gt; x = last;</div><div class="line">				for (int i = size - 1; i &gt; index; i--)</div><div class="line">					x = x.prev;</div><div class="line">				return x;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">```		</div><div class="line">------</div><div class="line"></div><div class="line">### 添加、删除、获取元素的方法</div><div class="line">```java		</div><div class="line">		//添加元素e</div><div class="line">	    public boolean add(E e) &#123;</div><div class="line">			linkLast(e);//添加到链表尾</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除对象o</div><div class="line">		public boolean remove(Object o) &#123;</div><div class="line">			if (o == null) &#123;//如果o==null</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (x.item == null) &#123;//如果节点x值为null</div><div class="line">						unlink(x);//删除节点x</div><div class="line">						return true;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125; else &#123;//o!=null</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (o.equals(x.item)) &#123;//如果节点x值为与o相等</div><div class="line">						unlink(x);//删除节点x</div><div class="line">						return true;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//通过索引获取元素(节点的值)</div><div class="line">		public E get(int index) &#123;</div><div class="line">			checkElementIndex(index);//检查索引值</div><div class="line">			return node(index).item;//调用</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//清空链表</div><div class="line">		public void clear() &#123;</div><div class="line">			for (Node&lt;E&gt; x = first; x != null; ) &#123;//遍历链表，并将每个节点的值、前一个节点、后一个节点都置空</div><div class="line">				Node&lt;E&gt; next = x.next;</div><div class="line">				x.item = null;</div><div class="line">				x.next = null;</div><div class="line">				x.prev = null;</div><div class="line">				x = next;</div><div class="line">			&#125;</div><div class="line">			first = last = null;//将头节点、尾节点都置空</div><div class="line">			size = 0;//将链表长度修改为0</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//获取元素的索引值</div><div class="line">		public int indexOf(Object o) &#123;</div><div class="line">			int index = 0;</div><div class="line">			if (o == null) &#123;//如果o==null</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (x.item == null)</div><div class="line">						return index;//找到则返回索引值</div><div class="line">					index++;</div><div class="line">				&#125;</div><div class="line">			&#125; else &#123;</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (o.equals(x.item))</div><div class="line">						return index;//找到则返回索引值</div><div class="line">					index++;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			return -1;//如果没找到，返回-1</div><div class="line">		&#125;</div><div class="line">```	</div><div class="line">		</div><div class="line">**还有很多添加删除获取元素的方法，都是在调用以上方法的基础上实现的。**</div><div class="line">------</div><div class="line">		</div><div class="line">### 可作为双端队列的方法</div><div class="line">		* offerFirst offerLast 在队列前后添加元素</div><div class="line">		* peekFirs peekLast 获取队列前后的元素</div><div class="line">		* pollFirst pollLast 在队列前/后删除元素</div><div class="line">	</div><div class="line">### 可作为先进先出的栈的方法</div><div class="line">		* push 元素入栈</div><div class="line">		* pop 元素出栈</div><div class="line">		</div><div class="line">### LinkedList遍历方式</div><div class="line">1.通过迭代器遍历</div><div class="line">```java</div><div class="line">		for(Iterator iterator = list.iterator();iterator.hasNext();)&#123;</div><div class="line">			iterator.next();</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<p>2.通过增强for循环遍历<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(Integer i:linkedList)&#123;</div><div class="line">	<span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3.通过快速随机访问遍历<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;lisy.size;i++)&#123;</div><div class="line">	list.get(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>其中第三种遍历方式效率最低</strong></p>
+<h3 id="List去除重复元素方式"><a href="#List去除重复元素方式" class="headerlink" title="List去除重复元素方式"></a>List去除重复元素方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedListTest</span> </span>&#123;</div><div class="line">	<span class="comment">/*双重循环遍历List*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicate</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size() - <span class="number">1</span>; i++) &#123;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = list.size() - <span class="number">1</span>; j &gt; i; j--) &#123;</div><div class="line">				<span class="keyword">if</span> (list.get(j).equals(list.get(i))) &#123;</div><div class="line">					list.remove(j);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*通过HashSet去重*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicateWithHashSet</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</div><div class="line">		HashSet&lt;Integer&gt; h = <span class="keyword">new</span> HashSet&lt;Integer&gt;(list);<span class="comment">//将List中的元素全部添加到HashSet中</span></div><div class="line">		list.clear();<span class="comment">//清空原List</span></div><div class="line">		list.addAll(h);<span class="comment">//将HashSet中的元素全部添加到List中</span></div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*通过List的contains方法去重*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicateWithContains</span><span class="params">(List&lt;Integer&gt; list)</span></span>&#123;</div><div class="line">		List&lt;Integer&gt; newList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		<span class="keyword">for</span>(Integer next:list)&#123;</div><div class="line">			<span class="keyword">if</span>(!newList.contains(next))&#123;</div><div class="line">				newList.add(next);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		list.clear();</div><div class="line">		list.addAll(newList);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*去重，并保持元素原来的顺序*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicateKeepOrder</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</div><div class="line">		List&lt;Integer&gt; newList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		Set&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</div><div class="line"></div><div class="line">		<span class="keyword">for</span> (Iterator&lt;Integer&gt; iterator = list.iterator(); iterator.hasNext();) &#123;</div><div class="line">			Integer next = iterator.next();</div><div class="line">			<span class="keyword">if</span> (set.add(next)) &#123;<span class="comment">//如果能向set中添加元素，说明无重复</span></div><div class="line">				newList.add(next);<span class="comment">//如果无重复，则将元素添加到新的list中</span></div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		list.clear();</div><div class="line">		list.addAll(newList);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;主要成员变量&quot;&gt;&lt;a href=&quot;#主要成员变量&quot; class=&quot;headerlink&quot; title=&quot;主要成员变量&quot;&gt;&lt;/a&gt;主要成员变量&lt;/h3&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ThreadLocal源码学习</title>
+    <link href="http://yoursite.com/threadlocal/"/>
+    <id>http://yoursite.com/threadlocal/</id>
+    <published>2017-07-27T16:00:00.000Z</published>
+    <updated>2017-07-31T06:24:27.501Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>ThreadLocal内部保存了一个变量，每个线程都可以从获取/设置这个变量的独立副本，每个线程之间互不干扰。这也是一个泛型类，类型即为保存的变量的类型。</strong><br><a id="more"></a></p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="1-get方法"><a href="#1-get方法" class="headerlink" title="1.get方法"></a>1.get方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">    Thread t = Thread.currentThread();<span class="comment">//获取当前线程</span></div><div class="line">    ThreadLocalMap map = getMap(t);<span class="comment">//获取ThreadLocalMap</span></div><div class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;  <span class="comment">//1</span></div><div class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</div><div class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">            T result = (T)e.value;</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> setInitialValue(); <span class="comment">//2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>get方法首先获取到当前线程，然后以当前线程为参数通过getMap方法去获取一个ThreadLocalMap型的变量。<br>若map不为null则执行1，否则执行2，返回setInitialValue方法得到的值。</p>
+<p><strong>getMap方法</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">    <span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> t.threadLocals;</div><div class="line">    &#125;</div><div class="line">```	</div><div class="line"></div><div class="line">**Thread类**</div><div class="line"></div><div class="line">```java</div><div class="line">    <span class="comment">/* ThreadLocal values pertaining to this thread. This map is maintained</span></div><div class="line">     * by the ThreadLocal class. */</div><div class="line">    ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</div></pre></td></tr></table></figure></p>
+<p>可以看到getMap方法是通过线程的threadLocals变量来获取ThreadLocalMap的，而ThreadLocalMap的初始值即threadLocals的值为null。<br>所以如果在调用getMap方法时返回的map值为null,ThreadLocal的get方法会执行2，返回setInitialValue方法得到的值。</p>
+<hr>
+<p><strong>setInitialValue方法</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> T <span class="title">setInitialValue</span><span class="params">()</span> </span>&#123;</div><div class="line">    T value = initialValue();</div><div class="line">    Thread t = Thread.currentThread();</div><div class="line">    ThreadLocalMap map = getMap(t);</div><div class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)	<span class="comment">//1</span></div><div class="line">        map.set(<span class="keyword">this</span>, value);</div><div class="line">    <span class="keyword">else</span></div><div class="line">        createMap(t, value);<span class="comment">//2</span></div><div class="line">    <span class="keyword">return</span> value;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">initialValue</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到setInitialValue先调用initialValue方法，如果返回值为null,接下来获取当前线程和调用getMap方法与get方法中类似。<br>如果接下来执行2，即会调用createMap方法</p>
+<p><strong>createMap方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">createMap</span><span class="params">(Thread t, T firstValue)</span> </span>&#123;</div><div class="line">    t.threadLocals = <span class="keyword">new</span> ThreadLocalMap(<span class="keyword">this</span>, firstValue);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>ThreadLocalMap内部类的构造函数</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">ThreadLocalMap(ThreadLocal&lt;?&gt; firstKey, Object firstValue) &#123;</div><div class="line">      table = <span class="keyword">new</span> Entry[INITIAL_CAPACITY];</div><div class="line">      <span class="keyword">int</span> i = firstKey.threadLocalHashCode &amp; (INITIAL_CAPACITY - <span class="number">1</span>);</div><div class="line">      table[i] = <span class="keyword">new</span> Entry(firstKey, firstValue);</div><div class="line">      size = <span class="number">1</span>;</div><div class="line">      setThreshold(INITIAL_CAPACITY);</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>createMap方法以ThreadLocal为key，ThreadLocal中的初始值为value创建了一个ThreadLocalMap的实例并赋值给当前线程的threadlocals变量。</p>
+<hr>
+<p>再回到ThreadLocal的get方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">    Thread t = Thread.currentThread();<span class="comment">//获取当前线程</span></div><div class="line">    ThreadLocalMap map = getMap(t);<span class="comment">//获取ThreadLocalMap</span></div><div class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;  <span class="comment">//1</span></div><div class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</div><div class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</div><div class="line">            T result = (T)e.value;</div><div class="line">            <span class="keyword">return</span> result;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> setInitialValue(); <span class="comment">//2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这时会直接返回setInitialValue方法的返回值。<br>如果map不为null，则会执行1，以ThreadLocal为键从ThreadLocalMap中取出当前线程对应的独立变量的值。</p>
+<hr>
+<h3 id="2-set方法"><a href="#2-set方法" class="headerlink" title="2.set方法"></a>2.set方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</div><div class="line">    Thread t = Thread.currentThread();<span class="comment">//获取当前线程</span></div><div class="line">    ThreadLocalMap map = getMap(t);</div><div class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>)<span class="comment">//1</span></div><div class="line">        map.set(<span class="keyword">this</span>, value);</div><div class="line">    <span class="keyword">else</span></div><div class="line">        createMap(t, value);<span class="comment">//2</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果map不为null,则会执行1，即调用map的set方法，以ThreadLocal为键将变量的值存入ThreadLocalMap中。</p>
+<p><strong>ThreadLocalMap的set方法</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(ThreadLocal&lt;?&gt; key, Object value)</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// We don't use a fast path as with get() because it is at</span></div><div class="line">    <span class="comment">// least as common to use set() to create new entries as</span></div><div class="line">    <span class="comment">// it is to replace existing ones, in which case, a fast</span></div><div class="line">    <span class="comment">// path would fail more often than not.</span></div><div class="line"></div><div class="line">    Entry[] tab = table;</div><div class="line">    <span class="keyword">int</span> len = tab.length;</div><div class="line">    <span class="keyword">int</span> i = key.threadLocalHashCode &amp; (len-<span class="number">1</span>);</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (Entry e = tab[i];</div><div class="line">         e != <span class="keyword">null</span>;</div><div class="line">         e = tab[i = nextIndex(i, len)]) &#123;</div><div class="line">        ThreadLocal&lt;?&gt; k = e.get();</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (k == key) &#123;</div><div class="line">            e.value = value;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (k == <span class="keyword">null</span>) &#123;</div><div class="line">            replaceStaleEntry(key, value, i);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    tab[i] = <span class="keyword">new</span> Entry(key, value);</div><div class="line">    <span class="keyword">int</span> sz = ++size;</div><div class="line">    <span class="keyword">if</span> (!cleanSomeSlots(i, sz) &amp;&amp; sz &gt;= threshold)</div><div class="line">        rehash();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果map为null,则会执行set方法中的2，即以ThreadLocal为key，方法入参值为value创建了一个ThreadLocalMap的实例并赋值给当前线程的threadlocals变量。</p>
+<h3 id="3-remove方法"><a href="#3-remove方法" class="headerlink" title="3.remove方法"></a>3.remove方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</div><div class="line">    ThreadLocalMap m = getMap(Thread.currentThread());</div><div class="line">    <span class="keyword">if</span> (m != <span class="keyword">null</span>)</div><div class="line">        m.remove(<span class="keyword">this</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>ThreadLocalMap的remove方法</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(ThreadLocal&lt;?&gt; key)</span> </span>&#123;</div><div class="line">    Entry[] tab = table;</div><div class="line">    <span class="keyword">int</span> len = tab.length;</div><div class="line">    <span class="keyword">int</span> i = key.threadLocalHashCode &amp; (len-<span class="number">1</span>);</div><div class="line">    <span class="keyword">for</span> (Entry e = tab[i];</div><div class="line">         e != <span class="keyword">null</span>;</div><div class="line">         e = tab[i = nextIndex(i, len)]) &#123;</div><div class="line">        <span class="keyword">if</span> (e.get() == key) &#123;</div><div class="line">            e.clear();</div><div class="line">            expungeStaleEntry(i);</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Threadlocal的remove方法先获取当前线程的TheradLocalMap(由线程的threadlocals变量保存，上面已经提到过)，如果返回值不为null，则以当前的ThreadLocal对象为参数<br>调用ThreadLocalMap的remove方法，移除对应的结点。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.<strong>ThreadLocal使用ThreadLocalMap数据结构来保存变量，其中key为当前的ThreadLocal对象，value为变量值。但是ThreadLocal并不是直接管理ThreadLocalMap而是由当前线程的threadLocals变量持有对应的ThreadLocalMap对象的引用。</strong><br>2.<strong>通过这种机制，ThreadLocal可以为每个线程保存同一个变量的不同的独立副本，且每个线程可以互不干扰地获取/设置独立副本的值。</strong></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;ThreadLocal内部保存了一个变量，每个线程都可以从获取/设置这个变量的独立副本，每个线程之间互不干扰。这也是一个泛型类，类型即为保存的变量的类型。&lt;/strong&gt;&lt;br&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Maven(二):Eclipse中的Maven插件以及Maven中的核心概念</title>
@@ -1551,395 +1649,6 @@ iframe内嵌框架(作为body的一部分)
     
     
       <category term="IE" scheme="http://yoursite.com/tags/IE/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SpingMVC_Study Note(1)</title>
-    <link href="http://yoursite.com/springmvc-1/"/>
-    <id>http://yoursite.com/springmvc-1/</id>
-    <published>2017-05-13T16:00:00.000Z</published>
-    <updated>2017-05-15T14:48:25.770Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>一、SpringMVC简述</strong><br>SpringMVC 是一个模型-视图-控制(Model-View-Controller)框架,它建立在一个前端控制器(DispatcherServlet)之上，能够帮你建立一个像Spring框架一样灵活和松耦合的Web应用程序。</p>
-<a id="more"></a>
-<p>《Spring实战》中这样描述了SpringMVC中请求的处理:</p>
-<blockquote>
-<ol>
-<li>请求的第一站是前端控制器(DispatcherServlet)，在这里一个单实例的Servlet将请求委托给应用程序的其他组件来处理，<br>即将请求发送给控制器(Controller)。</li>
-<li>应用程序中有多个处理器，DispatcherServlet需要查询处理器映射(HandlerMapping)来确定要将请求发送给哪个控制器。</li>
-<li>DispatcherServlet将请求发送给具体的控制器后，控制器在完成逻辑处理后，通常会产生一些需要返回给浏览器显示的信息，<br>这些信息被称为模型(Model)。</li>
-<li>不过仅仅返回给用户原始的信息是不够的,通常需要将信息发送给视图(View),通常是JSP，以用户友好的方式进行格式化。所以控制器会将<br>模型数据打包，并且标识出用于格式化这些模型数据的视图，再将模型数据和视图名一起发送给DispatcherServlet。</li>
-<li>传递给DispatcherServlet的视图名并表示具体的视图，只是一个逻辑视图名。DispatcherServlet会使用视图解析器(View Resolver)来将逻辑视图名解析为一个物理视图。</li>
-<li>DispatcherServlet将模型数据发送给物理视图。</li>
-<li>视图将使用模型数据渲染输出，并将输出通过响应对象返回给客户端(浏览器)。</li>
-</ol>
-</blockquote>
-<hr>
-<p><strong>二、搭建SpringMVC环境并开始第一个SpringMVC Web应用程序</strong></p>
-<p><strong>1.导入需要的jar包</strong><br>commons-logging-1.1.3.jar<br>spring-aop-4.0.0.RELEASE.jar<br>spring-beans-4.0.0.RELEASE.jar<br>spring-context-4.0.0.RELEASE.jar<br>spring-core-4.0.0.RELEASE.jar<br>spring-expression-4.0.0.RELEASE.jar<br>spring-web-4.0.0.RELEASE.jar<br>spring-webmvc-4.0.0.RELEASE.jar</p>
-<p>其中除了commons-logging为日志支持jar包需要单独下载,其他的包都在spring-framework-4.0.0.RELEASE中。</p>
-<p><strong>2.配置web.xml文件</strong></p>
-<p>配置DispatcherServlet<br>①使用默认的 Spring MVC DispatcherServlet 读取 xml 配置文件的原则：<br>  servlet-name ==&gt; /WEB-INF/servlet-name-servlet.xml(Spring的xml文件路径及文件名)</p>
-<pre><code>&lt;servlet&gt;        
-&lt;servlet-name&gt;dispatcherServlet&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-&lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-&lt;/servlet&gt;
-&lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;dispatcherServlet&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;
-</code></pre><p>②自行指定DispatcherServlet的要读取的xml文件的实际位置<br>如：<br>    <code>&lt;init-param&gt;</code><br>            <code>&lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</code><br>            <code>&lt;param-value&gt;/WEB-INF/springmvc.xml&lt;/param-value&gt;</code><br>    <code>&lt;/init-param&gt;</code></p>
-<p><strong>3.配置spring的xml文件</strong></p>
-<p>组件的自动扫描<br><code>&lt;context:component-scan basepackage=&quot;com.jzf.springmvc&quot;&gt;``&lt;/context:component-scan&gt;</code></p>
-<p><strong>4.具体的控制器</strong></p>
-<pre><code>/**
- * 具体的控制器(处理器)：处理请求，并返回逻辑视图
- * @RequestMapping 表示这个类/方法能处理请求的url
- */
-@Controller
-public class Hello {
-@RequestMapping(&quot;/hello&quot;) 
-public String helloworld(){
-System.out.println(&quot;helloworld&quot;);
-return &quot;success&quot;;
-    }
-}
-</code></pre><p><strong>5.在spring的xml文件中配置视图解析器</strong></p>
-<pre><code>&lt;!-- 配置视图解析器，将处理器方法返回的值解析为具体的视图 --&gt;
-    &lt;bean
-        class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
-        &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/views/&quot;&gt;&lt;/property&gt;
-        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;&gt;&lt;/property&gt;
-    &lt;/bean&gt;
-</code></pre><p>视图解析器将控制器返回的逻辑视图解析为具体的物理视图，规则如下：<br>prefix+returnValue+suffix ==&gt; 物理视图</p>
-<p><strong>6.具体的视图(如jsp)</strong></p>
-<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot;
-    pageEncoding=&quot;ISO-8859-1&quot;%&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=ISO-8859-1&quot;&gt;
-&lt;title&gt;Insert title here&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;a href=&quot;hello&quot;&gt;hello&lt;/a&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;一、SpringMVC简述&lt;/strong&gt;&lt;br&gt;SpringMVC 是一个模型-视图-控制(Model-View-Controller)框架,它建立在一个前端控制器(DispatcherServlet)之上，能够帮你建立一个像Spring框架一样灵活和松耦合的Web应用程序。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="JavaWeb" scheme="http://yoursite.com/categories/JavaWeb/"/>
-    
-    
-      <category term="SpringMVC" scheme="http://yoursite.com/tags/SpringMVC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Servlet-download file/upload file</title>
-    <link href="http://yoursite.com/servlet-downandup/"/>
-    <id>http://yoursite.com/servlet-downandup/</id>
-    <published>2017-05-12T16:00:00.000Z</published>
-    <updated>2017-05-20T15:22:03.456Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>1.content-disposition</strong><br>实现文件的上传与下载都需要用到content-disposition头，content-disposition 是 MIME 协议的<br>扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p><strong>2.文件下载</strong></p>
-<p>浏览器直接打开文件(必须是浏览器支持直接打开的类型 如：txt,jpg等)<br><code>content-disposition=&quot;inline;filename=XX.XXX&quot;</code><br>弹出对话框选择是保存还是打开<br><code>content-disposition=&quot;attachment;filename=XX.XXX&quot;</code></p>
-<pre><code>@WebServlet(&quot;/DownloadServlet&quot;)
-public class DownloadServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        doPost(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding(&quot;utf-8&quot;);
-        // 告诉浏览器文件类型为PDF
-        response.setContentType(&quot;application/pdf;charset=utf-8&quot;);
-        // 设置返回时，弹出对话框来选择是保存还是打开
-        response.setHeader(&quot;content-disposition&quot;, &quot;attachment;filename=ThinkingInJava.pdf&quot;);
-        // 得到文件的绝对路径
-        String file = request.getServletContext().getRealPath(&quot;/WEB-INF/uploadFile/ThinkingInJava.pdf&quot;);
-        // 读取文件
-        InputStream in = new FileInputStream(file);
-
-        OutputStream out = response.getOutputStream();
-
-        byte[] buff = new byte[1024 * 1024];
-        int length = 0;
-        while ((length = in.read(buff)) &gt; 0) {
-            // 将文件写入输出流
-            out.write(buff, 0, length);
-        }
-        in.close();
-    }
-}
-</code></pre><hr>
-<p><strong>3.文件上传</strong><br><em>3.1 Servlet3.0提供了对文件上传的支持。</em><br>HttpServletRequest 提供了两个方法用于从请求中解析出上传的文件：</p>
-<ul>
-<li><code>Part getPart(String name)</code></li>
-<li><code>Collection&lt;Part&gt; getParts()</code></li>
-</ul>
-<p><em>3.2 @MultipartConfig</em><br>要在servlet中使用文件上传功能，还需将servlet打上注解@MultipartConfig<br>该注解主要是为了辅助 Servlet 3.0 中 HttpServletRequest 提供的对上传文件的支持。该注解标注在 Servlet 上面，以表示该 Servlet 希望处理的请求的 MIME 类型是 multipart/form-data。</p>
-<p><em>3.3 如果请求的MIME类型不是multipart/form-data,则不能使用上述的两个方法来得到上传的文件。</em><br>所以，在表单中属性中要加上 enctype=”multipart/form-data”</p>
-<p><em>3.4文件上传的代码实现</em></p>
-<p>表单提交页面</p>
-<pre><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=utf-8&quot;
-    pageEncoding=&quot;utf-8&quot;%&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;文件上传&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;fieldset&gt;
-        &lt;legend&gt;文件上传&lt;/legend&gt;
-        &lt;form action=&quot;${pageContext.request.contextPath}/UploadServlet&quot;
-            method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
-            &lt;input type=&quot;file&quot; name=&quot;file&quot;&gt; 
-            &lt;br/&gt;
-            &lt;input type=&quot;submit&quot; value=&quot;上传&quot;&gt;
-        &lt;/form&gt;
-    &lt;/fieldset&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><hr>
-<p>实现文件上传的servlet</p>
-<pre><code>@WebServlet(&quot;/UploadServlet&quot;)
-@MultipartConfig //标识这是一个处理请求类型为multipart/form-data的servlet
-public class UploadServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        doPost(request, response);
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding(&quot;utf-8&quot;);
-        response.setContentType(&quot;text/html;charset=utf-8&quot;);
-        PrintWriter out = response.getWriter();
-
-        //得到存储路径
-        String savePath = request.getServletContext().getRealPath(&quot;/WEB-INF/uploadFile&quot;);
-        //得到上传的文件对象
-        Part part = request.getPart(&quot;file&quot;);
-        //获得关于content-disposition头的信息
-        String header = part.getHeader(&quot;Content-Disposition&quot;);
-        //得到文件名
-        String fileName = getFileName(header);
-        //存储文件
-        part.write(savePath + File.separator + fileName);
-
-        out.println(&quot;上传成功&quot;);
-        out.flush();
-        out.close();
-    }
-    /**
-     * 从Content-Disposition头中解析出文件名
-     * content-disposition头实例  如：Content-Disposition: form-data; name=&quot;file&quot;; filename=&quot;jsdk23.chm&quot;
-     */
-    private String getFileName(String header) {
-        String[] tempArr1 = header.split(&quot;;&quot;);
-        String[] tempArr2 = tempArr1[2].split(&quot;=&quot;);
-        String fileName = tempArr2[1].substring(tempArr2[1].lastIndexOf(&quot;\\&quot;) + 1).replaceAll(&quot;\&quot;&quot;, &quot;&quot;);
-        return fileName;
-    }
-}
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;1.content-disposition&lt;/strong&gt;&lt;br&gt;实现文件的上传与下载都需要用到content-disposition头，content-disposition 是 MIME 协议的&lt;br&gt;扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。&lt;/p&gt;
-&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
-    
-    </summary>
-    
-      <category term="JavaWeb" scheme="http://yoursite.com/categories/JavaWeb/"/>
-    
-    
-      <category term="Servlet" scheme="http://yoursite.com/tags/Servlet/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>BeanUtils的使用</title>
-    <link href="http://yoursite.com/BeanUtils/"/>
-    <id>http://yoursite.com/BeanUtils/</id>
-    <published>2017-05-05T16:00:00.000Z</published>
-    <updated>2017-05-07T02:14:43.951Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong>1.什么是BeanUtils</strong><br>commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。<br><a id="more"></a><br><strong>2.需要的环境</strong><br>使用BeanUtils需要commons-beanutils 和commons-logging两个jar包</p>
-<p><strong>3.常用API</strong><br>BeanUtils：顾名思义就是对bean进行操作的工具类。<br>常用方法</p>
-<p><code>static void  setProperty(Object bean,String name,Object value)</code><br>将value的值付给bean的指定属性(需要注意的是，如果属性类型是基本类型，BeanUtils内部已经帮我们实现了自动转换;如果不是基本类型则需要注册相应的转换器)。</p>
-<p><code>static void     populate(Object bean, Map&lt;String,? extends Object&gt; properties)</code><br>将Map中的值赋给bean中相应的属性，其中Map中的键名必须与bean的属性名相同(同样，如果是非基本类型，需要注册相应的转换器)。</p>
-<p>ConvertUtils：用来注册转换器的工具类</p>
-<p>常用方法<br><code>static void     register(Converter converter, Class&lt;?&gt; clazz)</code><br>为clazz字节码对象对应的属性类型注册转换器(如属性值为Date类型，则clazz=Date.class())。</p>
-<p>Convert：即转换器接口，可通过实现这个接口来实现自定义的转换器类</p>
-<p>这个接口只有一个方法<br><code>&lt;T&gt; T convert(Class&lt;T&gt; type,Object value)</code></p>
-<p>commons-beanutils也为我们提供了众多的转换器类<br>如 BigDecimalConverte,DateConverter, DateLocaleConverter, URLConverter等。</p>
-<p><strong>4.实例</strong></p>
-<p>Person(JavaBean)</p>
-<pre><code>import java.util.Date;
-
-public class Person {
-    private int id;
-    private String name;
-    private String sex;
-    private Date birthday;
-
-public Date getBirthday() {
-    return birthday;
-}
-
-public void setBirthday(Date birthday) {
-    this.birthday = birthday;
-}
-
-public int getId() {
-    return id;
-}
-
-public void setId(int id) {
-    this.id = id;
-}
-
-public String getName() {
-    return name;
-}
-
-public void setName(String name) {
-    this.name = name;
-}
-
-public String getSex() {
-    return sex;
-}
-
-public void setSex(String sex) {
-    this.sex = sex;
-}
-
-}
-</code></pre><hr>
-<p><strong>利用BeanUtils对bean进行行相关操作</strong></p>
-<pre><code>import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.ConversionException;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.Converter;
-import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
-
-public class BeanUtilsTest {
-
-    /**
-     * 利用BeanUtils给bean相关属性赋值
-     */
-    public void test(){
-    Person p =new Person();
-    try {
-        BeanUtils.setProperty(p, &quot;name&quot;, &quot;James&quot;); //默认只支持基本类型的转换
-        System.out.println(p.getName());
-
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        e.printStackTrace();
-    }
-}
-
-/**
- * 自定义转换器类并注册
- */
-@SuppressWarnings(&quot;deprecation&quot;)
-public void test2(){
-    Person p = new Person();
-    String date=&quot;2017-5-6&quot;;
-
-    ConvertUtils.register(new Converter() { //为BeanUtils注册字符串转成日期类型的转换器，
-
-        @SuppressWarnings(&quot;unchecked&quot;)
-        @Override
-        public &lt;T&gt; T convert(Class&lt;T&gt; type, Object value) {
-            if(value == null){
-                return null;
-            }
-
-            if(!(value instanceof String)){
-                throw new ConversionException(&quot;只支持string类型的转换&quot;);
-            }
-
-            SimpleDateFormat sdf=new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-            try {
-                 return (T) sdf.parse((String) value);
-
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-
-    }, Date.class);
-
-    try {
-        BeanUtils.setProperty(p, &quot;birthday&quot;, date);
-        System.out.println(p.getBirthday().toLocaleString());
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new RuntimeException(&quot;转换出错！&quot;);
-    }
-}
-
-/**
- * 用Map来填充bean的属性
- */
-public void test3() {
-    Person person = new Person();
-    Map map = new HashMap();
-    map.put(&quot;name&quot;, &quot;James&quot;);
-    map.put(&quot;sex&quot;, &quot;男&quot;);
-    map.put(&quot;birthday&quot;, &quot;1984-6-5&quot;);
-    map.put(&quot;id&quot;, &quot;3&quot;);
-
-    ConvertUtils.register(new DateLocaleConverter(), Date.class);
-
-    try {
-        BeanUtils.populate(person, map); 
-        System.out.println(person.getBirthday());
-    } catch (IllegalAccessException | InvocationTargetException e) {
-        throw new RuntimeException(&quot;转换出错&quot;);
-    }
-}
-
-}
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;1.什么是BeanUtils&lt;/strong&gt;&lt;br&gt;commons-beanutils 是apache commons子项目中的一个软件包，其主要目的是利用反射机制对JavaBean的属性进行处理。&lt;br&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
-    
-    
-      <category term="Utils" scheme="http://yoursite.com/tags/Utils/"/>
     
   </entry>
   

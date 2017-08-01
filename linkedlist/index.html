@@ -1,0 +1,715 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="coderjzf" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="主要成员变量">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LinkedList源码学习">
+<meta property="og:url" content="http://yoursite.com/linkedlist/index.html">
+<meta property="og:site_name" content="coderjzf">
+<meta property="og:description" content="主要成员变量">
+<meta property="og:updated_time" content="2017-07-31T06:37:37.002Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LinkedList源码学习">
+<meta name="twitter:description" content="主要成员变量">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/linkedlist/"/>
+
+
+
+
+
+  <title> LinkedList源码学习 | coderjzf </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">coderjzf</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/linkedlist/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="coderjzf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="coderjzf">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LinkedList源码学习
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-31T00:00:00+08:00">
+                2017-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="主要成员变量"><a href="#主要成员变量" class="headerlink" title="主要成员变量"></a>主要成员变量</h3><a id="more"></a>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div></pre></td><td class="code"><pre><div class="line">	public class &lt;E&gt;</div><div class="line">		extends AbstractSequentialList&lt;E&gt;</div><div class="line">		implements List&lt;E&gt;, Deque&lt;E&gt;, Cloneable, java.io.Serializable</div><div class="line">	&#123;</div><div class="line">		transient int size = 0;</div><div class="line"></div><div class="line">		transient Node&lt;E&gt; first;//头节点</div><div class="line"></div><div class="line">		transient Node&lt;E&gt; last;//尾节点</div><div class="line"></div><div class="line">		public LinkedList() &#123;//默认构造函数，啥也没干</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		public LinkedList(Collection&lt;? extends E&gt; c) &#123;//入参为Collection的构造函数,将Collection中的元素全部添加到LinkedList中</div><div class="line">			this();</div><div class="line">			addAll(c);</div><div class="line">		&#125;</div><div class="line">		...</div><div class="line">		</div><div class="line">		//静态内部类Node</div><div class="line">		private static class Node&lt;E&gt; &#123;</div><div class="line">			E item;</div><div class="line">			Node&lt;E&gt; next;</div><div class="line">			Node&lt;E&gt; prev;</div><div class="line"></div><div class="line">			Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) &#123;</div><div class="line">				this.item = element;</div><div class="line">				this.next = next;</div><div class="line">				this.prev = prev;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">```		</div><div class="line"></div><div class="line">------</div><div class="line"></div><div class="line">### 添加、删除、获取节点的方法</div><div class="line">```java</div><div class="line">		//将元素e添加到第一个节点的位置(作为头节点)</div><div class="line">		private void linkFirst(E e) &#123;</div><div class="line">			final Node&lt;E&gt; f = first;//保存原来的头节点</div><div class="line">			final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);//构造要插入的节点</div><div class="line">			first = newNode;//将新节点赋值给头节点的引用</div><div class="line">			if (f == null)//如果原头节点为null,说明原链表为空</div><div class="line">				last = newNode;//原链表为空，则尾节点引用也应该指向这个新节点</div><div class="line">			else</div><div class="line">				f.prev = newNode;//如果原头节点不为null，则原头节点的prev(前驱指针)指向这个新节点(头节点)</div><div class="line">			size++;//链表长度+1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//将元素e添加到最后一个节点的位置(作为尾节点)</div><div class="line">		void linkLast(E e) &#123;</div><div class="line">			final Node&lt;E&gt; l = last;//保存原尾节点</div><div class="line">			final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);//构造要插入的新节点</div><div class="line">			last = newNode;//将新节点赋值给尾节点的引用</div><div class="line">			if (l == null)//如果原头节点为null,说明原链表为空</div><div class="line">				first = newNode;//原链表为空，则头节点也引用都应该指向这个新节点</div><div class="line">			else//原链表不为空</div><div class="line">				l.next = newNode;//原尾节点的next(后驱指针)指向新的尾节点</div><div class="line">			size++;//链表长度+1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//将元素e插入到指定的不为空的节点之前</div><div class="line">		void linkBefore(E e, Node&lt;E&gt; succ) &#123;</div><div class="line">			final Node&lt;E&gt; pred = succ.prev;//将succ的前一个节点赋值给pred</div><div class="line">			final Node&lt;E&gt; newNode = new Node&lt;&gt;(pred, e, succ);//构造要插入的新节点</div><div class="line">			succ.prev = newNode;//将succ的prev(前驱指针)指向要插入新节点</div><div class="line">			if (pred == null)//如果新节点的前一个节点为null(即succ原来的前一个节点为null,说明原来succ是头节点)</div><div class="line">				first = newNode;//新插入的节点赋值给头节点的引用</div><div class="line">			else//如果新节点的前一个节点不为null</div><div class="line">				pred.next = newNode;//前一个节点的nex(后驱指针)指向新插入的节点</div><div class="line">			size++;//链表长度+1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除头节点，并返回头节点的值</div><div class="line">		private E unlinkFirst(Node&lt;E&gt; f) &#123;</div><div class="line">			final E element = f.item;//保存头节点的值</div><div class="line">			final Node&lt;E&gt; next = f.next;//将头节点的下一个节点赋值给next(否则可能会找不到)</div><div class="line">			f.item = null;//将头节点的值置空</div><div class="line">			f.next = null; //将头节点的next引用置空 help GC</div><div class="line">			first = next;//将原头节点的下一个节点赋值给头节点</div><div class="line">			if (next == null)//如果next=null,说明原头节点没有下一个节点，即原头节点也是尾节点</div><div class="line">				last = null;//将尾节点的引用置空</div><div class="line">			else//如果next!=null</div><div class="line">				next.prev = null;//将头节点的prev置空</div><div class="line">			size--;//链表长度-1</div><div class="line">			modCount++;//修改次数+1</div><div class="line">			return element;//返回原头节点的值</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除尾节点,并返回尾节点的值。过程与删除头节点类似。</div><div class="line">		private E unlinkLast(Node&lt;E&gt; l) &#123;</div><div class="line">			final E element = l.item;</div><div class="line">			final Node&lt;E&gt; prev = l.prev;</div><div class="line">			l.item = null;</div><div class="line">			l.prev = null; // help GC</div><div class="line">			last = prev;</div><div class="line">			if (prev == null)</div><div class="line">				first = null;</div><div class="line">			else</div><div class="line">				prev.next = null;</div><div class="line">			size--;</div><div class="line">			modCount++;</div><div class="line">			return element;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		</div><div class="line">		//删除指定的节点x</div><div class="line">	   E unlink(Node&lt;E&gt; x) &#123;</div><div class="line">	        /**</div><div class="line">	         * 先保存要删除节点x的值、前一个节点、后一个节点</div><div class="line">	         */</div><div class="line">	        final E element = x.item;</div><div class="line">	        final Node&lt;E&gt; next = x.next;</div><div class="line">	        final Node&lt;E&gt; prev = x.prev;</div><div class="line">	        </div><div class="line">	        </div><div class="line">	        /**</div><div class="line">	         * 如果x的前一个节点为null,说明要删除的节点x是头节点，则将x的后一个节点赋值给头节点的引用</div><div class="line">	         * 否则，将x的前一个节点的next指向x的后一个节点</div><div class="line">	         */</div><div class="line">	        if (prev == null) &#123;</div><div class="line">	            first = next;</div><div class="line">	        &#125; else &#123;</div><div class="line">	            prev.next = next;</div><div class="line">	            x.prev = null;</div><div class="line">	        &#125;</div><div class="line">	        </div><div class="line">	        /**</div><div class="line">	         * 如果x的后一个节点为null,说明要删除的节点x是尾节点，则将x的前一个节点赋值给尾节点的引用</div><div class="line">	         * 否则，将x的后一个节点的prev指向x的前一个节点</div><div class="line">	         */</div><div class="line">	        if (next == null) &#123;</div><div class="line">	            last = prev;</div><div class="line">	        &#125; else &#123;</div><div class="line">	            next.prev = prev;</div><div class="line">	            x.next = null;</div><div class="line">	        &#125;</div><div class="line">			    x.item = null;</div><div class="line">				size--;</div><div class="line">				modCount++;</div><div class="line">				return element;</div><div class="line">			&#125;</div><div class="line">			</div><div class="line">		//通过索引获取节点</div><div class="line">		Node&lt;E&gt; node(int index) &#123;</div><div class="line">			if (index &lt; (size &gt;&gt; 1)) &#123;// size&gt;&gt;1也就是链表长度的一半,如果索引值小于链表长度的一半，从头节点开始遍历</div><div class="line">				Node&lt;E&gt; x = first;</div><div class="line">				for (int i = 0; i &lt; index; i++)</div><div class="line">					x = x.next;</div><div class="line">				return x;</div><div class="line">			&#125; else &#123;// 如果索引值大于或等于链表长度的一半，从尾节点开始遍历</div><div class="line">				Node&lt;E&gt; x = last;</div><div class="line">				for (int i = size - 1; i &gt; index; i--)</div><div class="line">					x = x.prev;</div><div class="line">				return x;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">```		</div><div class="line">------</div><div class="line"></div><div class="line">### 添加、删除、获取元素的方法</div><div class="line">```java		</div><div class="line">		//添加元素e</div><div class="line">	    public boolean add(E e) &#123;</div><div class="line">			linkLast(e);//添加到链表尾</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//删除对象o</div><div class="line">		public boolean remove(Object o) &#123;</div><div class="line">			if (o == null) &#123;//如果o==null</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (x.item == null) &#123;//如果节点x值为null</div><div class="line">						unlink(x);//删除节点x</div><div class="line">						return true;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125; else &#123;//o!=null</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (o.equals(x.item)) &#123;//如果节点x值为与o相等</div><div class="line">						unlink(x);//删除节点x</div><div class="line">						return true;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//通过索引获取元素(节点的值)</div><div class="line">		public E get(int index) &#123;</div><div class="line">			checkElementIndex(index);//检查索引值</div><div class="line">			return node(index).item;//调用</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//清空链表</div><div class="line">		public void clear() &#123;</div><div class="line">			for (Node&lt;E&gt; x = first; x != null; ) &#123;//遍历链表，并将每个节点的值、前一个节点、后一个节点都置空</div><div class="line">				Node&lt;E&gt; next = x.next;</div><div class="line">				x.item = null;</div><div class="line">				x.next = null;</div><div class="line">				x.prev = null;</div><div class="line">				x = next;</div><div class="line">			&#125;</div><div class="line">			first = last = null;//将头节点、尾节点都置空</div><div class="line">			size = 0;//将链表长度修改为0</div><div class="line">			modCount++;//修改次数+1</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		//获取元素的索引值</div><div class="line">		public int indexOf(Object o) &#123;</div><div class="line">			int index = 0;</div><div class="line">			if (o == null) &#123;//如果o==null</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (x.item == null)</div><div class="line">						return index;//找到则返回索引值</div><div class="line">					index++;</div><div class="line">				&#125;</div><div class="line">			&#125; else &#123;</div><div class="line">				for (Node&lt;E&gt; x = first; x != null; x = x.next) &#123;</div><div class="line">					if (o.equals(x.item))</div><div class="line">						return index;//找到则返回索引值</div><div class="line">					index++;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			return -1;//如果没找到，返回-1</div><div class="line">		&#125;</div><div class="line">```	</div><div class="line">		</div><div class="line">**还有很多添加删除获取元素的方法，都是在调用以上方法的基础上实现的。**</div><div class="line">------</div><div class="line">		</div><div class="line">### 可作为双端队列的方法</div><div class="line">		* offerFirst offerLast 在队列前后添加元素</div><div class="line">		* peekFirs peekLast 获取队列前后的元素</div><div class="line">		* pollFirst pollLast 在队列前/后删除元素</div><div class="line">	</div><div class="line">### 可作为先进先出的栈的方法</div><div class="line">		* push 元素入栈</div><div class="line">		* pop 元素出栈</div><div class="line">		</div><div class="line">### LinkedList遍历方式</div><div class="line">1.通过迭代器遍历</div><div class="line">```java</div><div class="line">		for(Iterator iterator = list.iterator();iterator.hasNext();)&#123;</div><div class="line">			iterator.next();</div><div class="line">		&#125;</div></pre></td></tr></table></figure>
+<p>2.通过增强for循环遍历<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(Integer i:linkedList)&#123;</div><div class="line">	<span class="comment">//...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>3.通过快速随机访问遍历<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;lisy.size;i++)&#123;</div><div class="line">	list.get(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>其中第三种遍历方式效率最低</strong></p>
+<h3 id="List去除重复元素方式"><a href="#List去除重复元素方式" class="headerlink" title="List去除重复元素方式"></a>List去除重复元素方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedListTest</span> </span>&#123;</div><div class="line">	<span class="comment">/*双重循环遍历List*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicate</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; list.size() - <span class="number">1</span>; i++) &#123;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = list.size() - <span class="number">1</span>; j &gt; i; j--) &#123;</div><div class="line">				<span class="keyword">if</span> (list.get(j).equals(list.get(i))) &#123;</div><div class="line">					list.remove(j);</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*通过HashSet去重*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicateWithHashSet</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</div><div class="line">		HashSet&lt;Integer&gt; h = <span class="keyword">new</span> HashSet&lt;Integer&gt;(list);<span class="comment">//将List中的元素全部添加到HashSet中</span></div><div class="line">		list.clear();<span class="comment">//清空原List</span></div><div class="line">		list.addAll(h);<span class="comment">//将HashSet中的元素全部添加到List中</span></div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*通过List的contains方法去重*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicateWithContains</span><span class="params">(List&lt;Integer&gt; list)</span></span>&#123;</div><div class="line">		List&lt;Integer&gt; newList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		<span class="keyword">for</span>(Integer next:list)&#123;</div><div class="line">			<span class="keyword">if</span>(!newList.contains(next))&#123;</div><div class="line">				newList.add(next);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		list.clear();</div><div class="line">		list.addAll(newList);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="comment">/*去重，并保持元素原来的顺序*/</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> List&lt;Integer&gt; <span class="title">removeDuplicateKeepOrder</span><span class="params">(List&lt;Integer&gt; list)</span> </span>&#123;</div><div class="line">		List&lt;Integer&gt; newList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		Set&lt;Integer&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</div><div class="line"></div><div class="line">		<span class="keyword">for</span> (Iterator&lt;Integer&gt; iterator = list.iterator(); iterator.hasNext();) &#123;</div><div class="line">			Integer next = iterator.next();</div><div class="line">			<span class="keyword">if</span> (set.add(next)) &#123;<span class="comment">//如果能向set中添加元素，说明无重复</span></div><div class="line">				newList.add(next);<span class="comment">//如果无重复，则将元素添加到新的list中</span></div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		list.clear();</div><div class="line">		list.addAll(newList);</div><div class="line">		<span class="keyword">return</span> list;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hashmap/" rel="next" title="HashMap源码学习">
+                <i class="fa fa-chevron-left"></i> HashMap源码学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/threadlocal/" rel="prev" title="ThreadLocal源码学习">
+                ThreadLocal源码学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="coderjzf" />
+          <p class="site-author-name" itemprop="name">coderjzf</p>
+           
+              <p class="site-description motion-element" itemprop="description">a primary coder</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要成员变量"><span class="nav-number">1.</span> <span class="nav-text">主要成员变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List去除重复元素方式"><span class="nav-number">2.</span> <span class="nav-text">List去除重复元素方式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">coderjzf</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
